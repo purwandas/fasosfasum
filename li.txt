@@ -1,0 +1,43 @@
+
+	}else
+
+	if (  (isset($_POST['pulomas'])) && (isset($_POST['rekon163'])) && (isset($_POST['rekon54']))  )
+	{
+		$query = mysql_query("select * from lokasidokumen where pulomas='1' && rekon163='1' && rekon54='1' && rekon129='0' && rekon101='0' && balaikota='0' && dtr='0' && tp3w='0' && lokasi58='0' && bpk357='0'") or die(mysql_error());
+	}else
+
+	if (  (isset($_POST['pulomas'])) && (isset($_POST['rekon163'])) && (isset($_POST['rekon54'])) && (isset($_POST['rekon129']))  )
+	{
+		$query = mysql_query("select * from lokasidokumen where pulomas='1' && rekon163='1' && rekon54='1' && rekon129='1' && rekon101='0' && balaikota='0' && dtr='0' && tp3w='0' && lokasi58='0' && bpk357='0'") or die(mysql_error());
+	}else
+
+	if (  (isset($_POST['pulomas'])) && (isset($_POST['rekon163'])) && (isset($_POST['rekon54'])) && (isset($_POST['rekon129'])) && (isset($_POST['rekon101']))   )
+	{
+		$query = mysql_query("select * from lokasidokumen where pulomas='1' && rekon163='1' && rekon54='1' && rekon129='1' && rekon101='1' && balaikota='0' && dtr='0' && tp3w='0' && lokasi58='0' && bpk357='0'") or die(mysql_error());
+	}else
+
+	if (  (isset($_POST['pulomas'])) && (isset($_POST['rekon163'])) && (isset($_POST['rekon54'])) && (isset($_POST['rekon129'])) && (isset($_POST['rekon101'])) && (isset($_POST['balaikota']))  )
+	{
+		$query = mysql_query("select * from lokasidokumen where pulomas='1' && rekon163='1' && rekon54='1' && rekon129='1' && rekon101='1' && balaikota='1' && dtr='0' && tp3w='0' && lokasi58='0' && bpk357='0'") or die(mysql_error());
+	}else
+
+	if (  (isset($_POST['pulomas'])) && (isset($_POST['rekon163'])) && (isset($_POST['rekon54'])) && (isset($_POST['rekon129'])) && (isset($_POST['rekon101'])) && (isset($_POST['balaikota'])) && (isset($_POST['dtr']))  )
+	{
+		$query = mysql_query("select * from lokasidokumen where pulomas='1' && rekon163='1' && rekon54='1' && rekon129='1' && rekon101='1' && balaikota='1' && dtr='1' && tp3w='0' && lokasi58='0' && bpk357='0'") or die(mysql_error());
+	}else
+
+	if (  (isset($_POST['pulomas'])) && (isset($_POST['rekon163'])) && (isset($_POST['rekon54'])) && (isset($_POST['rekon129'])) && (isset($_POST['rekon101'])) && (isset($_POST['balaikota'])) && (isset($_POST['dtr'])) && (isset($_POST['tp3w'])) )
+	{
+		$query = mysql_query("select * from lokasidokumen where pulomas='1' && rekon163='1' && rekon54='1' && rekon129='1' && rekon101='1' && balaikota='1' && dtr='1' && tp3w='1' && lokasi58='0' && bpk357='0'") or die(mysql_error());
+	}else
+
+	if (  (isset($_POST['pulomas'])) && (isset($_POST['rekon163'])) && (isset($_POST['rekon54'])) && (isset($_POST['rekon129'])) && (isset($_POST['rekon101'])) && (isset($_POST['balaikota'])) && (isset($_POST['dtr'])) && (isset($_POST['tp3w'])) && (isset($_POST['lokasi58']))  )
+	{
+		$query = mysql_query("select * from lokasidokumen where pulomas='1' && rekon163='1' && rekon54='1' && rekon129='1' && rekon101='1' && balaikota='1' && dtr='1' && tp3w='1' && lokasi58='1' && bpk357='0'") or die(mysql_error());
+	}else
+
+
+	if (  (isset($_POST['pulomas'])) && (isset($_POST['rekon163'])) && (isset($_POST['rekon54'])) && (isset($_POST['rekon129'])) && (isset($_POST['rekon101'])) && (isset($_POST['balaikota'])) && (isset($_POST['dtr'])) && (isset($_POST['tp3w'])) && (isset($_POST['lokasi58'])) && (isset($_POST['bpk357'])) )
+	{
+	$query = mysql_query("select * from lokasidokumen where pulomas='1' && rekon163='1' && rekon54='1' && rekon129='1' && rekon101='1' && balaikota='1' && dtr='1' && tp3w='1' && lokasi58='1' && bpk357='1'") or die(mysql_error());
+	}
