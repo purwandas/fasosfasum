@@ -727,7 +727,32 @@ $(document).ready(function() {
 .advance-search{
   display: visible;
 }
+.advance-search-button{
+    line-height: 12px;
+    font-size: 8pt;
+    font-family: tahoma;
+    margin-top: 1px;
+    margin-right: 2px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+    
+
 </style>
+<script>
+$(document).ready(function(){
+    var clck=0;
+    $(".advance-search-button").click(function(){
+     if(clck%2==0){
+        $('.advance-search')fadeIn();
+      }else{
+        $('.advance-search')fadeOut();  
+      }      
+    });
+});
+</script>
 <!-- ----------------------------------------------------------------- -->
 </head>
 
@@ -973,7 +998,9 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
 <form method="post" action="" name="form1" id="form1">
 <div class="col-md-12"  >
 <div class="col-md-6" >
-         
+  <div class="advance-search-button text-center btn btn-info">
+    Advance Search
+  </div>
    <b>Kata Pencarian  </b><br> <input type="text" name="term" />    <input type="submit" name="submit2" value="Cari"/><br/><br>
    <font size="1">)* Masukan Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan</font>
    
@@ -981,6 +1008,7 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
 <!--<div id="filter" class="col-md-6 text-center alert alert-info">Kriteria Pencarian</div> -->
 <div class="col-md-12 advance-search">
   <h4>Kriteria Pencarian</h4>
+
   <div id="schBox" class="col-md-12" style="border-radius:10px;padding-top:10px;">
     <?php
     if(isset($_REQUEST['submit2'])){
