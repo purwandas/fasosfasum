@@ -18,7 +18,7 @@
 <script type="text/javascript" src="view/javascript/jquery/menu/jquery.menu.js"></script>
 
 <script type="text/javascript" src="view/javascript/jquery/ui/external/jquery.bgiframe-2.1.2.js"></script>
-<script src="js/jquery.price_format.1.6.js" type="text/javascript"></script>
+<!-- <script src="js/jquery.price_format.1.6.js" type="text/javascript"></script> -->
 
 <script type="text/javascript" src="view/javascript/jquery/superfish/js/superfish.js"></script>
 <script type="text/javascript">
@@ -721,11 +721,11 @@ $(document).ready(function() {
 <!-- ----------------------------------------------------------------- -->
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="sources/bootstrap.min.css">
-  <script src="sources/bootstrap.min.js"></script></script>
+  <!-- <link rel="stylesheet" href="sources/bootstrap.min.css"> -->
+  <!-- <script src="sources/bootstrap.min.js"></script></script> -->
 <style>
 .advance-search{
-  display: visible;
+  display: none;
 }
 .advance-search-button{
     line-height: 12px;
@@ -733,7 +733,6 @@ $(document).ready(function() {
     font-family: tahoma;
     margin-top: 1px;
     margin-right: 2px;
-    position: absolute;
     top: 0;
     right: 0;
 }
@@ -741,28 +740,7 @@ $(document).ready(function() {
     
 
 </style>
-<script>
-$(document).ready(function(){
-    var clck=0;
-    $(".advance-search-button").click(function(){
-     if(clck%2==0){
-        $('.advance-search')fadeIn();
-      }else{
-        $('.advance-search')fadeOut();  
-      }      
-    });
-});
-</script>
-<script>
-$( "#advance-search-button" ).click(function() {
-  $( "#advance-search" ).fadeToggle( "slow", "linear" );
-});
-$( "button:last" ).click(function() {
-  $( "p:last" ).fadeToggle( "fast", function() {
-    $( "#log" ).append( "<div>finished</div>" );
-  });
-});
-</script>
+
 <!-- ----------------------------------------------------------------- -->
 </head>
 
@@ -990,6 +968,14 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
 		dataFormat: "HTMLTable",
 		width: "1100"
 	});
+  $(function(){
+
+
+    $('.advance-search-button').click(function(){
+        $('.advance-search').toggle('slow');
+    });
+
+  });
 	</script>
 	</center>
 </body>
@@ -1007,17 +993,17 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
   <div class="dashboard-content">
 <form method="post" action="" name="form1" id="form1">
 <div class="col-md-12"  >
-<div class="col-md-6" >
-  <div class="advance-search-button text-center btn btn-info">
-    Advance Search
-  </div>
-   <b>Kata Pencarian  </b><br> <input type="text" name="term" />    <input type="submit" name="submit2" value="Cari"/><br/><br>
+<div class="col-md-4" >
+  <!-- <div class="advance-search-button text-center btn btn-info"> -->
+    
+  <!-- </div> -->
+   <b>Kata Pencarian  </b><br> <input type="text" name="term" />    <input type="submit" name="submit2" value="Cari"/> <a class="advance-search-button">Advance Search</a><br/><br>
    <font size="1">)* Masukan Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan</font>
    
 </div>
 <!--<div id="filter" class="col-md-6 text-center alert alert-info">Kriteria Pencarian</div> -->
+<hr>
 <div class="col-md-12 advance-search">
-  <h4>Kriteria Pencarian</h4>
 
   <div id="schBox" class="col-md-12" style="border-radius:10px;padding-top:10px;">
     <?php
@@ -1106,8 +1092,8 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
         }
       }
     ?>
-    
-    
+    <br>
+    <button type="submit" name="submit2">Mulai Pencarian</button>
   </div>
 </div>
 </div>
@@ -1144,7 +1130,7 @@ if(isset($_REQUEST['submit2'])) {
 	include "koneksi.php";
 	
 	$XX = "<br><br><h2> <center> No Record Found, Search Again Please </center> </h2>"; 
-  echo"<font style='color:red'>$selectQuery-select</font>";
+  // echo"<font style='color:red'>$selectQuery-select</font>";
 	$query = mysql_query($selectQuery);
 }else{
 $query = mysql_query("select * from bast b inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan c on d.idkategori=c.idkategori order by nobast");
