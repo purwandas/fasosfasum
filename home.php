@@ -723,7 +723,11 @@ $(document).ready(function() {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="sources/bootstrap.min.css">
   <script src="sources/bootstrap.min.js"></script></script>
-
+<style>
+.advance-search{
+  display: visible;
+}
+</style>
 <!-- ----------------------------------------------------------------- -->
 </head>
 
@@ -973,9 +977,9 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
    <b>Kata Pencarian  </b><br> <input type="text" name="term" />    <input type="submit" name="submit2" value="Cari"/><br/><br>
    <font size="1">)* Masukan Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan</font>
    
-  </div>
+</div>
 <!--<div id="filter" class="col-md-6 text-center alert alert-info">Kriteria Pencarian</div> -->
-<div class="col-md-12">
+<div class="col-md-12 advance-search">
   <h4>Kriteria Pencarian</h4>
   <div id="schBox" class="col-md-12" style="border-radius:10px;padding-top:10px;">
     <?php
