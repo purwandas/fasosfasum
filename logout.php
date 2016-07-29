@@ -2,7 +2,7 @@
 	//Start session
 	session_start();
 
-			mysql_connect("localhost","root","");
+			mysql_connect("localhost","ff2016_repo","g4KhtXLJ");
 			mysql_select_db("ff2016_login");
 			$waktu = gmdate("Y-m-d H:i:s", time()+60*60*7);
 			$user = $_SESSION['SESS_FIRST_NAME'];

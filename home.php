@@ -753,6 +753,16 @@ $(document).ready(function(){
     });
 });
 </script>
+<script>
+$( "#advance-search-button" ).click(function() {
+  $( "#advance-search" ).fadeToggle( "slow", "linear" );
+});
+$( "button:last" ).click(function() {
+  $( "p:last" ).fadeToggle( "fast", function() {
+    $( "#log" ).append( "<div>finished</div>" );
+  });
+});
+</script>
 <!-- ----------------------------------------------------------------- -->
 </head>
 
