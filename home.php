@@ -583,7 +583,10 @@ $(document).ready(function() {
     <div class="heading">
       <h1><img src="view/image/home.png" alt="" /> Dashboard</h1>
     </div>
-
+<?php
+if(!isset($_REQUEST['submit2'])){
+  //-----------------------------------------------------------------------
+?>
     <div class="content">
       <div class="overview">
         <div class="dashboard-heading">Resume Data</div>
@@ -713,35 +716,15 @@ $(document).ready(function() {
         <div class="dashboard-content">
 
 
-<html>
-<head>
-<title>JSChart</title>
-
 <script type="text/javascript" src="sources/jscharts.js"></script>
-<!-- ----------------------------------------------------------------- -->
+
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <link rel="stylesheet" href="sources/bootstrap.min.css"> -->
+  
   <!-- <script src="sources/bootstrap.min.js"></script></script> -->
-<style>
-.advance-search{
-  display: none;
-}
-.advance-search-button{
-    line-height: 12px;
-    font-size: 8pt;
-    font-family: tahoma;
-    margin-top: 1px;
-    margin-right: 2px;
-    top: 0;
-    right: 0;
-}
 
-    
 
-</style>
 
-<!-- ----------------------------------------------------------------- -->
 </head>
 
 
@@ -968,41 +951,83 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
 		dataFormat: "HTMLTable",
 		width: "1100"
 	});
-  $(function(){
-
-
-    $('.advance-search-button').click(function(){
-        $('.advance-search').toggle('slow');
-    });
-
-  });
+  
 	</script>
 	</center>
-</body>
-</html>
 
 
 	</div>
         </div>
       </div>
+<?php
+}
+?>
+<script type="text/javascript">
+  $(function(){
+    $('.advance-search-button').click(function(){
+        $('.advance-search').toggle('slow');
+    });
 
+    $("input:checkbox[name='wilayah[]']").change(function(){
+      $("#kec").empty();
+      $("#kel").empty();
+      $("#kec").append("<option value='' > Kecamatan </option>");
+      $("input:checkbox[name='wilayah[]']").each(function(){
+        if($(this).is(":checked")){
+          var wilayah=$(this).val(); 
+          $.get('wilayah.php',{'nama':wilayah}, function(data){
 
+            $.each(data,function(k,v){
+              $("#kec").append("<option value='" + v + "' > "+v+"</option>");
+            });
+          }, "json");
+        }
+      });      
+    });
+
+    $("#kec").change(function(){
+      $("#kel").empty();
+      var wilayah=$(this).val();          
+      $.get('wilayah2.php',{'kec':wilayah}, function(data){
+        $("#kel").append("<option value='' > Kelurahan </option>");
+        $.each(data,function(k,v){
+          $("#kel").append("<option value='" + v + "' > "+v+"</option>");
+        });
+      }, "json");
+    });
+  });
+  </script>
+  <link rel="stylesheet" href="sources/bootstrap.min.css">
+  <style>
+.advance-search{
+  display: none;
+}
+.advance-search-button{
+    line-height: 12px;
+    font-size: 8pt;
+    font-family: tahoma;
+    margin-top: 1px;
+    margin-right: 2px;
+    top: 0;
+    right: 0;
+}
+</style>
     <div class="content">
   <div class="latest">
   <div class="dashboard-heading">Data BAST</div>
   <div class="dashboard-content">
 <form method="post" action="" name="form1" id="form1">
 <div class="col-md-12"  >
-<div class="col-md-4" >
+<div class="col-md-12" >
   <!-- <div class="advance-search-button text-center btn btn-info"> -->
     
   <!-- </div> -->
    <b>Kata Pencarian  </b><br> <input type="text" name="term" />    <input type="submit" name="submit2" value="Cari"/> <a class="advance-search-button">Advance Search</a><br/><br>
    <font size="1">)* Masukan Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan</font>
-   
+<hr>   
 </div>
 <!--<div id="filter" class="col-md-6 text-center alert alert-info">Kriteria Pencarian</div> -->
-<hr>
+
 <div class="col-md-12 advance-search">
 
   <div id="schBox" class="col-md-12" style="border-radius:10px;padding-top:10px;">
@@ -1017,17 +1042,24 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
       }
       
     }
+    include("koneksi.php");
       $s_filter_master=mysql_query("select * from ref_master");
       while($d_filter_master=mysql_fetch_array($s_filter_master)){
         $s_filter=mysql_query("select * from $d_filter_master[tabel]");
         if($d_filter_master['kategori']!='tahun'){ 
           echo"
-            <div class='checkbox bs-callout bs-callout-danger' > 
+            <div class='checkbox col-md-3' > 
                 <i>$d_filter_master[nama]</i><br>
           ";
         }
+        $dname='';
         while ($d_filter=mysql_fetch_array($s_filter)) {
-          $dname=$d_filter_master['name'].$d_filter['name'];
+          $thn=0;
+          if($d_filter_master['name']=="wilayah"){
+            $dname="wilayah[]";
+          }else{
+            $dname=$d_filter_master['name'].$d_filter['name'];
+          }          
           if(isset($_REQUEST['submit2'])) {
             if(isset($_POST["$dname"])){
               if($dcount>0){
@@ -1049,8 +1081,8 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
             
             echo"
               <label> 
-                <input type='checkbox' class='checkbox-info' $ckd name='$dname'> $d_filter[display] <br>
-              </label>
+                <input type='checkbox' value='$d_filter[display]' class='checkbox-info' $ckd name='$dname' id='$dname'> $d_filter[display] 
+              </label><br>
             ";
 
           }else{
@@ -1060,6 +1092,13 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
                 <select name=$d_filter_master[kategori]$d_filter[name]>
                   ";
                     for($i=1990;$i<=date('Y');$i++){
+                      if($thn==0){
+                        echo"
+                          <option value=''>
+                          -pilih-
+                          </option>
+                        ";
+                      }
                       echo"
                         <option value=$i>
                         $i
@@ -1072,6 +1111,14 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
                  <select name=$d_filter_master[kategori]$d_filter[name]2>
                     ";
                     for($i=date('Y');$i>=1990;$i--){
+                      if($thn==0){
+                        echo"
+                          <option value=''>
+                          -pilih-
+                          </option>
+                        ";
+                        $thn++;
+                      }
                       echo"
                         <option value=$i>
                         $i
@@ -1085,15 +1132,33 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
           }
           
         }
+        if($d_filter_master['tabel']=="ref_wilayah"){
+          echo"
+            <select name=kec id=kec>
+              <option value=''>
+                Kecamatan
+              </option>
+              <option value='Gambir'>
+                Gambir
+              </option>
+            </select>
+            <select name=kel id=kel>
+              <option value=''>
+                Kelurahan
+              </option>
+            </select>
+          ";
+        }
         if($d_filter_master['kategori']!='tahun'){ 
           echo"
             </div>
           ";
         }
+        
       }
     ?>
     <br>
-    <button type="submit" name="submit2">Mulai Pencarian</button>
+    <button type="submit" name="submit2">Mulai Pencarian</button><hr>
   </div>
 </div>
 </div>
