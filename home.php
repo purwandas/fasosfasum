@@ -1043,7 +1043,7 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
       
     }
     include("koneksi.php");
-      $s_filter_master=mysql_query("select * from ref_master");
+      $s_filter_master=mysql_query("select * from ref_master order by urutan asc");
       while($d_filter_master=mysql_fetch_array($s_filter_master)){
         $s_filter=mysql_query("select * from $d_filter_master[tabel]");
         if($d_filter_master['kategori']!='tahun'){ 
@@ -1057,20 +1057,36 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
           $thn=0;
           if($d_filter_master['name']=="wilayah"){
             $dname="wilayah[]";
+            $dname2="wilayah";
           }else{
             $dname=$d_filter_master['name'].$d_filter['name'];
-          }          
+            $dname2=$d_filter_master['name'].$d_filter['name'];
+          }       
           if(isset($_REQUEST['submit2'])) {
-            if(isset($_POST["$dname"])){
+            if(isset($_POST["$dname2"])){
               if($dcount>0){
                 $dor=" or";
               }else{
                 $dor=" where ";
+                $dcount++;
               }
-              $dcount++;
-              $ckd="checked";
-              $ref_tf=$d_filter_master['ref_table'].".".$d_filter_master['ref_field'];
-              $selectQuery.=" $dor $ref_tf like '%$d_filter[keyword]%' ";
+              if($dname2!="wilayah"){
+                $ckd="checked";
+                $ref_tf=$d_filter_master['ref_table'].".".$d_filter_master['ref_field'];
+                if($d_filter_master['name']!="kib"){
+                  $selectQuery.=" $dor $ref_tf like '%$d_filter[keyword]%' ";
+                }
+              }else if(isset($_POST['wilayah'])){
+                $wil= $_POST['wilayah'];
+                foreach ($wil as $value) {
+                  if($d_filter['display']==$value){
+                    $ckd="checked";
+                    break;
+                  }else{
+                    $ckd="";
+                  }
+                }
+              }
             }else{
               $ckd="";
             }
@@ -1081,23 +1097,34 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
             
             echo"
               <label> 
-                <input type='checkbox' value='$d_filter[display]' class='checkbox-info' $ckd name='$dname' id='$dname'> $d_filter[display] 
+                <input type='checkbox' value='$d_filter[display]' class='checkbox-info' $ckd name='$dname'> $d_filter[display] 
               </label><br>
             ";
 
           }else{
             echo"
-              <div class='checkbox col-md-4' style='margin-top:0px;background-color:#ECECEC;border-radius:10px'> 
+              <div class='checkbox col-md-4'> 
                 <i>Tahun Terbit $d_filter[display]</i><br>
                 <select name=$d_filter_master[kategori]$d_filter[name]>
                   ";
+                  $thn=0;
                     for($i=1990;$i<=date('Y');$i++){
                       if($thn==0){
-                        echo"
-                          <option value=''>
-                          -pilih-
-                          </option>
-                        ";
+                        $tanggal=$_POST["$d_filter_master[kategori]$d_filter[name]"];
+                        if(isset($tanggal)&&$tanggal!=''){
+                          echo"
+                            <option value=$tanggal>
+                            $tanggal
+                            </option>
+                          ";
+                        }else{
+                          echo"
+                            <option value=''>
+                            -pilih-
+                            </option>
+                          ";
+                        }
+                        $thn++;
                       }
                       echo"
                         <option value=$i>
@@ -1110,13 +1137,23 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
                  sampai dengan
                  <select name=$d_filter_master[kategori]$d_filter[name]2>
                     ";
+                    $thn=0;
                     for($i=date('Y');$i>=1990;$i--){
                       if($thn==0){
-                        echo"
-                          <option value=''>
-                          -pilih-
-                          </option>
-                        ";
+                        $tanggal=$_POST["$d_filter_master[kategori]$d_filter[name]2"];
+                        if(isset($tanggal)&&$tanggal!=''){
+                          echo"
+                            <option value=$tanggal>
+                            $tanggal
+                            </option>
+                          ";
+                        }else{
+                          echo"
+                            <option value=''>
+                            -pilih-
+                            </option>
+                          ";
+                        }
                         $thn++;
                       }
                       echo"
@@ -1135,19 +1172,45 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
         if($d_filter_master['tabel']=="ref_wilayah"){
           echo"
             <select name=kec id=kec>
+            ";
+            if(isset($_POST['kec'])&&$_POST['kec']!=''){
+              $kec=$_POST['kec'];
+              echo"
+              <option value='$kec'>
+                $kec
+              </option>
+              ";
+            }else{
+              echo"
               <option value=''>
                 Kecamatan
               </option>
-              <option value='Gambir'>
-                Gambir
-              </option>
+              ";
+            }
+              echo"
             </select>
+            ";
+
+          echo"
             <select name=kel id=kel>
+            ";
+            if(isset($_POST['kel'])&&$_POST['kel']!=''){
+              $kel=$_POST['kel'];
+              echo"
+              <option value='$kel'>
+                $kel
+              </option>
+              ";
+            }else{
+              echo"
               <option value=''>
                 Kelurahan
               </option>
+              ";
+            }
+              echo"
             </select>
-          ";
+            ";
         }
         if($d_filter_master['kategori']!='tahun'){ 
           echo"
@@ -1158,7 +1221,7 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
       }
     ?>
     <br>
-    <button type="submit" name="submit2">Mulai Pencarian</button><hr>
+    <button type="submit" class="col-md-12" name="submit2">Mulai Pencarian</button><br><br>
   </div>
 </div>
 </div>
@@ -1202,30 +1265,40 @@ $query = mysql_query("select * from bast b inner join detaildokacuan d on b.nodo
 }
 	$no = 1;
   $chck=1;
+  // echo $selectQuery." <-query";
 	while ($data = mysql_fetch_array($query)) {
-    if(isset($_REQUEST['submit2'])) {
-      $chck=0;
-      $qthn=mysql_query("select* from ref_tahun");
-      while($dthn=mysql_fetch_array($qthn)){
-        if($dthn['name']!='pkk'){
-          $dtahun=substr($data["$dthn[ref_field]"],-4);
-          $tahun1=$_POST["tahun"."$dthn[name]"];
-          if($dtahun>=$tahun1){//&&(substr($data["$dthn[ref_field]"],-4)<=$_POST["tahun"."$dthn[name]2"])){
-            $chck=1;
-          }else{
-            $chck=0;
-          }
-          //echo $dtahun."-".$tahun1."+$dthn[name]<hr>";
-        }
-      }
-      if($chck==0){
-        $smulti=mysql_query("select* from ref_master where ket='multi'");
-        while($dmulti=mysql_fetch_array($smulti)){
-          $qmulti="select* from $dmulti[tabel]";
-          $sdmulti=mysql_query($qmulti);
-        }
-      }
-    }
+    // if(isset($_REQUEST['submit2'])) {
+    //   $chck=0;
+    //   $qthn=mysql_query("select* from ref_tahun");
+    //   while($dthn=mysql_fetch_array($qthn)){
+    //     if($dthn['name']!='pkk'){
+    //       $dtahun=substr($data["$dthn[ref_field]"],-4);
+    //       $tahun1=$_POST["tahun"."$dthn[name]"];
+                      
+    //       if($dtahun>=$tahun1&&$tahun1!=''){
+    //         echo "<script type='text/javascript'>alert('$dtahun >= $tahun1');</script>";
+    //         $chck=1;
+    //       }else{
+    //         $chck=0;
+    //       }
+    //       //echo $dtahun."-".$tahun1."+$dthn[name]<hr>";
+    //     }
+    //   }
+    // }
+
+    // if($chck==0){
+    //   $smulti=mysql_query("select* from ref_master where ket='multi'");
+    //   while($dmulti0=mysql_fetch_array($smulti)){
+    //     $qmulti="select* from $dmulti0[tabel]";
+    //     $sdmulti=mysql_query($qmulti);
+    //     while ($dmulti=mysql_fetch_array($qmulti)) {
+    //       $dname=$dmulti0['name'].$dmulti['name'];
+    //       if(isset($_POST["$dname"])){
+    //         echo "<script type='text/javascript'>alert('$dname');</script>";
+    //       }
+    //     }
+    //   }
+    // }
     // echo "<hr>$chck<hr>";
     if($chck==1){
 	?>
@@ -1249,7 +1322,8 @@ $query = mysql_query("select * from bast b inner join detaildokacuan d on b.nodo
  	  $no++;
     }
 	}
-
+  $no-=1;
+  echo "<script type='text/javascript'>alert('Ditemukan $no data yang sesuai');</script>";
 	?>
 
 
