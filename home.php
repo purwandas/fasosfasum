@@ -1035,6 +1035,7 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
     if(isset($_REQUEST['submit2'])){
       $dcount=0;
       $term = $_POST['term']; 
+      $filter="berdasarkan ";
       if($term==""){
         $selectQuery="select * from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
       }else{
@@ -1064,23 +1065,36 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
           }       
           if(isset($_REQUEST['submit2'])) {
             if(isset($_POST["$dname2"])){
+              // echo "<script type='text/javascript'>alert('$dname2 <- isinya apa si? ->$dcount');</script>";
               if($dcount>0){
                 $dor=" or";
               }else{
                 $dor=" where ";
-                $dcount++;
+                
               }
               if($dname2!="wilayah"){
                 $ckd="checked";
                 $ref_tf=$d_filter_master['ref_table'].".".$d_filter_master['ref_field'];
                 if($d_filter_master['name']!="kib"){
+                  // echo $dor."-$dcount<hr>";
+                  $filter.="($d_filter_master[nama]: $d_filter[display]) ";
                   $selectQuery.=" $dor $ref_tf like '%$d_filter[keyword]%' ";
+                  // echo "<script type='text/javascript'>alert('NON wilayah $dcount');</script>";
+                  $dcount=2;
+                  // echo "<script type='text/javascript'>alert('NON wilayah $dcount');</script>";
                 }
               }else if(isset($_POST['wilayah'])){
                 $wil= $_POST['wilayah'];
+                // echo $dor."-$dcount<hr>";
                 foreach ($wil as $value) {
                   if($d_filter['display']==$value){
                     $ckd="checked";
+                    $filter.="($d_filter_master[nama]: $d_filter[display]) ";
+                    $ref_tf=$d_filter_master['ref_table'].".".$d_filter_master['ref_field'];
+                    $selectQuery.=" $dor $ref_tf like '%$d_filter[keyword]%' ";
+                    // echo "<script type='text/javascript'>alert('wilayah $dcount');</script>";
+                    $dcount=3;
+                    // echo "<script type='text/javascript'>alert('wilayah $dcount');</script>";
                     break;
                   }else{
                     $ckd="";
@@ -1258,7 +1272,7 @@ if(isset($_REQUEST['submit2'])) {
 	include "koneksi.php";
 	
 	$XX = "<br><br><h2> <center> No Record Found, Search Again Please </center> </h2>"; 
-  // echo"<font style='color:red'>$selectQuery-select</font>";
+  echo"<font style='color:red'>$selectQuery-select</font>";
 	$query = mysql_query($selectQuery);
 }else{
 $query = mysql_query("select * from bast b inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan c on d.idkategori=c.idkategori order by nobast");
@@ -1323,7 +1337,7 @@ $query = mysql_query("select * from bast b inner join detaildokacuan d on b.nodo
     }
 	}
   $no-=1;
-  echo "<script type='text/javascript'>alert('Ditemukan $no data yang sesuai');</script>";
+  echo "<script type='text/javascript'>alert('Ditemukan $no data yang sesuai, $filter');</script>";
 	?>
 
 
