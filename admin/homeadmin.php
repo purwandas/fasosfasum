@@ -3,10 +3,11 @@
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en" xml:lang="en">
 <head>
 <title>Fasos Fasum BPKD DKI Jakarta</title>
-
+<link rel="stylesheet" href="../sources/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="../view/stylesheet/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="../view/javascript/jquery/ui/themes/ui-lightness/ui.all.css" />
 <script type="text/javascript" src="../view/javascript/jquery/jquery-1.3.2.min.js"></script>
@@ -38,16 +39,16 @@
         <ul>
           <li><a href="dokacuan.php">Dokumen Acuan BAST</a></li>
           <li><a href="#">Data Pengembang</a></li>
-	  <li><a href="kategoriaset.php">Master Kategori Aset</a></li>
-	  <li><a href="#">Master Satuan Ukur (int.)</a></li>
+          <li><a href="kategoriaset.php">Master Kategori Aset</a></li>
+          <li><a href="#">Master Satuan Ukur (int.)</a></li>
           <li><a class="parent">Atribut Alamat</a>
             <ul>
               <li><a href="#">Data Wilayah</a></li>
               <li><a href="kecamatan.php">Data Kecamatan</a></li>
-	      <li><a href="kelurahan.php">Data Kelurahan</a></li>
+      	      <li><a href="kelurahan.php">Data Kelurahan</a></li>
             </ul>
           </li>
-
+          <li><a href="homeadmin.php?h=t_ref">Table Referensi</a></li>
         </ul>
       </li>
       </li>
@@ -160,18 +161,50 @@ $(document).ready(function() {
       </div>
               <div class="box">
     <div class="heading">
-      <h1><img src="../view/image/home.png" alt="" /> Dashboard</h1>
+      <h1><img src="../view/image/home.png" alt="" /> 
+      <?php
+        if(isset($_GET['h'])){
+          // if(!isset($_GET[]))
+          if($_GET['h']=='t_ref'){
+            echo"Tabel Referensi Pencarian";
+          }
+        }else{
+          echo"Dashboard";
+        }
+      ?>
+      </h1>
     </div>
 
 
 
 <div class="content">
   <div class="latest">
-  <div class="dashboard-heading">User Loging</div>
+  <div class="dashboard-heading">
+      <?php
+        if(isset($_GET['h'])){
+          // if(!isset($_GET[]))
+          if($_GET['h']=='t_ref'){
+            echo"Manajemen Tabel";
+          }
+        }else{
+          echo"User Loging";
+        }
+      ?>
+  </div>
   <div class="dashboard-content">
 
+<?php
+if(isset($_GET['h'])){
 
-
+  // if(!isset($_GET[]))
+  if($_GET['h']=='error'){
+    echo "<img src='../sources/Error404-1-01.png' width='100%' height='100%'>";
+  }else{
+    include($_GET['h'].".php");
+  }
+}else{
+?>
+<!-- dashboard -->
 	<table class="list" width="500" border="1" cellpadding="5" cellspacing="1">
 	<p></p>
 	
@@ -224,7 +257,10 @@ $(document).ready(function() {
           </div>
       	  </div>
 	  </div>
-
+<!-- dashboard -->
+<?php
+}//end if isset get h
+?>  
   </div>
 </div>
 <!--[if IE]>
@@ -232,5 +268,5 @@ $(document).ready(function() {
 <![endif]--> 
 
 </div>
-<div id="footer"><a href="http://www.dineshjay.co.id">dinesh consultant</a> &copy; 2009-2012 All Rights Reserved.<br />Version 1.0</div>
+<!-- <div id="footer"><a href="http://www.dineshjay.co.id">dinesh consultant</a> &copy; 2009-2012 All Rights Reserved.<br />Version 1.0</div> -->
 </body></html>
