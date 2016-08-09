@@ -60,7 +60,7 @@ $('a').click(function()
 <p align="center">&nbsp;</p>
 <h3 align="center" class="err">Access Denied!<br />
   You do not have access to this resource.</h3>
-<p align="center">Click here to <a href="login-form.php">Login</a></p>
+<p align="center">Click here to <a href="login-admin.php">Login</a></p>
 </body>
 </html>
 

@@ -15,9 +15,9 @@
 <link rel="stylesheet" type="text/css" href="../view/javascript/jquery/ui/themes/ui-lightness/jquery-ui-1.8.9.custom.css" />
 <script type="text/javascript" src="../view/javascript/jquery/ui/ui.core.js"></script>
 <script type="text/javascript" src="../view/javascript/jquery/superfish/js/superfish.js"></script>
-<script type="text/javascript" src="../view/javascript/jquerytab.js"></script>
+<!-- <script type="text/javascript" src="../view/javascript/jquerytab.js"></script> -->
 <script type="text/javascript" src="../view/javascript/jquery/ui/external/jquery.bgiframe-2.1.2.js"></script>
-<script src="../js/jquery.price_format.1.6.js" type="text/javascript"></script>
+<!-- <script src="../js/jquery.price_format.1.6.js" type="text/javascript"></script> -->
 
 <script type="text/javascript" src="../view/javascript/jquery/superfish/js/superfish.js"></script>
 <script type="text/javascript">
