@@ -35,7 +35,7 @@
 							Tabel:
 						</td>
 						<td  width=30%>					
-					 		<input type=text name=tabel class='$d_master[name]input form-control' value=$d_master[tabel]>
+					 		<input type=text name=tabel class='$d_master[name]input form-control' value='$d_master[tabel]'>
 					 		<input type=hidden name=id value=$d_master[id]>
 					 	</td>
 						<td  width=10%>
@@ -44,7 +44,7 @@
 							Nama: 
 						</td>
 						<td>
-							<input type=text name=nama class='$d_master[name]input form-control' value=$d_master[nama]>
+							<input type=text name=nama class='$d_master[name]input form-control' value='$d_master[nama]'>
 						</td>
 						</tr>
 						<tr>
@@ -52,7 +52,7 @@
 							Ref. Tabel: 
 						</td>
 						<td>
-							<input type=text name=ref_table class='$d_master[name]input form-control' value=$d_master[ref_table]>
+							<input type=text name=ref_table class='$d_master[name]input form-control' value='$d_master[ref_table]'>
 						</td>
 						<td>
 						</td>
@@ -60,7 +60,7 @@
 							Ref. Field: 
 						</td>
 						<td>
-							<input type=text name=ref_field class='$d_master[name]input form-control' value=$d_master[ref_field]>
+							<input type=text name=ref_field class='$d_master[name]input form-control' value='$d_master[ref_field]'>
 						</td>
 						</tr>
 						<tr>
@@ -68,7 +68,7 @@
 							Ket: 
 						</td>
 						<td>
-							<input type=text name=ket class='$d_master[name]input form-control' value=$d_master[ket]>
+							<input type=text name=ket class='$d_master[name]input form-control' value='$d_master[ket]'>
 						</td>
 						<td> 
 						</td>
@@ -76,7 +76,7 @@
 							Kategori: 
 						</td>
 						<td>
-							<input type=text name=kategori class='$d_master[name]input form-control' value=$d_master[kategori]>
+							<input type=text name=kategori class='$d_master[name]input form-control' value='$d_master[kategori]'>
 						</td>
 						</tr>
 						<tr>
@@ -84,7 +84,7 @@
 							Urutan: 
 						</td>
 						<td>
-							<input type=number name=urutan class='$d_master[name]input form-control' value=$d_master[urutan]>
+							<input type=number name=urutan class='$d_master[name]input form-control' value='$d_master[urutan]'>
 						</td>
 						<td> 
 						</td>
@@ -153,15 +153,15 @@
 										<td>
 											<form action='t-ref.php' class='form-inline' method='post'>
 												<div class='col-md-3'>
-													<input type=hidden name=tabel value=$d_master[tabel]>
-													<input type=hidden name=id value=$d_ref[id]>
-													<input type=text class='form-control' name='keyword' value=$d_ref[keyword]>
+													<input type=hidden name=tabel value='$d_master[tabel]'>
+													<input type=hidden name=id value='$d_ref[id]'>
+													<input type=text class='form-control' name='keyword' value='$d_ref[keyword]'>
 												</div>
 												<div class='col-md-3'>
-													<input class='form-control' type=text name='display' value=$d_ref[display]>
+													<input class='form-control' type=text name='display' value='$d_ref[display]'>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='name' value=$d_ref[name]>
+													<input class='form-control' type=text name='name' value='$d_ref[name]'>
 												</div>
 												<div class='col-md-4'>
 													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
@@ -177,21 +177,21 @@
 										<td>
 											<form action='t-ref.php' class='form-inline' method='post'>
 												<div class='col-md-1'>
-													<input type=hidden name=tabel value=$d_master[tabel]>
-													<input type=hidden name=id value=$d_ref[id]>
-													<input type=text class='form-control' name='name' value=$d_ref[name]>
+													<input type=hidden name=tabel value='$d_master[tabel]'>
+													<input type=hidden name=id value='$d_ref[id]'>
+													<input type=text class='form-control' name='name' value='$d_ref[name]'>
 												</div>
 												<div class='col-md-1'>
-													<input class='form-control' type=text name='display' value=$d_ref[display]>
+													<input class='form-control' type=text name='display' value='$d_ref[display]'>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='ref_table' value=$d_ref[ref_table]>
+													<input class='form-control' type=text name='ref_table' value='$d_ref[ref_table]'>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='ref_field' value=$d_ref[ref_field]>
+													<input class='form-control' type=text name='ref_field' value='$d_ref[ref_field]'>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='clause' value=$d_ref[clause]>
+													<input class='form-control' type=text name='clause' value='$d_ref[clause]'>
 												</div>
 												<div class='col-md-4'>
 													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
@@ -278,7 +278,7 @@
 				}
 			</style>
 			<div class='form-group'>
-				<p class='add-master btn-info btn text-center col-md-12 row'> (+) Tambah Data Tabel Master</p>
+				<p class='add-master btn-success btn text-center col-md-12 row'> (+) Tambah Data Tabel Master</p>
 				<div class='add-master2 form-inline'>
 					<form action='t-master.php' method='post'>
 					<center>
