@@ -1,7 +1,9 @@
 <div class="container">
 <?php
 	include("koneksi.php");
-
+	if(isset($_GET['s'])){
+		echo "KAMPRET!!!!".$_GET['s'];
+	}
 	$q_master=mysql_query("select * from ref_master order by urutan asc");
 	while($d_master=mysql_fetch_array($q_master)){
 		echo"
@@ -82,7 +84,7 @@
 							Urutan: 
 						</td>
 						<td>
-							<input type=text name=urutan class='$d_master[name]input form-control' value=$d_master[urutan]>
+							<input type=number name=urutan class='$d_master[name]input form-control' value=$d_master[urutan]>
 						</td>
 						<td> 
 						</td>
@@ -97,11 +99,7 @@
 					<h3>Data Tabel $d_master[tabel]</h3><br>
 					<table class='table table-striped table-hover table-bordered '>
 					";
-					$q_ref=mysql_query("select* from $d_master[tabel]");
-					$idx=0;
-					while($d_ref=mysql_fetch_array($q_ref)){
-						if($d_master['kategori']!='tahun'){
-							if($idx==0){
+							if($d_master['kategori']!='tahun'){
 								echo"
 									<tr>
 										<td>
@@ -121,58 +119,7 @@
 									</tr>
 									</tr>
 								";
-								echo"
-									<tr>
-										<td>
-											<form action='t-ref.php' class='form-inline' method='post'>
-												<div class='col-md-3'>
-													<input type=hidden name=tabel value=$d_master[tabel]>
-													<input type=hidden name=id value=$d_ref[id]>
-													<input type=text class='form-control' name='keyword' value=$d_ref[keyword]>
-												</div>
-												<div class='col-md-3'>
-													<input class='form-control' type=text name='display' value=$d_ref[display]>
-												</div>
-												<div class='col-md-2'>
-													<input class='form-control' type=text name='name' value=$d_ref[name]>
-												</div>
-												<div class='col-md-4'>
-													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
-													<button type='submit' name=hapus class='btn btn-danger'>Hapus Data</button>
-												</div>	
-											</form>
-										</td>
-									</tr>
-								";
-								$idx++;
 							}else{
-								echo"
-									<tr>
-										<td>
-											<form action='t-ref.php' class='form-inline' method='post'>
-												<div class='col-md-3'>
-													<input type=hidden name=tabel value=$d_master[tabel]>
-													<input type=hidden name=id value=$d_ref[id]>
-													<input type=text class='form-control' name='keyword' value=$d_ref[keyword]>
-												</div>
-												<div class='col-md-3'>
-													<input class='form-control' type=text name='display' value=$d_ref[display]>
-												</div>
-												<div class='col-md-2'>
-													<input class='form-control' type=text name='name' value=$d_ref[name]>
-												</div>
-												<div class='col-md-4'>
-													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
-													<button type='submit' name=hapus class='btn btn-danger'>Hapus Data</button>
-												</div>	
-											</form>
-										</td>
-									</tr>
-									
-								";
-							}
-						}else{
-							if($idx==0){
 								echo"
 									<tr>
 										<td>
@@ -197,6 +144,34 @@
 										</td>
 									</tr>
 								";
+							}
+					$q_ref=mysql_query("select* from $d_master[tabel]");
+					while($d_ref=mysql_fetch_array($q_ref)){
+						if($d_master['kategori']!='tahun'){
+								echo"
+									<tr>
+										<td>
+											<form action='t-ref.php' class='form-inline' method='post'>
+												<div class='col-md-3'>
+													<input type=hidden name=tabel value=$d_master[tabel]>
+													<input type=hidden name=id value=$d_ref[id]>
+													<input type=text class='form-control' name='keyword' value=$d_ref[keyword]>
+												</div>
+												<div class='col-md-3'>
+													<input class='form-control' type=text name='display' value=$d_ref[display]>
+												</div>
+												<div class='col-md-2'>
+													<input class='form-control' type=text name='name' value=$d_ref[name]>
+												</div>
+												<div class='col-md-4'>
+													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
+													<button type='submit' name=hapus class='btn btn-danger'>Hapus Data</button>
+												</div>	
+											</form>
+										</td>
+									</tr>
+								";
+						}else{
 								echo"
 									<tr>
 										<td>
@@ -226,45 +201,173 @@
 										</td>
 									</tr>
 								";
-								$idx++;
-							}else{
+						} 
+					}
+						if($d_master['kategori']!='tahun'){						
+								echo"
+									<tr>
+										<td>
+											<form action='t-ref.php' class='form-inline' method='post'>
+												<div class='col-md-3'>
+													<input type=hidden name=tabel value=$d_master[tabel]>
+													<input type=text class='form-control' name='keyword' value=''>
+												</div>
+												<div class='col-md-3'>
+													<input class='form-control' type=text name='display' value=''>
+												</div>
+												<div class='col-md-2'>
+													<input class='form-control' type=text name='name' value=''>
+												</div>
+												<div class='col-md-4'>
+													<button type=submit name=tambah class='btn btn-success'>Tambah Data Baru</button>
+												</div>	
+											</form>
+										</td>
+									</tr>
+								";
+						}else{
 								echo"
 									<tr>
 										<td>
 											<form action='t-ref.php' class='form-inline' method='post'>
 												<div class='col-md-1'>
 													<input type=hidden name=tabel value=$d_master[tabel]>
-													<input type=hidden name=id value=$d_ref[id]>
-													<input type=text class='form-control' name='name' value=$d_ref[name]>
+													<input type=text class='form-control' name='name' value=''>
 												</div>
 												<div class='col-md-1'>
-													<input class='form-control' type=text name='display' value=$d_ref[display]>
+													<input class='form-control' type=text name='display' value=''>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='ref_table' value=$d_ref[ref_table]>
+													<input class='form-control' type=text name='ref_table' value=''>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='ref_field' value=$d_ref[ref_field]>
+													<input class='form-control' type=text name='ref_field' value=''>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='clause' value=$d_ref[clause]>
+													<input class='form-control' type=text name='clause' value=''>
 												</div>
 												<div class='col-md-4'>
-													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
-													<button type='submit' name=hapus class='btn btn-danger'>Hapus Data</button>
+													<button type=submit name=tambah class='btn btn-success'>Tambah Data Baru</button>
 												</div>	
 											</form>
 										</td>
 									</tr>
 								";
 							}
-						} 
-					}
 					echo"
 					</table>
 				</div>
 			</div>
 		";
 	}
+	echo"
+			<script type='text/javascript'>
+			  $(function(){
+			    $('.add-master').click(function(){
+			        $('.add-master2').toggle('slow');
+			    });
+
+			  });
+			</script>
+			 <style>
+				.add-master2{
+				  display: none;
+				}
+				.add-masterinput{
+				  disabled:disabled;
+				}
+			</style>
+			<div class='form-group'>
+				<p class='add-master btn-info btn text-center col-md-12 row'> (+) Tambah Data Tabel Master</p>
+				<div class='add-master2 form-inline'>
+					<form action='t-master.php' method='post'>
+					<center>
+					<h3>Tambah Data Tabel Master</h3><br>
+					<table>
+						<tr>
+						<td width=10%>
+							Tabel:
+						</td>
+						<td  width=30%>					
+					 		<input type=text name=tabel class='add-masterinput form-control' value='ref_'>
+					 		<input type=hidden name=id value=$d_master[id]>
+					 	</td>
+						<td  width=10%>
+						</td>
+						<td>
+							Nama(display): 
+						</td>
+						<td>
+							<input type=text name=nama class='add-masterinput form-control' value=''>
+						</td>
+						</tr>
+						<tr>
+						<td>
+							 Name
+						</td>
+						<td>
+							<input type=text name=name class='add-masterinput form-control' value=''>
+						</td>
+						<td>
+						</td>
+						<td>
+							Ref. Tabel:
+							 
+						</td>
+						<td>
+							<input type=text name=ref_table class='add-masterinput form-control' value=''>
+						</td>
+						</tr>
+						<tr>
+						<td>
+							Ref. Field:
+							
+						</td>
+						<td>
+							<input type=text name=ref_field class='add-masterinput form-control' value=''>
+						</td>
+						<td> 
+						</td>
+						<td>
+							Ket: 
+						</td>
+						<td>
+							<input type=text name=ket class='add-masterinput form-control' value=''>
+						</td>
+						</tr>
+
+						<tr>
+						<td>
+							Urutan: 
+						</td>
+						<td>
+							<input type=number name=urutan class='add-masterinput form-control'
+							";
+							$query_max=mysql_query("SELECT MAX(urutan) as max FROM ref_master;");
+							$d_max=mysql_fetch_array($query_max);
+							$next=$d_max['0']+1;
+							echo" value='$next' min=$next>
+						</td>
+						<td> 
+						</td>
+						<td colspan=2>
+							<button type=submit name=tambah class='btn btn-success'>Tambah Data</button>
+						</td>
+						</tr>
+						<tr>
+						<td colspan=5>
+							<center>
+								Kategori
+								<label><input type='radio' name='kategori' value='biasa'><img width='200px' src='../sources/biasa.png'></label>
+								<label><input type='radio' name='kategori' value='tahun'><img width='200px' src='../sources/tahun.png'></label>
+							</center>
+						</td>
+						</tr>
+					</table>
+					</center>
+					</form>
+				</div>
+			</div>
+		";
 ?>
 </div>
