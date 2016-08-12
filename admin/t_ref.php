@@ -26,76 +26,78 @@
 			<div class='form-group'>
 				<p class='$d_master[name] btn-info btn text-center col-md-12 row'>$d_master[nama]</p>
 				<div class='$d_master[name]2 form-inline'>
-					<form action='t-master.php' method='post'>
-					<center>
-					<h3>Data Tabel Master</h3><br>
-					<table>
-						<tr>
-						<td width=10%>
-							Tabel:
-						</td>
-						<td  width=30%>					
-					 		<input type=text name=tabel class='$d_master[name]input form-control' value='$d_master[tabel]'>
-					 		<input type=hidden name=id value=$d_master[id]>
-					 	</td>
-						<td  width=10%>
-						</td>
-						<td>
-							Nama: 
-						</td>
-						<td>
-							<input type=text name=nama class='$d_master[name]input form-control' value='$d_master[nama]'>
-						</td>
-						</tr>
-						<tr>
-						<td>
-							Ref. Tabel: 
-						</td>
-						<td>
-							<input type=text name=ref_table class='$d_master[name]input form-control' value='$d_master[ref_table]'>
-						</td>
-						<td>
-						</td>
-						<td>
-							Ref. Field: 
-						</td>
-						<td>
-							<input type=text name=ref_field class='$d_master[name]input form-control' value='$d_master[ref_field]'>
-						</td>
-						</tr>
-						<tr>
-						<td>
-							Ket: 
-						</td>
-						<td>
-							<input type=text name=ket class='$d_master[name]input form-control' value='$d_master[ket]'>
-						</td>
-						<td> 
-						</td>
-						<td>
-							Kategori: 
-						</td>
-						<td>
-							<input type=text name=kategori class='$d_master[name]input form-control' value='$d_master[kategori]'>
-						</td>
-						</tr>
-						<tr>
-						<td>
-							Urutan: 
-						</td>
-						<td>
-							<input type=number name=urutan class='$d_master[name]input form-control' value='$d_master[urutan]'>
-						</td>
-						<td> 
-						</td>
-						<td colspan=2>
-							<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
-							<button type='submit' name=hapus class='btn btn-danger'>Hapus Tabel ini</button>
-						</td>
-						</tr>
-					</table>
-					</center>
-					</form>
+				";
+					// <form action='t-master.php' method='post'>
+					// <center>
+					// <h3>Data Tabel Master</h3><br>
+					// <table>
+					// 	<tr>
+					// 	<td width=10%>
+					// 		Tabel:
+					// 	</td>
+					// 	<td  width=30%>					
+					//  		<input type=text name=tabel class='$d_master[name]input form-control' value='$d_master[tabel]'>
+					//  		<input type=hidden name=id value=$d_master[id]>
+					//  	</td>
+					// 	<td  width=10%>
+					// 	</td>
+					// 	<td>
+					// 		Nama: 
+					// 	</td>
+					// 	<td>
+					// 		<input type=text name=nama class='$d_master[name]input form-control' value='$d_master[nama]'>
+					// 	</td>
+					// 	</tr>
+					// 	<tr>
+					// 	<td>
+					// 		Ref. Tabel: 
+					// 	</td>
+					// 	<td>
+					// 		<input type=text name=ref_table class='$d_master[name]input form-control' value='$d_master[ref_table]'>
+					// 	</td>
+					// 	<td>
+					// 	</td>
+					// 	<td>
+					// 		Ref. Field: 
+					// 	</td>
+					// 	<td>
+					// 		<input type=text name=ref_field class='$d_master[name]input form-control' value='$d_master[ref_field]'>
+					// 	</td>
+					// 	</tr>
+					// 	<tr>
+					// 	<td>
+					// 		Ket: 
+					// 	</td>
+					// 	<td>
+					// 		<input type=text name=ket class='$d_master[name]input form-control' value='$d_master[ket]'>
+					// 	</td>
+					// 	<td> 
+					// 	</td>
+					// 	<td>
+					// 		Kategori: 
+					// 	</td>
+					// 	<td>
+					// 		<input type=text name=kategori class='$d_master[name]input form-control' value='$d_master[kategori]'>
+					// 	</td>
+					// 	</tr>
+					// 	<tr>
+					// 	<td>
+					// 		Urutan: 
+					// 	</td>
+					// 	<td>
+					// 		<input type=number name=urutan class='$d_master[name]input form-control' value='$d_master[urutan]'>
+					// 	</td>
+					// 	<td> 
+					// 	</td>
+					// 	<td colspan=2>
+					// 		<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
+					// 		<button type='submit' name=hapus class='btn btn-danger'>Hapus Tabel ini</button>
+					// 	</td>
+					// 	</tr>
+					// </table>
+					// </center>
+					// </form>
+				echo"
 					<h3>Data Tabel $d_master[tabel]</h3><br>
 					<table class='table table-striped table-hover table-bordered '>
 					";
@@ -155,17 +157,17 @@
 												<div class='col-md-3'>
 													<input type=hidden name=tabel value='$d_master[tabel]'>
 													<input type=hidden name=id value='$d_ref[id]'>
-													<input type=text class='form-control' name='keyword' value='$d_ref[keyword]'>
+													<input type=text class='form-control' required name='keyword' value='$d_ref[keyword]'>
 												</div>
 												<div class='col-md-3'>
-													<input class='form-control' type=text name='display' value='$d_ref[display]'>
+													<input class='form-control' type=text required name='display' value='$d_ref[display]'>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='name' value='$d_ref[name]'>
+													<input class='form-control' type=text required name='name' value='$d_ref[name]'>
 												</div>
 												<div class='col-md-4'>
 													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
-													<button type='submit' name=hapus class='btn btn-danger'>Hapus Data</button>
+													<a href='t-ref.php?hapus=$d_ref[id]&&tab=$d_master[tabel]'><button type='submit' name=hapus class='btn btn-danger'>Hapus Data</button></a>
 												</div>	
 											</form>
 										</td>
@@ -179,23 +181,23 @@
 												<div class='col-md-1'>
 													<input type=hidden name=tabel value='$d_master[tabel]'>
 													<input type=hidden name=id value='$d_ref[id]'>
-													<input type=text class='form-control' name='name' value='$d_ref[name]'>
+													<input type=text class='form-control' required name='name' value='$d_ref[name]'>
 												</div>
 												<div class='col-md-1'>
-													<input class='form-control' type=text name='display' value='$d_ref[display]'>
+													<input class='form-control' type=text required name='display' value='$d_ref[display]'>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='ref_table' value='$d_ref[ref_table]'>
+													<input class='form-control' type=text required name='ref_table' value='$d_ref[ref_table]'>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='ref_field' value='$d_ref[ref_field]'>
+													<input class='form-control' type=text required name='ref_field' value='$d_ref[ref_field]'>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='clause' value='$d_ref[clause]'>
+													<input class='form-control' type=text required name='clause' value='$d_ref[clause]'>
 												</div>
 												<div class='col-md-4'>
 													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
-													<button type='submit' name=hapus class='btn btn-danger'>Hapus Data</button>
+													<a href='t-ref.php?hapus=$d_ref[id]&&tab=$d_master[tabel]'><button type='button' name=hapus class='btn btn-danger'>Hapus Data</button></a>
 												</div>	
 											</form>
 										</td>
@@ -210,13 +212,13 @@
 											<form action='t-ref.php' class='form-inline' method='post'>
 												<div class='col-md-3'>
 													<input type=hidden name=tabel value=$d_master[tabel]>
-													<input type=text class='form-control' name='keyword' value=''>
+													<input type=text class='form-control' required name='keyword' value=''>
 												</div>
 												<div class='col-md-3'>
-													<input class='form-control' type=text name='display' value=''>
+													<input class='form-control' type=text required name='display' value=''>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='name' value=''>
+													<input class='form-control' type=text required name='name' value=''>
 												</div>
 												<div class='col-md-4'>
 													<button type=submit name=tambah class='btn btn-success'>Tambah Data Baru</button>
@@ -232,19 +234,19 @@
 											<form action='t-ref.php' class='form-inline' method='post'>
 												<div class='col-md-1'>
 													<input type=hidden name=tabel value=$d_master[tabel]>
-													<input type=text class='form-control' name='name' value=''>
+													<input type=text class='form-control' required name='name' value=''>
 												</div>
 												<div class='col-md-1'>
-													<input class='form-control' type=text name='display' value=''>
+													<input class='form-control' type=text required name='display' value=''>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='ref_table' value=''>
+													<input class='form-control' type=text required name='ref_table' value=''>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='ref_field' value=''>
+													<input class='form-control' type=text required name='ref_field' value=''>
 												</div>
 												<div class='col-md-2'>
-													<input class='form-control' type=text name='clause' value=''>
+													<input class='form-control' type=text required name='clause' value=''>
 												</div>
 												<div class='col-md-4'>
 													<button type=submit name=tambah class='btn btn-success'>Tambah Data Baru</button>
@@ -289,7 +291,7 @@
 							Tabel:
 						</td>
 						<td  width=30%>					
-					 		<input type=text name=tabel class='add-masterinput form-control' value='ref_'>
+					 		<input type=text name=tabel required class='add-masterinput form-control' value='ref_'>
 					 		<input type=hidden name=id value=$d_master[id]>
 					 	</td>
 						<td  width=10%>
@@ -298,7 +300,7 @@
 							Nama(display): 
 						</td>
 						<td>
-							<input type=text name=nama class='add-masterinput form-control' value=''>
+							<input type=text name=nama required class='add-masterinput form-control' value=''>
 						</td>
 						</tr>
 						<tr>
@@ -306,7 +308,7 @@
 							 Name
 						</td>
 						<td>
-							<input type=text name=name class='add-masterinput form-control' value=''>
+							<input type=text name=name required class='add-masterinput form-control' value=''>
 						</td>
 						<td>
 						</td>
@@ -315,7 +317,7 @@
 							 
 						</td>
 						<td>
-							<input type=text name=ref_table class='add-masterinput form-control' value=''>
+							<input type=text name=ref_table required class='add-masterinput form-control' value=''>
 						</td>
 						</tr>
 						<tr>
@@ -324,7 +326,7 @@
 							
 						</td>
 						<td>
-							<input type=text name=ref_field class='add-masterinput form-control' value=''>
+							<input type=text name=ref_field required class='add-masterinput form-control' value=''>
 						</td>
 						<td> 
 						</td>
@@ -332,7 +334,7 @@
 							Ket: 
 						</td>
 						<td>
-							<input type=text name=ket class='add-masterinput form-control' value=''>
+							<input type=text name=ket  required class='add-masterinput form-control' value=''>
 						</td>
 						</tr>
 
@@ -341,7 +343,7 @@
 							Urutan: 
 						</td>
 						<td>
-							<input type=number name=urutan class='add-masterinput form-control'
+							<input type=number name=urutan required class='add-masterinput form-control'
 							";
 							$query_max=mysql_query("SELECT MAX(urutan) as max FROM ref_master;");
 							$d_max=mysql_fetch_array($query_max);
@@ -358,7 +360,7 @@
 						<td colspan=5>
 							<center>
 								Kategori
-								<label><input type='radio' name='kategori' value='biasa'><img width='200px' src='../sources/biasa.png'></label>
+								<label><input type='radio' checked name='kategori' value='biasa'><img width='200px' src='../sources/biasa.png'></label>
 								<label><input type='radio' name='kategori' value='tahun'><img width='200px' src='../sources/tahun.png'></label>
 							</center>
 						</td>

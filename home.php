@@ -1022,7 +1022,13 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
   <!-- <div class="advance-search-button text-center btn btn-info"> -->
     
   <!-- </div> -->
-   <b>Kata Pencarian  </b><br> <input type="text" name="term" />    <input type="submit" name="submit2" value="Cari"/> <a class="advance-search-button">Advance Search</a><br/><br>
+   <b>Kata Pencarian  </b><br>
+   <select name='kategori'>
+     <option value='aset'>
+       ASET
+     </option>
+   </select>
+   <input type="text" name="term" />    <input type="submit" name="submit2" value="Cari"/> <a class="advance-search-button">Advance Search</a><br/><br>
    <font size="1">)* Masukan Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan</font>
 <hr>   
 </div>
@@ -1037,16 +1043,21 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
       $term = $_POST['term']; 
       $filter="berdasarkan ";
       if($term==""){
-        $selectQuery="select * from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
+        $selectQuery="select bast.nobast,bast.tglbast,bast.pengembangbast,dokumenacuan.jenisdokumen,detaildokacuan.nodokacuan,detaildokacuan.pemegangdokacuan,bast.keterangan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
       }else{
-        $selectQuery="select * from bast b inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan c on d.idkategori=c.idkategori INNER JOIN dataaset da on b.nobast=da.nobastaset where nobast like '%$term%' or pengembangbast like '%$term%'  or jenisdokumen like '%$term%' or tglbast like  '%$term%' ";
+        $selectQuery="select bast.nobast,bast.tglbast,bast.pengembangbast,dokumenacuan.jenisdokumen,detaildokacuan.nodokacuan,detaildokacuan.pemegangdokacuan,bast.keterangan from bast b inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan c on d.idkategori=c.idkategori INNER JOIN dataaset da on b.nobast=da.nobastaset where nobast like '%$term%' or pengembangbast like '%$term%'  or jenisdokumen like '%$term%' or tglbast like  '%$term%' ";
       }
       
     }
+    // echo"Metode Pencarian data : <select name='logic'>
+    //   <option value='OR'>Semua yang terdapat data dipilih</option>
+    //   <option value='AND'>Cari Spesifik</option>
+    // </select><br>";
     $dcount=0;
     include("koneksi.php");
       $s_filter_master=mysql_query("select * from ref_master order by urutan asc");
       while($d_filter_master=mysql_fetch_array($s_filter_master)){
+        $multi=0;
         $s_filter=mysql_query("select * from $d_filter_master[tabel]");
         if($d_filter_master['kategori']!='tahun'){ 
           echo"
@@ -1054,6 +1065,7 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
                 <i>$d_filter_master[nama]</i><br>
           ";
         }
+        
         $dname='';
         while ($d_filter=mysql_fetch_array($s_filter)) {
           $thn=0;
@@ -1068,7 +1080,7 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
             if(isset($_POST["$dname2"])){
               // echo "<script type='text/javascript'>alert('$dname2 <- isinya apa si? ->$dcount');</script>";
               if($dcount>0){
-                $dor=" or";
+                $dor=" and";
               }else{
                 $dor=" where ";
                 
@@ -1076,13 +1088,30 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
               if($dname2!="wilayah"){
                 $ckd="checked";
                 $ref_tf=$d_filter_master['ref_table'].".".$d_filter_master['ref_field'];
-                if($d_filter_master['name']!="kib"){
-                  // echo $dor."-$dcount<hr>";
-                  $filter.="($d_filter_master[nama]: $d_filter[display]) ";
-                  $selectQuery.=" $dor $ref_tf like '%$d_filter[keyword]%' ";
-                  // echo "<script type='text/javascript'>alert('NON wilayah $dcount');</script>";
-                  $dcount=2;
-                  // echo "<script type='text/javascript'>alert('NON wilayah $dcount');</script>";
+                if($d_filter_master['ket']=="multi"){
+                    // echo "<script type='text/javascript'>alert('nih $dname -> $multi');</script>";
+                    if(isset($_POST["$d_filter_master[name]$d_filter[name]"]))
+                    {
+                      if($multi==0){
+                        $filter.="($d_filter_master[nama]: $d_filter[display]) ";
+                        $selectQuery.=" $dor (bast.nobast in (select DISTINCT $d_filter_master[ref_table].nobast from $d_filter_master[ref_table] where $d_filter_master[ref_field]='$d_filter[keyword]'))";
+                        $multi=2;
+                        $dcount=2;
+                      }else{
+                        $filter=substr($filter, 0,strlen($filter)-2).", $d_filter[display]) ";
+                        $selectQuery=substr($selectQuery, 0,strlen($selectQuery)-2)." or $d_filter_master[ref_field]='$d_filter[keyword]'))";
+                      }
+                    }
+                }else if($d_filter_master['kategori']!='tahun'){
+                  if($multi==0){
+                    $filter.="($d_filter_master[nama]: $d_filter[display]) ";
+                    $selectQuery.=" $dor ($ref_tf like '%$d_filter[keyword]%') ";
+                    $multi=2;
+                    $dcount=2;
+                  }else{
+                    $filter=substr($filter, 0,strlen($filter)-2).", $d_filter[display]) ";
+                    $selectQuery=substr($selectQuery, 0,strlen($selectQuery)-2)." or $ref_tf like '%$d_filter[keyword]%') ";
+                  }
                 }
               }else if(isset($_POST['wilayah'])){
                 $wil= $_POST['wilayah'];
@@ -1090,12 +1119,16 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
                 foreach ($wil as $value) {
                   if($d_filter['display']==$value){
                     $ckd="checked";
-                    $filter.="($d_filter_master[nama]: $d_filter[display]) ";
                     $ref_tf=$d_filter_master['ref_table'].".".$d_filter_master['ref_field'];
-                    $selectQuery.=" $dor $ref_tf like '%$d_filter[keyword]%' ";
-                    // echo "<script type='text/javascript'>alert('wilayah $dcount');</script>";
-                    $dcount=3;
-                    // echo "<script type='text/javascript'>alert('wilayah $dcount');</script>";
+                    if($multi==0){
+                      $filter.="($d_filter_master[nama]: $d_filter[display]) ";
+                      $selectQuery.=" $dor ($ref_tf like '%$d_filter[keyword]%') ";
+                      $multi=2;
+                      $dcount=3;
+                    }else{
+                      $filter=substr($filter, 0,strlen($filter)-2).", $d_filter[display]) ";
+                      $selectQuery=substr($selectQuery, 0,strlen($selectQuery)-2)." or $ref_tf like '%$d_filter[keyword]%') ";
+                    }
                     break;
                   }else{
                     $ckd="";
@@ -1195,6 +1228,7 @@ $hasil26= mysql_query("select * from bast b inner join (select distinct nobastas
               }
             if(isset($tanggal)&&$tanggal!=''&&isset($tanggal2)&&$tanggal2!=''){
               if($d_filter['ref_table']!=''){
+                  $filter.="($d_filter_master[nama]: $d_filter[display]) ";
                 $ref_tf=$d_filter['ref_table'].".".$d_filter['ref_field'];
                 $selectQuery.=" $dor year(STR_TO_DATE($ref_tf, '%d/%m/%Y')) between '$tanggal' and '$tanggal2' ";
               }
@@ -1288,13 +1322,15 @@ if(isset($_REQUEST['submit2'])) {
 	include "koneksi.php";
 	
 	$XX = "<br><br><h2> <center> No Record Found, Search Again Please </center> </h2>"; 
+  // $selectQuery="select * from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori INNER JOIN dataaset on bast.nobast=dataaset.nobastaset where (bast.keterangan like '%gubernur%' or bast.keterangan like '%walikota%' or dataaset.wilayah like '%pusat%') and (year(STR_TO_DATE(detaildokacuan.tgldokacuan, '%d/%m/%Y')) between '2003' and '2004') and (bast.nobast in (select DISTINCT akun.nobast from akun where kategoriaset like '%A%'))";
   echo"<font style='color:red'>$selectQuery-select</font>";
 	$query = mysql_query($selectQuery);
 }else{
-$query = mysql_query("select * from bast b inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan c on d.idkategori=c.idkategori order by nobast");
+$query = mysql_query("select bast.nobast,bast.tglbast,bast.pengembangbast,dokumenacuan.jenisdokumen,detaildokacuan.nodokacuan,detaildokacuan.pemegangdokacuan,bast.keterangan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori order by nobast");
 }
 	$no = 1;
   $chck=1;
+  
   // echo $selectQuery." <-query";
 	while ($data = mysql_fetch_array($query)) {
     

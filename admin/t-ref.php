@@ -13,8 +13,8 @@
 		}else{
 			header("location:homeadmin.php?h=t_ref&&s=f");
 		}
-	}else if(isset($_REQUEST['hapus'])){
-		$q_d="delete from $_POST[tabel] where id='$_POST[id]' ";
+	}else if(isset($_GET['hapus'])){
+		$q_d="delete from $_GET[tab] where id='$_GET[hapus]' ";
 		$delete=mysql_query($q_d);
 		if($delete){
 			header("location:homeadmin.php?h=t_ref&&d=s");
