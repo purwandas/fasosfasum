@@ -89,13 +89,12 @@ xlsWriteLabel(2,8,"PENILAIAN BAST");
 // -------- menampilkan data --------- //
 
 // koneksi ke mysql
-
-mysql_connect("localhost", "root", "");
-mysql_select_db("bpkd2012");
+include("koneksi.php");
 
 // query menampilkan semua data
 
-$query = "SELECT * FROM bast b inner join (select distinct nobast, totmix from akun)a on a.nobast=b.nobast inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan m on m.idkategori=d.idkategori  inner join (select distinct nobastaset, wilayah from dataaset)s on s.nobastaset=b.nobast where  d.idkategori 
+$query = "SELECT * FROM bast b inner join (select distinct nobast, totmix from akun)a on a.nobast=b.nobast inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan m on m.idkategori=d.idkategori  
+inner join (select distinct nobastaset, wilayah from dataaset)s on s.nobastaset=b.nobast where  d.idkategori 
 ='1'    ";
 
 

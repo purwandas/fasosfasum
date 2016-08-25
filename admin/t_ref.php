@@ -2,7 +2,7 @@
 <?php
 	include("koneksi.php");
 	if(isset($_GET['s'])){
-		echo "KAMPRET!!!!".$_GET['s'];
+		echo "Ada kesalahan ".$_GET['s'];
 	}
 	$q_master=mysql_query("select * from ref_master order by urutan asc");
 	while($d_master=mysql_fetch_array($q_master)){
