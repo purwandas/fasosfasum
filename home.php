@@ -688,7 +688,7 @@ $(document).ready(function() {
         </font>
         <?php
         echo"
-        
+        <br />
         <select name='order'>
           ";
           if(isset($_POST['order'])&&$_POST['order']!=''){
@@ -711,7 +711,7 @@ $(document).ready(function() {
             
             echo"
             <option value='$_POST[order]'>
-              -$order
+              -$disp
             </option>
             ";
           }else{
