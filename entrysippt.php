@@ -576,7 +576,7 @@ $(document).ready(function() {
              $sql = "insert into peruntukan(idperuntukan,deskripsi,jenisfasos,luas,statussertifikat,statusplang,statuspenggunaan,sensusfasos,nodokacuan)   
              values ('','{$deskripsi}','{$_POST['jenisfasos'][$key]}','{$_POST['luas'][$key]}','Belum SHP Pemprov. DKI Jakarta','Belum Terpasang','Idle','Belum dilakukan Sensus','$nodokacuan2');";  
              mysql_query($sql); 
-             echo $sql; 
+             // echo $sql; 
            } 
          }
          echo 'Data telah disimpan';  

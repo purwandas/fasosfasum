@@ -507,16 +507,17 @@ function konfirmasi(){
 		<td class="right"><?php echo $data2['luassertifikat']; ?></td>
 		<td class="left"><?php echo $data2['keterangan']; ?></td>
 
-
-
 		<td class="center"><a href="editperuntukan.php?idperuntukan=<?php echo $data2['idperuntukan']; ?>">Edit</a>.|.<a href="hapusperuntukan.php?idperuntukan=<?php echo $data2['idperuntukan']; ?>" onClick="return konfirmasi()">Hapus</a></td>
-
-
-		
-
-
-
 	</tr>
+        <tr>
+          <td class="center"></td>
+          <td class="center" colspan='2'>Jenis: <?php echo $data2['jenisfasos']; ?></td>
+          <td class="center" colspan='3'>Sertifikat: <?php echo $data2['statussertifikat']; ?></td>
+          <td class="left" colspan='2'>Plang: <?php echo $data2['statusplang']; ?></td>
+          <td class="center" colspan='2'>Penggunaan: <?php echo $data2['statuspenggunaan']; ?></td>
+          <td class="right" colspan='2'>Sensus: <?php echo $data2['sensusfasos']; ?></td>
+    <td class="center" colspan='4'>No. Acuan: <a href=bastbysippt.php?id=<?php echo $data2['nodokacuan'].">$data2[nodokacuan].</a>"; ?></td>
+</tr>
 	<?php
  	$no++;
 	}

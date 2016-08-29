@@ -587,34 +587,45 @@ $(document).ready(function() {
 
     <script type="text/javascript">
       $(function(){
-        $('.advance-search-button').click(function(){
-          $('.advance-search').toggle('slow');
+        // $('.advance-search-button').click(function(){
+        //   $('.advance-search').toggle('slow');
+        // });
+        // alert("test");
+        // $("input:checkbox[name='wilayah[]']").change(function(){
+        //   $("#kec").empty();
+        //   $("#kel").empty();
+        //   $("#kec").append("<option value='' > Kecamatan </option>");
+        //   $("input:checkbox[name='wilayah[]']").each(function(){
+        //     if($(this).is(":checked")){
+        //       var wilayah=$(this).val(); 
+        //       $.get('wilayah.php',{'nama':wilayah}, function(data){
+
+        //         $.each(data,function(k,v){
+        //           $("#kec").append("<option value='" + v + "' > "+v+"</option>");
+        //         });
+        //       }, "json");
+        //     }
+        //   });      
+        // });
+
+
+        $("#wilayahwil").change(function(){
+          $("#wilayahkec").empty();
+          var wilayah=$(this).val();          
+          $.get('wilayah.php',{'nama':wilayah}, function(data){
+            $("#wilayahkec").append("<option value='' > Kecamatan </option>");
+            $.each(data,function(k,v){
+              $("#wilayahkec").append("<option value='" + v + "' > "+v+"</option>");
+            });
+          }, "json");
         });
-
-        $("input:checkbox[name='wilayah[]']").change(function(){
-          $("#kec").empty();
-          $("#kel").empty();
-          $("#kec").append("<option value='' > Kecamatan </option>");
-          $("input:checkbox[name='wilayah[]']").each(function(){
-            if($(this).is(":checked")){
-              var wilayah=$(this).val(); 
-              $.get('wilayah.php',{'nama':wilayah}, function(data){
-
-                $.each(data,function(k,v){
-                  $("#kec").append("<option value='" + v + "' > "+v+"</option>");
-                });
-              }, "json");
-            }
-          });      
-        });
-
-        $("#kec").change(function(){
-          $("#kel").empty();
+        $("#wilayahkec").change(function(){
+          $("#wilayahkel").empty();
           var wilayah=$(this).val();          
           $.get('wilayah2.php',{'kec':wilayah}, function(data){
-            $("#kel").append("<option value='' > Kelurahan </option>");
+            $("#wilayahkel").append("<option value='' > Kelurahan </option>");
             $.each(data,function(k,v){
-              $("#kel").append("<option value='" + v + "' > "+v+"</option>");
+              $("#wilayahkel").append("<option value='" + v + "' > "+v+"</option>");
             });
           }, "json");
         });
@@ -676,7 +687,7 @@ $(document).ready(function() {
              Dokumen Acuan
            </option>
          </select>
-         <input type="text" name="term" />    <input type="submit" name="submit2" value="Cari"/> 
+         <input type="text" name="term" <?php if(isset($_POST['term'])){echo "value='".$_POST['term']."'";} ?> />    <input type="submit" name="submit2" value="Cari"/> 
          <!-- <a class="advance-search-button">Advance Search</a><br/> -->
          <br>
          
@@ -707,7 +718,7 @@ $(document).ready(function() {
               $order=" year(STR_TO_DATE(detaildokacuan.tgldokacuan,'%d/%m/%Y')) ";
               $disp='Tgl. Dok. Acuan';
             }
-            $query.=" order by ".$order." asc";
+            $order=" order by ".$order." asc";
             
             echo"
             <option value='$_POST[order]'>
@@ -721,13 +732,17 @@ $(document).ready(function() {
             </option>
             ";
           }
+          if(!isset($_POST['kategori'])||$_POST['kategori']!='dokacuan'){
+            echo"
+            <option value='nobast'>
+              No. BAST
+            </option>
+            <option value='tglbast'>
+              Tgl. BAST
+            </option>
+            ";
+          }
           echo"
-          <option value='nobast'>
-            No. BAST
-          </option>
-          <option value='tglbast'>
-            Tgl. BAST
-          </option>
           <option value='nodokacuan'>
             No. Dok. Acuan
           </option>
@@ -847,7 +862,7 @@ $(document).ready(function() {
                 if($dfilter_m['ket']=='bertingkat'){//beda tampiloan beda query
 
                   echo"
-                  <select name='$dfilter_m[name]$dfilter[name]' style='width:90%'>
+                  <select name='$dfilter_m[name]$dfilter[name]' id='$dfilter_m[name]$dfilter[name]' style='width:90%'>
                     ";
                     if(isset($_POST["$dfilter_m[name]$dfilter[name]"])&&$_POST["$dfilter_m[name]$dfilter[name]"]!="$dfilter_m[name]$dfilter[name]"){
                       $wp=$_POST["$dfilter_m[name]$dfilter[name]"];
@@ -1003,8 +1018,8 @@ $(document).ready(function() {
 
             <?php
 
-            
-            // echo $query."<--";
+            $query.=$order;
+            echo $query."<--";
             ?>
 
             <table class="list table-striped table-hover table-condensed" cellpadding="5" cellspacing="5" style="overflow: scroll;">
