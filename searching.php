@@ -1,4 +1,5 @@
 <?php
+// session_start();
 require_once('auth.php');
 ?>
 
@@ -62,7 +63,7 @@ require_once('auth.php');
       }
       #filter{
         float: left;
-        border: 2px solid #CCCCCC;
+        background-color: #C5EFF7;
         width: 88%;
       }
       #data{
@@ -135,7 +136,7 @@ require_once('auth.php');
               if($_GET['kategori']=='dokacuan'){
                 $query='select * from detaildokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori ';
               }else{
-                $query="select bast.nobast, bast.keterangan, bast.tglbast, bast.pengembangbast, detaildokacuan.nodokacuan, detaildokacuan.pemegangdokacuan,dokumenacuan.jenisdokumen, detaildokacuan.tgldokacuan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
+                $query="select bast.nobast, bast.keterangan, bast.tglbast, bast.pengembangbast, detaildokacuan.nodokacuan, detaildokacuan.pemegangdokacuan,dokumenacuan.jenisdokumen, detaildokacuan.tgldokacuan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori ";// INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
               }
               echo"
               <option value='$_GET[kategori]'>
@@ -143,7 +144,7 @@ require_once('auth.php');
              </option>
              ";
            }else{
-            $query="select bast.nobast, bast.keterangan, bast.tglbast, bast.pengembangbast, detaildokacuan.nodokacuan, detaildokacuan.pemegangdokacuan, dokumenacuan.jenisdokumen, detaildokacuan.tgldokacuan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
+            $query="select bast.nobast, bast.keterangan, bast.tglbast, bast.pengembangbast, detaildokacuan.nodokacuan, detaildokacuan.pemegangdokacuan, dokumenacuan.jenisdokumen, detaildokacuan.tgldokacuan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori ";//INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
           }
           ?>
           <option value='aset'>
@@ -218,9 +219,9 @@ require_once('auth.php');
                     if($dan2==0){
                       $dan=1;
                       $dan2=1;
-                      $query.=" $ope (($dfilter_m[ket].$dfilter_m[name] like '%$wp%'))";
+                      $query.=" $ope ((nobast in (select nobast from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
                     }else{
-                      $query=substr($query,0,-2).") or ($dfilter_m[ket].$dfilter_m[name] like '%$wp%'))";
+                      $query=substr($query,0,-3).") or (nobast in (select nobast from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
                     }
                     $ck="checked";
                     $dply="block";
@@ -249,7 +250,7 @@ require_once('auth.php');
                   ";
                   if(isset($_GET["$dfilter_m[ref_table]$dfilter[name]"])&&$_GET["$dfilter_m[ref_table]$dfilter[name]"]!="$dfilter_m[ref_table]$dfilter[name]"&&$_GET["$dfilter_m[ref_table]$dfilter[name]"]!=""){
                     $wp=$_GET["$dfilter_m[ref_table]$dfilter[name]"];
-                    $query=substr($query,0,-2)." and $dfilter_m[ket].$dfilter_m[ref_table] like '%$wp%'))";
+                    $query=substr($query,0,-3)." and $dfilter_m[ket].$dfilter_m[ref_table] like '%$wp%')))";
                     $ctingkat3="where nama$dfilter_m[ref_table] like '%$wp%'";
                     echo"
                     <option value='$wp'>
@@ -282,7 +283,7 @@ require_once('auth.php');
                   ";
                   if(isset($_GET["$dfilter_m[ref_field]$dfilter[name]"])&&$_GET["$dfilter_m[ref_field]$dfilter[name]"]!="$dfilter_m[ref_field]$dfilter[name]"&&$_GET["$dfilter_m[ref_field]$dfilter[name]"]!=""){
                     $wp=$_GET["$dfilter_m[ref_field]$dfilter[name]"];
-                    $query=substr($query,0,-2)." and $dfilter_m[ket].$dfilter_m[ref_field] like '%$wp%'))";
+                    $query=substr($query,0,-3)." and $dfilter_m[ket].$dfilter_m[ref_field] like '%$wp%')))";
                     echo"
                     <option value='$wp'>
                       $wp
@@ -369,7 +370,7 @@ require_once('auth.php');
                     <option value='$i'>$i</option>
                     ";
                   }
-                  echo"</select> sampai dengan <select name=$dfilter_m[name]$dfilter[name]2>";
+                  echo"</select> sampai dengan <select name=$dfilter_m[name]$dfilter[name]2 $submitch>";
                   if(isset($_GET["$dfilter_m[name]$dfilter[name]2"])&&$_GET["$dfilter_m[name]$dfilter[name]2"]!=''){
                     $ye=$_GET["$dfilter_m[name]$dfilter[name]2"];
                     echo"
@@ -482,6 +483,7 @@ require_once('auth.php');
                 }
                 $limit=" LIMIT $offset, $reclimit";
                 $query.=$order;
+                $_SESSION['query']=$query;
                 $qpaging=$query;
                 $page=ceil(mysql_num_rows(mysql_query($query))/$reclimit);
                 $query.=$limit;
@@ -495,8 +497,8 @@ require_once('auth.php');
                 </option>
               </select><br>
               <hr>
+              <a href=testexcell.php target=_blank><img alt=' ' src='view/image/excel.jpg' border='0'>excell nihh</a>
               <center>
-                
                 <table>
                   ";
                   if(isset($_GET['kategori'])&&$_GET['kategori']=='dokacuan'){
@@ -532,6 +534,7 @@ require_once('auth.php');
                     </thead>
                     ";
                   }
+                  echo $query."<--";
                   $qs=mysql_query($query);
                   $sudah="<i class='fa fa-check-circle' aria-hidden='true' style='color:green'></i>";
                   $belum="<i class='fa fa-times-circle' aria-hidden='true' style='color:red'></i>";
@@ -539,7 +542,7 @@ require_once('auth.php');
 
                     if(isset($_GET['kategori'])&&$_GET['kategori']=='dokacuan'){
                       echo "
-                      <tr>
+                      <tr class='rowdata'>
                         <td style='background-color: #C5EFF7' class='center'>$no</td>
                         <td  style='background-color: #C5EFF7' class='left'><a href='bastbysippt.php?id=$data[nodokacuan]'>$data[nodokacuan]</a></td>
                         <td  style='background-color: #C5EFF7' class='center'>$data[tgldokacuan]</td>
@@ -553,17 +556,51 @@ require_once('auth.php');
                       </tr>
                       ";
                       $number=0;
-                      $query2=mysql_query("select * from peruntukan where nobast='' and nodokacuan='$data[nodokacuan]'");
+                      $query2=mysql_query("select * from peruntukan where nodokacuan='$data[nodokacuan]'");//nobast='' and 
+                      $mxrow=mysql_num_rows($query2);
+                      if($mxrow>0){
+                        echo"
+                          <tr class='rowdetail'><td colspan=7><center>
+                          List Kewajiban
+                          <table>
+                          <tr>
+                            <td style='background-color: #6BB9F0'>
+                            No.
+                            </td>
+                            <td style='background-color: #6BB9F0'>
+                            Jenis Fasos Fasum
+                            </td>
+                            <td style='background-color: #6BB9F0'>
+                            Deskripsi
+                            </td>
+                            <td style='background-color: #6BB9F0'>
+                            Luas (m<sup>2</sup>)
+                            </td>
+                            <td style='background-color: #6BB9F0'>
+                            Status Kewajiban
+                            </td>
+                          </tr>
+                        ";
+                      }
                       while ($data2=mysql_fetch_array($query2)) {
                         $number++;
+                        if($data2['nobast']==''){
+                          $sttskewajiban=$belum;
+                        }else{
+                          $sttskewajiban=$sudah;
+                        }
                         echo "
                         <tr>
-                          <td class='right'>$number</td>
-                          <td  style='background-color: #E4F1FE' class='left' colspan='2'>Jenis: $data2[jenisfasos]</td>
-                          <td  style='background-color: #E4F1FE' class='left' colspan='2'>Jenis: $data2[deskripsi]</td>
-                          <td  style='background-color: #E4F1FE' class='left' colspan='2'>Jenis: $data2[luas]</td>
+                          <td style='background-color: #E4F1FE'>$number</td>
+                          <td  style='background-color: #E4F1FE'>$data2[jenisfasos]</td>
+                          <td  style='background-color: #E4F1FE'>$data2[deskripsi]</td>
+                          <td  style='background-color: #E4F1FE'>$data2[luas]</td>
+                          <td  style='background-color: #E4F1FE' align='center'>$sttskewajiban</td>
                         </tr>
                         ";
+                      }
+                      if($mxrow>0){
+                        echo"</table></center></td></tr>";
                       }
                     }else{
                       echo "
@@ -588,7 +625,7 @@ require_once('auth.php');
                             <center>
                               <table border=1 style='border-collapse: collapse;'>
                                 <tr>
-                                  <td colspan=6>
+                                  <td colspan=7>
                                     <b>Wilayah</b>: $data2[wilayah], $data2[kecamatan], $data2[kelurahan]<br> <b>Tgl. Dokacuan</b>: $data2[tgldokacuan]
                                   </td>
                                 </tr>
@@ -599,9 +636,10 @@ require_once('auth.php');
                                   <td  style='background-color: #ECECEC'>Status Penggunaan</td>
                                   <td  style='background-color: #ECECEC'>Status Plang</td>
                                   <td  style='background-color: #ECECEC'>Sensus Fasos Fasum</td>
+                                  <td  style='background-color: #ECECEC;' align='center'>KIB</td>
                                 </tr>
                                 ";
-                                $query3=mysql_query("select peruntukan.jenisfasos,peruntukan.statussertifikat,peruntukan.statuspenggunaan,peruntukan.statusplang,peruntukan.sensusfasos from dataaset inner join peruntukan on dataaset.idaset=peruntukan.idaset where dataaset.idaset='$data2[idaset]'");
+                                $query3=mysql_query("select peruntukan.jenisfasos,peruntukan.statussertifikat,peruntukan.statuspenggunaan,peruntukan.statusplang,peruntukan.sensusfasos, akun.kategoriaset from dataaset inner join peruntukan on dataaset.idaset=peruntukan.idaset inner join akun on peruntukan.idperuntukan=akun.idperuntukan where dataaset.idaset='$data2[idaset]'");
                                 $nomor=0;
                                 while ($data3=mysql_fetch_array($query3)) {
                                   if($data3['statussertifikat']=='SHP Pemprov. DKI Jakarta'){
@@ -628,6 +666,7 @@ require_once('auth.php');
                                     <td align='center'>$data3[statuspenggunaan]</td>
                                     <td align='center'>$statusplang</td>
                                     <td align='center'>$sensusfasos</td>
+                                    <td align='center'>$data3[kategoriaset]</td>
                                   </tr>
                                   ";
                                 }

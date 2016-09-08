@@ -167,7 +167,7 @@ require_once('auth.php');
                           $hasil = mysql_query($query);
                           while ($data = mysql_fetch_array($hasil))
                           {
-                            echo "<option >".$data['display']."</option>".$data['display']."</option>";
+                            echo "<option value='".$data['display']."'>".$data['display']."</option>";
                           }
                           ?></select>";
 
@@ -215,7 +215,7 @@ require_once('auth.php');
                                 $hasil = mysql_query($query);
                                 while ($data = mysql_fetch_array($hasil))
                                 {
-                                  echo "<option >".$data['display']."</option>".$data['display']."</option>";
+                                  echo "<option value='".$data['display']."'>".$data['display']."</option>";
                                 }
                                 ?>
                               </select></td>
@@ -243,16 +243,18 @@ require_once('auth.php');
             include "koneksi.php";
             if (isset($_POST['submit'])){
               include("config_dir.php");
-              $ext=end(explode('.', $_FILES['fileacuan']['name']));
+
               if(mysql_num_rows(mysql_query("select * from upload"))==0){
-                $namabaru="F0000000001";
+                $namabaru=$namadefault;
               }else{
                 $nama=mysql_fetch_array(mysql_query("select * from upload order by id desc"));
+                $ext=end(explode('.', $nama['nama_file']));      
                 $namanya=basename($nama['nama_file'],".".$ext);
                 echo $namanya;
                 $namabaru=incrementName($namanya);
               }
               $target_file = $target_dir . "$namabaru.".$ext;
+              $ext=end(explode('.', $_FILES['fileacuan']['name']));
               $nodokacuan = $_POST['nodokacuan'];
               $tgldokacuan= $_POST['tgldokacuan'];
               $haldokacuan= $_POST['haldokacuan'];
@@ -277,12 +279,10 @@ require_once('auth.php');
             }else
 
             if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
-                //tambah data ke tabel baru (upload)
-                //tambah field id upload ke detaildokacuan
               $namafile=$_FILES['fileacuan']['name'];
               $upload=mysql_query("INSERT INTO `upload` (`id`, `nama_asli`, `nama_file`, `path`, `nodokacuan`, `nobast`) VALUES ('', '$namafile', '$namabaru.$ext', '$target_dir', '$nodokacuan', '');");
-                // $query = mysql_query("insert into detaildokacuan values('$nodokacuan', '$tgldokacuan', '$haldokacuan', '$pemegangdokacuan', '$ketdokacuan', '$idkategori')") or die(mysql_error());
-                echo "The file <a href='$target_dir$namabaru.$ext'>link</a>". basename( $_FILES["fileacuan"]["name"]). " has been uploaded.";
+                $query = mysql_query("insert into detaildokacuan values('$nodokacuan', '$tgldokacuan', '$haldokacuan', '$pemegangdokacuan', '$ketdokacuan', '$idkategori')") or die(mysql_error());
+                echo "The file <a href='$target_dir$namabaru.$ext'>". basename( $_FILES["fileacuan"]["name"]). "</a> has been uploaded.";
             } else {
               echo "$target_file";
               echo "Sorry, there was an error uploading your file.";

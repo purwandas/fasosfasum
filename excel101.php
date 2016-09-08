@@ -39,15 +39,13 @@ return;
 
 header("Pragma: public");
 header("Expires: 0");
-header("Cache-Control: must-revalidate, post-check=0,
-        pre-check=0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Content-Type: application/force-download");
 header("Content-Type: application/octet-stream");
 header("Content-Type: application/download");
 
 // header untuk nama file
-header("Content-Disposition: attachment;
-        filename=".$namaFile."");
+header("Content-Disposition: attachment;filename=".$namaFile."");
 
 header("Content-Transfer-Encoding: binary ");
 

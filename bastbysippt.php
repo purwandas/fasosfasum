@@ -81,6 +81,20 @@ require_once('auth.php');
               <tr>
                 <td>Keterangan </td><td>:</td><td><?php echo $data['ketdokacuan']; ?></td> 
               </tr>
+              <tr>
+                  <?php 
+                  $qr="select nama_asli,nama_file,path from upload where nodokacuan='$data[nodokacuan]'";
+                  $qp=mysql_query($qr);
+                  while ($dq=mysql_fetch_array($qp)) {
+                    echo"
+                    <td>File Acuan </td><td>:</td>
+                    <td>
+                    <a href='$dq[path]$dq[nama_file]'>$dq[nama_asli]</a>
+                    </td> 
+                    ";
+                  }
+                 ?>
+              </tr>
 
             </table><br>
           </div>

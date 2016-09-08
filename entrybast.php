@@ -50,7 +50,7 @@ require_once('auth.php');
         <div class="dashboard-heading">Input Deskripsi BAST</div>
         <div class="dashboard-content">
 
-          <form name="inputbast" action="" method="post">
+          <form name="inputbast" action="" method="post"  enctype="multipart/form-data">
            <table>
             <tr>
               <td>No.BAST </td><td>: </td><td><input type="text" name="nobast" maxlength="50" required="required" /></td>
@@ -89,6 +89,9 @@ require_once('auth.php');
         <tr>
           <td>Kode Arsip </td><td>: </td><td><input type="text" name="kodearsip" maxlength="40" required="required" /></td>
         </tr>
+        <tr>
+          <td>File Acuan</td><td>: </td><td><input type="file" name="fileacuan"></td>
+        </tr>
       </table>
       <right><input type="submit" name="submit" value="Simpan Data BAST"/></right>
     </form>
@@ -96,7 +99,18 @@ require_once('auth.php');
     <?php
     include "koneksi.php";
     if (isset($_POST['submit'])){
-
+              include("config_dir.php");
+if(mysql_num_rows(mysql_query("select * from upload"))==0){
+                $namabaru=$namadefault;
+              }else{
+                $nama=mysql_fetch_array(mysql_query("select * from upload order by id desc"));
+                $ext=end(explode('.', $nama['nama_file']));      
+                $namanya=basename($nama['nama_file'],".".$ext);
+                echo $namanya;
+                $namabaru=incrementName($namanya);
+              }
+              $target_file = $target_dir . "$namabaru.".$ext;
+              $ext=end(explode('.', $_FILES['fileacuan']['name']));
      $nobast = $_POST['nobast'];
      $tglbast= $_POST['tglbast'];
      $pengembangbast= $_POST['pengembangbast'];
@@ -123,10 +137,17 @@ require_once('auth.php');
 
    }else
 
-
+if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
+              $namafile=$_FILES['fileacuan']['name'];
+              $upload=mysql_query("INSERT INTO `upload` (`id`, `nama_asli`, `nama_file`, `path`, `nodokacuan`, `nobast`) VALUES ('', '$namafile', '$namabaru.$ext', '$target_dir', '', '$nobast');");
+   $query = mysql_query("insert into bast values('$nobast', '$tglbast', '$perihalbast', '$pengembangbast', '$keterangan', '$nodokacuan', '$kodearsip')") or die(mysql_error());
+                echo "The file <a href='$target_dir$namabaru.$ext'>". basename( $_FILES["fileacuan"]["name"]). "</a> has been uploaded.";
+            } else {
+              echo "$target_file";
+              echo "Sorry, there was an error uploading your file.";
+            }
 
 					//simpan data ke database
-   $query = mysql_query("insert into bast values('$nobast', '$tglbast', '$perihalbast', '$pengembangbast', '$keterangan', '$nodokacuan', '$kodearsip')") or die(mysql_error());
 
    if ($query) {
      echo 'input data bast  berhasil........... No BAST :  ' ;
@@ -460,8 +481,9 @@ require_once('auth.php');
 
          include "koneksi.php";
          $term = $_POST['nobastaset']; 
+         echo $term."<--";
 
-         $query = mysql_query("select * from bast b inner join dataaset d on b.nobast=d.nobastaset where nobastaset='$term'");
+         $query = mysql_query("select * from bast b inner join dataaset d on b.nobast=d.nobastaset where d.nobastaset='$term'");
        }else
 
        
