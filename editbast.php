@@ -23,11 +23,11 @@ require_once('auth.php');
   </script>
 </head>
 <body>
-<?php
-      include "koneksi.php";
-      if (isset($_POST['submit'])){
+  <?php
+  include "koneksi.php";
+  if (isset($_POST['submit'])){
 
-        include("config_dir.php");
+    include("config_dir.php");
     $nama=mysql_fetch_array(mysql_query("select * from upload order by id desc"));
     $ext=end(explode('.', $nama['nama_file']));      
     $namanya=basename($nama['nama_file'],".".$ext);
@@ -36,18 +36,20 @@ require_once('auth.php');
     $ext=end(explode('.', $_FILES['fileacuan']['name']));
     $target_file = $target_dir . "$namabaru.".$ext;
     $id=$_POST['id'];
-        $tglbast= $_POST['tglbast'];
-        $perihalbast= $_POST['perihalbast'];
-        $pengembangbast= $_POST['pengembangbast'];
-        $keterangan= $_POST['keterangan'];
-        $kodearsip= $_POST['kodearsip'];
-        $nodokacuan= $_POST['nodokacuan'];
+    $tglbast= $_POST['tglbast'];
+    $perihalbast= $_POST['perihalbast'];
+    $pengembangbast= $_POST['pengembangbast'];
+    $keterangan= $_POST['keterangan'];
+    $kodearsip= $_POST['kodearsip'];
+    $nodokacuan= $_POST['nodokacuan'];
 
-        if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
+    if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
       $namafile=$_FILES['fileacuan']['name'];
-      $dupload=mysql_query("delete from upload where nobast='$id'");
+      if($id!=''){
+        $dupload=mysql_query("delete from upload where nobast='$id'");
+      }
       $upload=mysql_query("INSERT INTO `upload` (`id`, `nama_asli`, `nama_file`, `path`, `nodokacuan`, `nobast`) VALUES ('', '$namafile', '$namabaru.$ext', '$target_dir', '', '$id');");
-        $query = mysql_query("update bast set  tglbast='$tglbast', perihalbast='$perihalbast',pengembangbast='$pengembangbast',keterangan='$keterangan',kodearsip='$kodearsip',nodokacuan='$nodokacuan' where nobast='$id'") or die(mysql_error());
+      $query = mysql_query("update bast set  tglbast='$tglbast', perihalbast='$perihalbast',pengembangbast='$pengembangbast',keterangan='$keterangan',kodearsip='$kodearsip',nodokacuan='$nodokacuan' where nobast='$id'") or die(mysql_error());
       echo "The file <a href='$target_dir$namabaru.$ext'>". basename( $_FILES["fileacuan"]["name"]). "</a> has been uploaded.";
     } else {
       echo "$target_file";
@@ -55,116 +57,116 @@ require_once('auth.php');
     }
 //update data ke database
 
-        if ($query) {
+    if ($query) {
 
-         echo 'simpan perbahan data bast berhasil...........';
+     echo 'simpan perbahan data bast berhasil...........';
 
-       }
-     }
-     ?>
-  <div id="container">
-    <div id="header">
-      <div class="div1">
-        <div class="div2"><img src="view/image/logo.png" title="Administration" onclick="location = 'http://localhost/fasosfasum/'" /></div>
-        <div class="div3"><img src="view/image/lock.png" alt="" style="position: relative; top: 3px;" />&nbsp;Welcome <?php echo $_SESSION['SESS_FIRST_NAME'];?>, you are logged in as <span>user</span></div>
-      </div>
-
-
-      <?php
-      include("menu.php");
-      ?>
+   }
+ }
+ ?>
+ <div id="container">
+  <div id="header">
+    <div class="div1">
+      <div class="div2"><img src="view/image/logo.png" title="Administration" onclick="location = 'http://localhost/fasosfasum/'" /></div>
+      <div class="div3"><img src="view/image/lock.png" alt="" style="position: relative; top: 3px;" />&nbsp;Welcome <?php echo $_SESSION['SESS_FIRST_NAME'];?>, you are logged in as <span>user</span></div>
     </div>
-    <div id="content">
-      <div class="breadcrumb">
-        <a href="home.php">Home</a>
 
+
+    <?php
+    include("menu.php");
+    ?>
+  </div>
+  <div id="content">
+    <div class="breadcrumb">
+      <a href="home.php">Home</a>
+
+    </div>
+    <div class="box">
+      <div class="heading">
+        <h1><img src="view/image/home.png" alt="" /> Edit BAST</h1>
       </div>
-      <div class="box">
-        <div class="heading">
-          <h1><img src="view/image/home.png" alt="" /> Edit BAST</h1>
-        </div>
 
-        <div class="content">
-          <div class="overview">
-            <div class="dashboard-heading">Edit Data BAST</div>
-            <div class="dashboard-content">
+      <div class="content">
+        <div class="overview">
+          <div class="dashboard-heading">Edit Data BAST</div>
+          <div class="dashboard-content">
 
-             <?php 
-             include "koneksi.php";
-             $id = $_GET['id'];
+           <?php 
+           include "koneksi.php";
+           $id = $_GET['id'];
 
-             $query = mysql_query("select * from bast where nobast='$id'") or die(mysql_error());
+           $query = mysql_query("select * from bast where nobast='$id'") or die(mysql_error());
 
-             $data = mysql_fetch_array($query);
-             ?>
+           $data = mysql_fetch_array($query);
+           ?>
 
-             <form name="editbast" action="" method="post" enctype="multipart/form-data">
-               <input type="hidden" name="id" value="<?php echo $id; ?>" />
-               <table>
+           <form name="editbast" action="" method="post" enctype="multipart/form-data">
+             <input type="hidden" name="id" value="<?php echo $id; ?>" />
+             <table>
 
-                <tr>
-                  <td >No.BAST</td>           
-                  <td height="21"><input type="text" name="nobast" maxlength="20" required="required" value="<?php echo $data['nobast']; ?>" disabled /></td>
-                </tr>
+              <tr>
+                <td >No.BAST</td>           
+                <td height="21"><input type="text" name="nobast" maxlength="20" required="required" value="<?php echo $data['nobast']; ?>" disabled /></td>
+              </tr>
 
-                <tr>
-                  <td>Tgl. BAST </td>
-                  <td height="21"><input type="text" id="tglbast" name="tglbast" maxlength="10" required="required" value="<?php echo $data['tglbast']; ?>"/>
-                  </td>         
-                </tr>
-                <tr>
-                  <td>Nama Pengembang </td>
-                  <td><input type="text" name="pengembangbast" maxlength="40" required="required" value="<?php echo $data['pengembangbast']; ?>"/></td>
-                </tr>
-                <tr>
-                  <td>Perihal</td>
-                  <td><textarea name=perihalbast rows=1 cols=30 required="required"/><?=$data['perihalbast'] ?> </textarea></td> 
-                </tr> 
-
-
-                <tr>
-                  <td>Kategori</td>
-                  <td><textarea name=keterangan rows=1 cols=30 required="required"/><?=$data['keterangan'] ?> </textarea></td> 
-                </tr>  
-                <tr>
-                  <td>No.Dokumen Acuan </td>
-                  <td><input type="text" name="nodokacuan" maxlength="40" required="required" value="<?php echo $data['nodokacuan']; ?>"/></td>
-                </tr>
-
-                <tr>
-                  <td>Kode Arisp </td>
-                  <td><input type="text" name="kodearsip" maxlength="40" required="required" value="<?php echo $data['kodearsip']; ?>"/></td>
-                </tr>
-                <tr>
-                <td>File Acuan </td>
-                  <td>
-                   <?php 
-                   $qr="select nama_asli,nama_file,path from upload where nobast='$data[nobast]'";
-                   $qp=mysql_query($qr);
-                   while ($dq=mysql_fetch_array($qp)) {
-                    echo"
-                    <a href='$dq[path]$dq[nama_file]'>$dq[nama_asli]</a>
-                    ";
-                  }
-                  ?>
-                  <br>
-                  <input type="file" name="fileacuan">
-                </td>
+              <tr>
+                <td>Tgl. BAST </td>
+                <td height="21"><input type="text" id="tglbast" name="tglbast" maxlength="10" required="required" value="<?php echo $data['tglbast']; ?>"/>
+                </td>         
               </tr>
               <tr>
-                <td align="right" colspan="2"><input type="submit" name="submit" value="Simpan Perubahan"> </td>
+                <td>Nama Pengembang </td>
+                <td><input type="text" name="pengembangbast" maxlength="40" required="required" value="<?php echo $data['pengembangbast']; ?>"/></td>
+              </tr>
+              <tr>
+                <td>Perihal</td>
+                <td><textarea name=perihalbast rows=1 cols=30 required="required"/><?=$data['perihalbast'] ?> </textarea></td> 
+              </tr> 
+
+
+              <tr>
+                <td>Kategori</td>
+                <td><textarea name=keterangan rows=1 cols=30 required="required"/><?=$data['keterangan'] ?> </textarea></td> 
+              </tr>  
+              <tr>
+                <td>No.Dokumen Acuan </td>
+                <td><input type="text" name="nodokacuan" maxlength="40" required="required" value="<?php echo $data['nodokacuan']; ?>"/></td>
               </tr>
 
-            </table>
-          </form>
+              <tr>
+                <td>Kode Arisp </td>
+                <td><input type="text" name="kodearsip" maxlength="40" required="required" value="<?php echo $data['kodearsip']; ?>"/></td>
+              </tr>
+              <tr>
+                <td>File Acuan </td>
+                <td>
+                 <?php 
+                 $qr="select nama_asli,nama_file,path from upload where nobast='$data[nobast]'";
+                 $qp=mysql_query($qr);
+                 while ($dq=mysql_fetch_array($qp)) {
+                  echo"
+                  <a href='download.php?type=b&id=$data[nobast]'>$dq[nama_asli]</a>
+                  ";
+                }
+                ?>
+                <br>
+                <input type="file" name="fileacuan">
+              </td>
+            </tr>
+            <tr>
+              <td align="right" colspan="2"><input type="submit" name="submit" value="Simpan Perubahan"> </td>
+            </tr>
 
-        </div>
+          </table>
+        </form>
+
       </div>
+    </div>
 
-      
+    
 
-   </div>
- </div>
+  </div>
+</div>
 
 </div>
 </div>

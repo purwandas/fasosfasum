@@ -31,6 +31,7 @@ require_once('auth.php');
     function submit() {
       document.getElementById("formpencarian").submit();
     }
+
   </script>
 </head>
 <body>
@@ -103,6 +104,16 @@ require_once('auth.php');
       $(document).ready(function(){
         $(".rowdata").click(function(){
           $(this).closest('tr').next().toggle();
+        });
+        $("#tahunsippt,#tahunsippt2").change(function(){
+          if($('#tahunsippt').val()!='' && $('#tahunsippt2').val()!=''){
+            document.getElementById("formpencarian").submit();   
+          }
+        });
+        $("#tahunbast,#tahunbast2").change(function(){
+          if($('#tahunbast').val()!='' && $('#tahunbast2').val()!=''){
+            document.getElementById("formpencarian").submit();   
+          }
         });
       });
       function closeFil() {
@@ -354,7 +365,7 @@ require_once('auth.php');
                   }else{
                     $ck='';
                   }
-                  echo "$dfilter[display]<br/><select name=$dfilter_m[name]$dfilter[name]>";
+                  echo "$dfilter[display]<br/><select name=$dfilter_m[name]$dfilter[name] id=$dfilter_m[name]$dfilter[name]>";
                   if(isset($_GET["$dfilter_m[name]$dfilter[name]"])&&$_GET["$dfilter_m[name]$dfilter[name]"]!=''){
                     $ye=$_GET["$dfilter_m[name]$dfilter[name]"];
                     echo"
@@ -370,7 +381,7 @@ require_once('auth.php');
                     <option value='$i'>$i</option>
                     ";
                   }
-                  echo"</select> sampai dengan <select name=$dfilter_m[name]$dfilter[name]2 $submitch>";
+                  echo"</select> sampai dengan <select name=$dfilter_m[name]$dfilter[name]2 id=$dfilter_m[name]$dfilter[name]2>";
                   if(isset($_GET["$dfilter_m[name]$dfilter[name]2"])&&$_GET["$dfilter_m[name]$dfilter[name]2"]!=''){
                     $ye=$_GET["$dfilter_m[name]$dfilter[name]2"];
                     echo"

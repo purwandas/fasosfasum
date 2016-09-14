@@ -87,7 +87,7 @@ require_once('auth.php');
                  <?php
                  $query=mysql_query("select nodokacuan from bast where nobast='$data[nobastaset]'");
                  $d1=mysql_fetch_array($query);
-                  $query=mysql_query("select idperuntukan,deskripsi,jenisfasos,luas from peruntukan where nodokacuan='$d1[nodokacuan]'");
+                  $query=mysql_query("select idperuntukan,deskripsi,jenisfasos,luas from peruntukan where nodokacuan='$d1[nodokacuan]' and nobast=''");
                   $idx=0;
 
                   while ($d2=mysql_fetch_array($query)) {
@@ -95,6 +95,10 @@ require_once('auth.php');
                     if(isset($_GET["wjb$d2[idperuntukan]"])){
                       $ckd="checked";
                       $peruntukan[$idx]=$_GET["wjb$d2[idperuntukan]"];
+                      $idx++;
+                    }else if($data['nobastaset']==$d2['nobast']){
+                      $ckd="checked";
+                      $peruntukan[$idx]=$d2['idperuntukan'];
                       $idx++;
                     }
                     echo"

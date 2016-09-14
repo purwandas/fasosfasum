@@ -48,6 +48,7 @@ require_once('auth.php');
         <div class="heading">
           <h1><img src="view/image/home.png" alt="" />Detail Dokumen</h1>
           <?php include "koneksi.php"; 
+          include 'config_dir.php';
           $id = $_GET['id'];
 
           $query = mysql_query("select * from bast b inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dataaset a on b.nobast=a.nobastaset where nobast='$id'") or die(mysql_error());
@@ -103,7 +104,7 @@ require_once('auth.php');
                     echo"
                     <td>File Acuan </td><td>:</td>
                     <td>
-                    <a href='$dq[path]$dq[nama_file]'>$dq[nama_asli]</a>
+                    <a href='download.php?type=b&id=$data[nobast]'>$dq[nama_asli]</a>
                     </td> 
                     ";
                   }
@@ -143,7 +144,7 @@ require_once('auth.php');
                     echo"
                     <td>File Acuan </td><td>:</td>
                     <td>
-                    <a href='$dq[path]$dq[nama_file]'>$dq[nama_asli]</a>
+                    <a href='download.php?type=a&id=$data[nodokacuan]'>$dq[nama_asli]</a>
                     </td> 
                     ";
                   }
@@ -156,7 +157,7 @@ require_once('auth.php');
 
         <div class="latest">
           <div class="dashboard-heading">Detail Peruntukan</div>
-          <div class="dashboard-content">
+          <div class="dashboard-content" >
 
            <?php 
            include "koneksi.php";
@@ -168,20 +169,20 @@ require_once('auth.php');
 
              <table>
               <tr>
-                <td>Alamat lokasi</td><td>:</td><td><?php echo $data3['alamataset']; ?></td>
+                <td>Alamat lokasi</td><td>:</td><td><?php echo $data3['alamataset']; ?></td><td><a href='editaset.php<?php echo "?id=$data3[idaset]"; ?>'>[Edit]</a></td>
               </tr>
               <tr>
-               <td>Wilayah</td><td>:</td><td><?php echo $data3['wilayah']; ?></td>
+               <td >Wilayah</td><td>:</td><td colspan='2'><?php echo $data3['wilayah']; ?></td>
              </tr>
              <tr>
-               <td>Kecamatan</td><td>:</td><td><?php echo $data3['kecamatan']; ?></td>
+               <td >Kecamatan</td><td>:</td><td colspan='2'><?php echo $data3['kecamatan']; ?></td>
              </tr>
              <tr>
-               <td>Kelurahan</td><td>:</td><td><?php echo $data3['kelurahan']; ?></td>
+               <td >Kelurahan</td><td>:</td><td colspan='2'><?php echo $data3['kelurahan']; ?></td>
              </tr>
+    </table>
 
-
-             <tr>
+<div style="overflow:auto">
               <table class="list" cellpadding="5" cellspacing="5">
                 
                 <thead>
@@ -200,6 +201,12 @@ require_once('auth.php');
                     <td class="center">MasaBerlaku</td>
                     <td class="center">Luas(Stfkt)</td>
                     <td class="center">Keterangan</td>
+                    <td class="center">Jenis</td>
+                  <td class="center">Sertifikat</td>
+                  <td class="left">Plang</td>
+                  <td class="center">Penggunaan</td>
+                  <td class="right">Sensus</td>
+                  <td class="center">No. Acuan</td>
                     <td class="center">Action</td>
                     
                     
@@ -248,27 +255,22 @@ require_once('auth.php');
                    <td class="center"><?php echo $data2['masaberlaku']; ?></td>
                    <td class="right"><?php echo $data2['luassertifikat']; ?></td>
                    <td class="left"><?php echo $data2['keterangan']; ?></td>
-
-                   <td class="center"><a href="editperuntukan.php?idperuntukan=<?php echo $data2['idperuntukan']; ?>">Edit</a>.|.<a href="hapusperuntukan.php?idperuntukan=<?php echo $data2['idperuntukan']; ?>" onClick="return konfirmasi()">Hapus</a></td>
+                   <td class="center"><?php echo $data2['jenisfasos']; ?></td>
+                  <td class="center"><?php echo $data2['statussertifikat']; ?></td>
+                  <td class="left"><?php echo $data2['statusplang']; ?></td>
+                  <td class="center"><?php echo $data2['statuspenggunaan']; ?></td>
+                  <td class="right"><?php echo $data2['sensusfasos']; ?></td>
+                  <td class="center"><a href=bastbysippt.php?id=<?php echo $data2['nodokacuan'].">$data2[nodokacuan]"; ?></a></td>
+                   <td class="center"><a href="editperuntukan.php?idperuntukan=<?php echo $data2['idperuntukan']; ?>">Edit</a>.|.<a href="hapusperuntukan.php?idperuntukan=<?php echo $data2['idperuntukan']."&id=$_GET[id]"; ?>" onClick="return konfirmasi()">Hapus</a></td>
                  </tr>
-                 <tr>
-                  <td class="center"></td>
-                  <td class="center" colspan='2'>Jenis: <?php echo $data2['jenisfasos']; ?></td>
-                  <td class="center" colspan='3'>Sertifikat: <?php echo $data2['statussertifikat']; ?></td>
-                  <td class="left" colspan='2'>Plang: <?php echo $data2['statusplang']; ?></td>
-                  <td class="center" colspan='2'>Penggunaan: <?php echo $data2['statuspenggunaan']; ?></td>
-                  <td class="right" colspan='2'>Sensus: <?php echo $data2['sensusfasos']; ?></td>
-                  <td class="center" colspan='4'>No. Acuan: <a href=bastbysippt.php?id=<?php echo $data2['nodokacuan'].">$data2[nodokacuan].</a>"; ?></td>
-                </tr>
+                 
                 <?php
                 $no++;
               }
               ?>
             </tbody>
           </table>
-
-
-        </tr>
+        </div>
 
         <?php
         
@@ -276,7 +278,6 @@ require_once('auth.php');
       ?>
 
 
-    </table>
 
     <a  href="akunshowdata2.php?id=<?php echo $data['nobast']; ?>" ></li>
      <img alt=" " src="view/image/viewdetail.gif" border=0></a>

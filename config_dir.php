@@ -1,5 +1,6 @@
 <?php
 $target_dir = "fileacuan/";
+$universal_path="file:///C:/xampp/htdocs/fasosfasum/";
 $namadefault="F0000000001";
 
 function incrementName($awal){

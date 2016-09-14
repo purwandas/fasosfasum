@@ -32,137 +32,137 @@ require_once('auth.php');
 
 
       <?php
-        include("menu.php");
+      include("menu.php");
       ?>
-</div>
-<div id="content">
-  <div class="breadcrumb">
-    <a href="home.php">Home</a>
-
-  </div>
-  <div class="box">
-    <div class="heading">
-      <h1><img src="view/image/home.png" alt="" /> Entry Data BAST</h1>
     </div>
+    <div id="content">
+      <div class="breadcrumb">
+        <a href="home.php">Home</a>
 
-    <div class="content">
-      <div class="overview">
-        <div class="dashboard-heading">Input Deskripsi BAST</div>
-        <div class="dashboard-content">
+      </div>
+      <div class="box">
+        <div class="heading">
+          <h1><img src="view/image/home.png" alt="" /> Entry Data BAST</h1>
+        </div>
 
-          <form name="inputbast" action="" method="post"  enctype="multipart/form-data">
-           <table>
-            <tr>
-              <td>No.BAST </td><td>: </td><td><input type="text" name="nobast" maxlength="50" required="required" /></td>
-            </tr>
-            <tr><td>Tgl. BAST </td><td>: </td><td><input type="text" id="tgldokacuan" name="tglbast" maxlength="10" required="required"/></td>
-            </tr>
-            
-            <link type="text/css" rel="stylesheet" href="jquery-ui-1.7.3.custom.css" />
-            <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
-            <script type="text/javascript" src="jquery.ui.datepicker.js"></script>
-            <script type="text/javascript" src="jquery.ui.core.js"></script>
-            <script type="text/javascript" src="tanggaldokacuan.js"></script>
-            <tr>
-              <td>Pengembang </td><td>: </td><td><input type="text" name="pengembangbast" maxlength="100" required="required" /></td>
-            </tr>
-            <tr>
-              <td>Perihal</td><td>:</td><td><textarea name=perihalbast rows=1 cols=30 required="required" /> </textarea></td> 
-            </tr>
-            <tr>
-              <td>Kategori </td><td>:</td><td><textarea name=keterangan rows=1 cols=30 required="required" /> </textarea></td> 
-            </tr>
-            <tr><td>Dokumen Acuan</td><td>:</td><td><select name='nodokacuan'>
-             <?php
-             include "koneksi.php";
+        <div class="content">
+          <div class="overview">
+            <div class="dashboard-heading">Input Deskripsi BAST</div>
+            <div class="dashboard-content">
+
+              <form name="inputbast" action="" method="post"  enctype="multipart/form-data">
+               <table>
+                <tr>
+                  <td>No.BAST </td><td>: </td><td><input type="text" name="nobast" maxlength="50" required="required" /></td>
+                </tr>
+                <tr><td>Tgl. BAST </td><td>: </td><td><input type="text" id="tgldokacuan" name="tglbast" maxlength="10" required="required"/></td>
+                </tr>
+
+                <link type="text/css" rel="stylesheet" href="jquery-ui-1.7.3.custom.css" />
+                <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+                <script type="text/javascript" src="jquery.ui.datepicker.js"></script>
+                <script type="text/javascript" src="jquery.ui.core.js"></script>
+                <script type="text/javascript" src="tanggaldokacuan.js"></script>
+                <tr>
+                  <td>Pengembang </td><td>: </td><td><input type="text" name="pengembangbast" maxlength="100" required="required" /></td>
+                </tr>
+                <tr>
+                  <td>Perihal</td><td>:</td><td><textarea name=perihalbast rows=1 cols=30 required="required" /> </textarea></td> 
+                </tr>
+                <tr>
+                  <td>Kategori </td><td>:</td><td><textarea name=keterangan rows=1 cols=30 required="required" /> </textarea></td> 
+                </tr>
+                <tr><td>Dokumen Acuan</td><td>:</td><td><select name='nodokacuan'>
+                 <?php
+                 include "koneksi.php";
                  // query untuk menampilkan wilayah
-             $query = "SELECT * FROM detaildokacuan";
-             $hasil = mysql_query($query);
-             while ($data = mysql_fetch_array($hasil))
-             {
-              echo "<option >".$data['nodokacuan']."</option>".$data['nodokacuan']."</option>";
-            }
-            ?>
-          </select></td>
-        </tr>       
+                 $query = "SELECT * FROM detaildokacuan";
+                 $hasil = mysql_query($query);
+                 while ($data = mysql_fetch_array($hasil))
+                 {
+                  echo "<option >".$data['nodokacuan']."</option>".$data['nodokacuan']."</option>";
+                }
+                ?>
+              </select></td>
+            </tr>       
 
-        <tr>
-          <td>Kode Arsip </td><td>: </td><td><input type="text" name="kodearsip" maxlength="40" required="required" /></td>
-        </tr>
-        <tr>
-          <td>File Acuan</td><td>: </td><td><input type="file" name="fileacuan"></td>
-        </tr>
-      </table>
-      <right><input type="submit" name="submit" value="Simpan Data BAST"/></right>
-    </form>
+            <tr>
+              <td>Kode Arsip </td><td>: </td><td><input type="text" name="kodearsip" maxlength="40" required="required" /></td>
+            </tr>
+            <tr>
+              <td>File Acuan</td><td>: </td><td><input type="file" name="fileacuan"></td>
+            </tr>
+          </table>
+          <right><input type="submit" name="submit" value="Simpan Data BAST"/></right>
+        </form>
 
-    <?php
-    include "koneksi.php";
-    if (isset($_POST['submit'])){
-              include("config_dir.php");
-if(mysql_num_rows(mysql_query("select * from upload"))==0){
-                $namabaru=$namadefault;
-              }else{
-                $nama=mysql_fetch_array(mysql_query("select * from upload order by id desc"));
-                $ext=end(explode('.', $nama['nama_file']));      
-                $namanya=basename($nama['nama_file'],".".$ext);
-                echo $namanya;
-                $namabaru=incrementName($namanya);
-              }
-              $target_file = $target_dir . "$namabaru.".$ext;
-              $ext=end(explode('.', $_FILES['fileacuan']['name']));
-     $nobast = $_POST['nobast'];
-     $tglbast= $_POST['tglbast'];
-     $pengembangbast= $_POST['pengembangbast'];
-     $perihalbast= $_POST['perihalbast'];
-     $keterangan= $_POST['keterangan'];
-     $nodokacuan= $_POST['nodokacuan'];
-     $kodearsip=$_POST['kodearsip'];
+        <?php
+        include "koneksi.php";
+        if (isset($_POST['submit'])){
+          include("config_dir.php");
+          if(mysql_num_rows(mysql_query("select * from upload"))==0){
+            $namabaru=$namadefault;
+          }else{
+            $nama=mysql_fetch_array(mysql_query("select * from upload order by id desc"));
+            $ext=end(explode('.', $nama['nama_file']));      
+            $namanya=basename($nama['nama_file'],".".$ext);
+            // echo $namanya;
+            $namabaru=incrementName($namanya);
+          }
+          $target_file = $target_dir . "$namabaru.".$ext;
+          $ext=end(explode('.', $_FILES['fileacuan']['name']));
+          $nobast = $_POST['nobast'];
+          $tglbast= $_POST['tglbast'];
+          $pengembangbast= $_POST['pengembangbast'];
+          $perihalbast= $_POST['perihalbast'];
+          $keterangan= $_POST['keterangan'];
+          $nodokacuan= $_POST['nodokacuan'];
+          $kodearsip=$_POST['kodearsip'];
 
 
 
-     
-     $check = mysql_query("SELECT nobast FROM bast WHERE nobast = '$nobast'") or die(mysql_error());
-     $check2 = mysql_num_rows($check);
+
+          $check = mysql_query("SELECT nobast FROM bast WHERE nobast = '$nobast'") or die(mysql_error());
+          $check2 = mysql_num_rows($check);
 
     					//if the name exists it gives an error
-     if ($check2 != 0)
-     {
-      ?>
-      <script type="text/javascript">
-       alert("BAST No:  <?php echo $nobast; ?> has already registered.");
-       history.back();
-     </script>
-     <?php
+          if ($check2 != 0)
+          {
+            ?>
+            <script type="text/javascript">
+             alert("BAST No:  <?php echo $nobast; ?> has already registered.");
+             history.back();
+           </script>
+           <?php
 
-   }else
+         }else
 
-if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
-              $namafile=$_FILES['fileacuan']['name'];
-              $upload=mysql_query("INSERT INTO `upload` (`id`, `nama_asli`, `nama_file`, `path`, `nodokacuan`, `nobast`) VALUES ('', '$namafile', '$namabaru.$ext', '$target_dir', '', '$nobast');");
-   $query = mysql_query("insert into bast values('$nobast', '$tglbast', '$perihalbast', '$pengembangbast', '$keterangan', '$nodokacuan', '$kodearsip')") or die(mysql_error());
-                echo "The file <a href='$target_dir$namabaru.$ext'>". basename( $_FILES["fileacuan"]["name"]). "</a> has been uploaded.";
-            } else {
-              echo "$target_file";
-              echo "Sorry, there was an error uploading your file.";
-            }
+         if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
+          $namafile=$_FILES['fileacuan']['name'];
+          $upload=mysql_query("INSERT INTO `upload` (`id`, `nama_asli`, `nama_file`, `path`, `nodokacuan`, `nobast`) VALUES ('', '$namafile', '$namabaru.$ext', '$target_dir', '', '$nobast');");
+          $query = mysql_query("insert into bast values('$nobast', '$tglbast', '$perihalbast', '$pengembangbast', '$keterangan', '$nodokacuan', '$kodearsip')") or die(mysql_error());
+          echo "The file <a href='$target_dir$namabaru.$ext'>". basename( $_FILES["fileacuan"]["name"]). "</a> has been uploaded.";
+        } else {
+          echo "$target_file";
+          echo "Sorry, there was an error uploading your file.";
+        }
 
 					//simpan data ke database
 
-   if ($query) {
-     echo 'input data bast  berhasil........... No BAST :  ' ;
-     echo  $nobast;
-     
-
-   }
- }
- ?>
-
-</div>
-</div>
+        if ($query) {
+         echo 'input data bast  berhasil........... No BAST :  ' ;
+         echo  $nobast;
 
 
-<div class="statistic">
+       }
+     }
+     ?>
+
+   </div>
+ </div>
+
+
+ <div class="statistic">
   <div class="dashboard-heading">Input Lokasi Dokumen</div>
   <div class="dashboard-content">
 
@@ -173,12 +173,12 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
     ?>
     
     <form method="post" action="">
-      
+
      <tr>
        No.BAST :  <input type="text" name="nobastlokasi" value="<?php echo $nobast; ?>"/>
      </tr></p>
      <table >
-      
+
        <tr><td><input type="checkbox" name="rekon163" value="1"/>Data Rekon 163<br/><br/></td>
          <td><input type="checkbox" name="rekon54" value="1" /> Data Rekon 54<br/><br/></td></tr>
          <tr><td><input type="checkbox" name="rekon101" value="1" /> Data Rekon 101<br/><br/></td>
@@ -295,11 +295,14 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
                  var td2=x.insertCell(1);
                  var td3=x.insertCell(2);
                  var td4=x.insertCell(3);
+                 var td5=x.insertCell(4);
+                 var td6=x.insertCell(5);
+
                  
 
 
                  
-                 td1.innerHTML="<input type='text' name='alamataset[]'>";
+                 td1.innerHTML="<input type='text' required name='alamataset[]'>";
                  td2.innerHTML="<select name='kecamatan[]'>          	<?php
                  include "koneksi.php";
                  // query untuk menampilkan kecamatan
@@ -322,7 +325,7 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
                 }
                 ?></select>";
 
-                td4.innerHTML="<select name='wilayah[]'>          	<?php
+                td4.innerHTML="<select name='wilayah[]'>            <?php
                 include "koneksi.php";
                  // query untuk menampilkanwilayah
                 $query = "SELECT * FROM wilayah";
@@ -331,7 +334,12 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
                 {
                   echo "<option >".$data['wilayah']."</option>".$data['wilayah']."</option>";
                 }
-                ?></select>";   
+                ?></select>";
+
+                td5.innerHTML="<input type='text' required name='latitude[]'>";
+
+                td6.innerHTML="<input type='text' required name='longitude[]'>";
+
 
                 idrow++;
               }
@@ -352,25 +360,28 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
 
              <br><p>
              <div style=" width:20; height:110px;overflow:auto;">
-               
+
                <table class="list" id=datatable >
                  <thead>
                    <tr>
-                     
+
                      <td class="center">ALAMAT ASET</font></td>
                      <td class="center">KECAMATAN</font></td>
                      <td class="center">KELURAHAN</font></td>
                      <td class="center">WILAYAH</font></td>
+                     <td class="center">LATITUDE</font></td>
+                     <td class="center">LONGITUDE</font></td>
+
 
                    </tr>
                  </thead>
 
                  <tbody>
                    <tr>
-                     
-                     <td><input type='text' name='alamataset[]'></td>
+
+                     <td><input type='text' required name='alamataset[]'></td>
                      <td><select name='kecamatan[]'>
-                      
+
                        <?php
                        include "koneksi.php";
                  // query untuk menampilkan wilayah
@@ -384,7 +395,7 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
                     </select></td>
 
                     <td><select name='kelurahan[]'>
-                      
+
                      <?php
                      include "koneksi.php";
                  // query untuk menampilkan kelurahan
@@ -398,7 +409,7 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
                   </select></td>
 
                   <td><select name='wilayah[]'>
-                    
+
                    <?php
                    include "koneksi.php";
                  // query untuk menampilkan wilayah
@@ -409,7 +420,10 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
                     echo "<option >".$data['wilayah']."</option>".$data['wilayah']."</option>";
                   }
                   ?>
-                </select></td>         	
+                </select></td>    
+                <td><input type='text' required name='latitude[]'></td>
+                <td><input type='text' required name='longitude[]'></td>
+
               </tr>
             </tbody>
           </table>
@@ -435,8 +449,8 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
 		//menyimpan data ke tabel dataaset
   foreach($_POST['alamataset'] as $key => $alamataset){  
     if($alamataset){
-     $sql = "insert into dataaset(alamataset,wilayah,kecamatan,kelurahan,nobastaset)   
-     values ('{$alamataset}','{$_POST['wilayah'][$key]}','{$_POST['kecamatan'][$key]}','{$_POST['kelurahan'][$key]}','{$_POST['nobast']}')";  
+      $sql = "insert into dataaset(alamataset,wilayah,kecamatan,kelurahan,nobastaset,latitude,longitude)   
+     values ('{$alamataset}','{$_POST['wilayah'][$key]}','{$_POST['kecamatan'][$key]}','{$_POST['kelurahan'][$key]}','{$_POST['nobast']}','{$_POST['latitude'][$key]}','{$_POST['longitude'][$key]}')";  
      mysql_query($sql);  
    } 
  }
@@ -461,7 +475,7 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
       No.BAST :  <input type="text" name="nobastaset" value="<?php echo $nobastaset; ?>"/><input type="submit" name="submit10" value="Pilih yang sesuai saja"/><br/>
     </form><br>
     <div style="height:480px; overflow:auto;">
-     
+
      <table class="list" width="530" border="1" cellpadding="5" cellspacing="1">
        <thead>
          <tr>
@@ -481,7 +495,7 @@ if (move_uploaded_file($_FILES["fileacuan"]["tmp_name"], $target_file)) {
 
          include "koneksi.php";
          $term = $_POST['nobastaset']; 
-         echo $term."<--";
+         // echo $term."<--";
 
          $query = mysql_query("select * from bast b inner join dataaset d on b.nobast=d.nobastaset where d.nobastaset='$term'");
        }else
