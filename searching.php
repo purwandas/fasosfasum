@@ -230,9 +230,9 @@ require_once('auth.php');
                     if($dan2==0){
                       $dan=1;
                       $dan2=1;
-                      $query.=" $ope ((nobast in (select nobast from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
+                      $query.=" $ope ((nobast in (select nobastaset from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
                     }else{
-                      $query=substr($query,0,-3).") or (nobast in (select nobast from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
+                      $query=substr($query,0,-3).") or (nobast in (select nobastaset from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
                     }
                     $ck="checked";
                     $dply="block";
