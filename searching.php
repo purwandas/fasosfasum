@@ -86,7 +86,6 @@ require_once('auth.php');
         width: 0;
         cursor: pointer;
         cursor: hand;
-        height: auto;
       }
       #btnright p{
         transform: rotate(90deg);
@@ -232,7 +231,7 @@ require_once('auth.php');
                       $dan2=1;
                       $query.=" $ope ((nobast in (select nobastaset from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
                     }else{
-                      $query=substr($query,0,-3).") or (nobast in (select nobastaset from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
+                      $query=substr($query,0,-2).") or (nobast in (select nobastaset from $dfilter_m[ket] where $dfilter_m[name] like '%$wp%')))";
                     }
                     $ck="checked";
                     $dply="block";
@@ -259,7 +258,7 @@ require_once('auth.php');
                 echo"
                 <select $submitch name='$dfilter_m[ref_table]$dfilter[name]' id='$dfilter_m[ref_table]$dfilter[name]' style='width:90%'>
                   ";
-                  if(isset($_GET["$dfilter_m[ref_table]$dfilter[name]"])&&$_GET["$dfilter_m[ref_table]$dfilter[name]"]!="$dfilter_m[ref_table]$dfilter[name]"&&$_GET["$dfilter_m[ref_table]$dfilter[name]"]!=""){
+                  if(isset($_GET["$dfilter_m[ref_table]$dfilter[name]"])&&$_GET["$dfilter_m[ref_table]$dfilter[name]"]!="$dfilter_m[ref_table]$dfilter[name]"&&$_GET["$dfilter_m[ref_table]$dfilter[name]"]!=""&&$ck=="checked"){
                     $wp=$_GET["$dfilter_m[ref_table]$dfilter[name]"];
                     $query=substr($query,0,-3)." and $dfilter_m[ket].$dfilter_m[ref_table] like '%$wp%')))";
                     $ctingkat3="where nama$dfilter_m[ref_table] like '%$wp%'";
@@ -292,7 +291,7 @@ require_once('auth.php');
                 echo" 
                 <select $submitch name='$dfilter_m[ref_field]$dfilter[name]' id='$dfilter_m[ref_field]$dfilter[name]' style='width:90%'>
                   ";
-                  if(isset($_GET["$dfilter_m[ref_field]$dfilter[name]"])&&$_GET["$dfilter_m[ref_field]$dfilter[name]"]!="$dfilter_m[ref_field]$dfilter[name]"&&$_GET["$dfilter_m[ref_field]$dfilter[name]"]!=""){
+                  if(isset($_GET["$dfilter_m[ref_field]$dfilter[name]"])&&$_GET["$dfilter_m[ref_field]$dfilter[name]"]!="$dfilter_m[ref_field]$dfilter[name]"&&$_GET["$dfilter_m[ref_field]$dfilter[name]"]!=""&&$ck=="checked"){
                     $wp=$_GET["$dfilter_m[ref_field]$dfilter[name]"];
                     $query=substr($query,0,-3)." and $dfilter_m[ket].$dfilter_m[ref_field] like '%$wp%')))";
                     echo"
@@ -422,9 +421,7 @@ require_once('auth.php');
                 }
               }
             }
-            echo"
-            <h4><input type=submit name=submit2 value=Cari style='width:100%;'></h4>
-            ";
+            
             ?>
           </div>
           <div id="btnleft">
@@ -432,14 +429,14 @@ require_once('auth.php');
           </div>
         </div>
         <div id="right">
-          <div id="btnright" onclick="openFil()">
+          <div id="btnright" onclick="openFil()" style="height: 180px;">
             <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
             <p>
               Filter_Data
             </p>
           </div>
           <div id="data">
-            <div class="sort">
+            <div class="sort" style="overflow:auto">
               <?php
               echo"
               Sort: 
@@ -492,10 +489,24 @@ require_once('auth.php');
                 }else{
                   $offset=0;
                 }
+                if(empty($_GET)){
+                  $qr='?';
+                }else{
+                  $qr='&';
+                }
+                include ("pagination.php");
+                if(isset($_GET['page'])){
+                  $plng=strlen($_GET['page']);
+                  $pth=substr("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",0,strlen("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]")-(5+$plng));
+                  $cp=$_GET['page'];
+                }else{
+                  $pth="http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$qr";
+                  $cp=1;
+                }
                 $limit=" LIMIT $offset, $reclimit";
                 $query.=$order;
                 $_SESSION['query']=$query;
-                $qpaging=$query;
+                $qpaging=$_SESSION['query'];
                 $page=ceil(mysql_num_rows(mysql_query($query))/$reclimit);
                 $query.=$limit;
                 $no=$offset+1;
@@ -508,7 +519,7 @@ require_once('auth.php');
                 </option>
               </select><br>
               <hr>
-              <a href=testexcell.php target=_blank><img alt=' ' src='view/image/excel.jpg' border='0'>excell nihh</a>
+              <a href=testexcell.php target=_blank><img alt=' ' src='view/image/excel.jpg' border='0'>excell nihh</a> 
               <center>
                 <table>
                   ";
@@ -549,6 +560,8 @@ require_once('auth.php');
                   $qs=mysql_query($query);
                   $sudah="<i class='fa fa-check-circle' aria-hidden='true' style='color:green'></i>";
                   $belum="<i class='fa fa-times-circle' aria-hidden='true' style='color:red'></i>";
+                  echo "<div align='right'>".pagination($qpaging,$reclimit,$cp,"$pth")."</div><br>";
+
                   while ($data=mysql_fetch_array($qs)) {
 
                     if(isset($_GET['kategori'])&&$_GET['kategori']=='dokacuan'){
@@ -694,21 +707,12 @@ require_once('auth.php');
                   echo"
                 </table>
                 ";
-                if(empty($_GET)){
-                  $qr='?';
-                }else{
-                  $qr='&';
-                }
-                include ("pagination.php");
-                if(isset($_GET['page'])){
-                  $plng=strlen($_GET['page']);
-                  $pth=substr("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",0,strlen("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]")-(5+$plng));
-                  $cp=$_GET['page'];
-                }else{
-                  $pth="http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$qr";
-                  $cp=1;
-                }
-                echo pagination($qpaging,$reclimit,$cp,"$pth");
+                
+                $totalData=mysql_num_rows(mysql_query($qpaging));
+                echo "<br><div align='left'> <b>*)$totalData Data ditemukan</b> </div>";
+                echo "<div align='right'>".pagination($qpaging,$reclimit,$cp,"$pth")."</div>";
+
+                
               // for($i=0;$i<$page;$i++){
               //   $j=$i+1;
               //   echo "<a href='http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$qr"."offset=".$i*$reclimit."'>$j</a> ";
