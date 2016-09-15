@@ -87,7 +87,7 @@ require_once('auth.php');
         cursor: pointer;
         cursor: hand;
       }
-      #btnright p{
+      #btnright p, #btnleft p{
         transform: rotate(90deg);
         font-size: x-large;
       }
@@ -113,6 +113,32 @@ require_once('auth.php');
           if($('#tahunbast').val()!='' && $('#tahunbast2').val()!=''){
             document.getElementById("formpencarian").submit();   
           }
+        });
+        $("#tahunpkk,#tahunpkk2").change(function(){
+          if($('#tahunpkk').val()!='' && $('#tahunpkk2').val()!=''){
+            document.getElementById("formpencarian").submit();   
+          }
+        });
+        $("#btahunsippt").click(function(){
+          $("#tahunsippt").empty();
+          $("#tahunsippt2").empty();
+          $("#tahunsippt").append("<option value='' > -pilih- </option>");
+          $("#tahunsippt2").append("<option value='' > -pilih- </option>");
+          document.getElementById("formpencarian").submit();   
+        });
+        $("#btahunbast").click(function(){
+          $("#tahunbast").empty();
+          $("#tahunbast2").empty();
+          $("#tahunbast").append("<option value='' > -pilih- </option>");
+          $("#tahunbast2").append("<option value='' > -pilih- </option>");
+          document.getElementById("formpencarian").submit();   
+        });
+        $("#btahunpkk").click(function(){
+          $("#tahunpkk").empty();
+          $("#tahunpkk2").empty();
+          $("#tahunpkk").append("<option value='' > -pilih- </option>");
+          $("#tahunpkk2").append("<option value='' > -pilih- </option>");
+          document.getElementById("formpencarian").submit();   
         });
       });
       function closeFil() {
@@ -157,11 +183,11 @@ require_once('auth.php');
             $query="select bast.nobast, bast.keterangan, bast.tglbast, bast.pengembangbast, detaildokacuan.nodokacuan, detaildokacuan.pemegangdokacuan, dokumenacuan.jenisdokumen, detaildokacuan.tgldokacuan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori ";//INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
           }
           ?>
-          <option value='aset'>
-           ASET
-         </option>
          <option value='bast'>
            BAST
+         </option>
+         <option value='aset'>
+           ASET
          </option>
          <option value='akun'>
            Akun
@@ -175,8 +201,8 @@ require_once('auth.php');
        <br>
 
        <font size="1">
-        )* -<u>ASET</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />
         )* -<u>BAST</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />
+        )* -<u>ASET</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />
         )* -<u>Akun</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />
         )* -<u>Dokumen Acuan</u>- Input Nomor Dok. Acuan atau Nama Pemegang Dok. atau Jenis Dok. Acuan <br />
       </font>
@@ -191,7 +217,7 @@ require_once('auth.php');
         if(isset($_GET['kategori'])){
           $kategori=$_GET['kategori'];
         }else{
-          $kategori='aset';
+          $kategori='bast';
         }
         $qr="select tabel, nama, `name`, ref_table, ref_field, ket, kategori from ref_master where kategori like '%$kategori%'";
             // echo $qr;
@@ -217,7 +243,7 @@ require_once('auth.php');
               if($dfilter_m['ket']=='dataaset'){//beda tampiloan beda query
                 $qfilter=mysql_query("select display, name from $dfilter_m[tabel]");
               }else if($dfilter_m['ket']=='tahun'){//beda tampilan beda query
-                $qfilter=mysql_query("select name, display, ref_table, ref_field, clause from $dfilter_m[tabel] where kategori like '%$_GET[kategori]%'");
+                $qfilter=mysql_query("select name, display, ref_table, ref_field, clause from $dfilter_m[tabel] where kategori like '%$kategori%'");
               }else{
                 $qfilter=mysql_query("select keyword, display, name from $dfilter_m[tabel]");
               }
@@ -356,15 +382,17 @@ require_once('auth.php');
                       $dan2=1;
                       $ye1=$_GET["$dfilter_m[name]$dfilter[name]"];
                       $ye2=$_GET["$dfilter_m[name]$dfilter[name]2"];
-                      $query.=" $ope (year(STR_TO_DATE($dfilter[ref_table].$dfilter[ref_field], '%d/%m/%Y')) between '$ye1' and '$ye2')";
+                      $query.=" $ope ((year(STR_TO_DATE($dfilter[ref_table].$dfilter[ref_field], '%d/%m/%Y')) between '$ye1' and '$ye2') $dfilter[clause])";
                     }else{
-                      $query=substr($query,0,-1)." or year(STR_TO_DATE($dfilter[ref_table].$dfilter[ref_field], '%d/%m/%Y')) between '$ye1' and '$ye2')";
+                      $query=substr($query,0,-1)." or (year(STR_TO_DATE($dfilter[ref_table].$dfilter[ref_field], '%d/%m/%Y')) between '$ye1' and '$ye2') $dfilter[clause])";
                     }
                     $ck="checked";
                   }else{
                     $ck='';
                   }
-                  echo "$dfilter[display]<br/><select name=$dfilter_m[name]$dfilter[name] id=$dfilter_m[name]$dfilter[name]>";
+                  echo "$dfilter[display]<br/>";
+                  echo"<select name=$dfilter_m[name]$dfilter[name] id=$dfilter_m[name]$dfilter[name]>";
+
                   if(isset($_GET["$dfilter_m[name]$dfilter[name]"])&&$_GET["$dfilter_m[name]$dfilter[name]"]!=''){
                     $ye=$_GET["$dfilter_m[name]$dfilter[name]"];
                     echo"
@@ -399,6 +427,8 @@ require_once('auth.php');
                   echo"
                 </select><br>
                 ";
+                  echo "<div align='right'><button id='b$dfilter_m[name]$dfilter[name]'>Clear</button></div>";
+
                 }else{//ini normalnya
                   if(isset($_GET["$dfilter_m[name]$dfilter[name]"])){
                     $wp=$_GET["$dfilter_m[name]$dfilter[name]"];
@@ -424,15 +454,18 @@ require_once('auth.php');
             
             ?>
           </div>
-          <div id="btnleft">
-            <i class="fa fa-eye-slash fa-lg" onclick="closeFil()" aria-hidden="true"></i>
+          <div id="btnleft" onclick="closeFil()" style="height: 180px;">
+            <i class="fa fa-eye-slash fa-lg"  aria-hidden="true"></i>
+            <p>
+              Hide_Filter 
+            </p>
           </div>
         </div>
         <div id="right">
           <div id="btnright" onclick="openFil()" style="height: 180px;">
             <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
             <p>
-              Filter_Data
+              Show_Filter 
             </p>
           </div>
           <div id="data">
@@ -517,9 +550,11 @@ require_once('auth.php');
                 <option value='tgldokacuan'>
                   Tgl. Dok. Acuan
                 </option>
-              </select><br>
+              </select> 
+              <a href=testexcell.php target=_blank style='margin-left:20px'><img alt=' ' src='view/image/excel.jpg' border='0'>excell nihh</a> 
+              <br>
               <hr>
-              <a href=testexcell.php target=_blank><img alt=' ' src='view/image/excel.jpg' border='0'>excell nihh</a> 
+              
               <center>
                 <table>
                   ";
@@ -709,7 +744,7 @@ require_once('auth.php');
                 ";
                 
                 $totalData=mysql_num_rows(mysql_query($qpaging));
-                echo "<br><div align='left'> <b>*)$totalData Data ditemukan</b> </div>";
+                echo "<br><div align='left'> <b>*) $totalData Data ditemukan</b> </div>";
                 echo "<div align='right'>".pagination($qpaging,$reclimit,$cp,"$pth")."</div>";
 
                 
