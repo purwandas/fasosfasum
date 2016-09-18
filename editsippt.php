@@ -70,14 +70,28 @@ require_once('auth.php');
   }  
 
     //menyimpan data ke tabel dataaset
-  foreach($_POST['deskripsi'] as $key => $deskripsi){  
-    if($deskripsi){
-      $sql = "update peruntukan set deskripsi='{$deskripsi}',jenisfasos='{$_POST['jenisfasos'][$key]}',luas='{$_POST['luas'][$key]}' where nodokacuan='$nodokacuan2';";  
-      mysql_query($sql); 
-   // echo $sql; 
+  foreach($_POST['idperuntukan'] as $key => $idperuntukan){  
+    if($idperuntukan){
+      $check=mysql_num_rows(mysql_query("select * from peruntukan where idperuntukan ='$idperuntukan'"));
+      echo "<br>$idperuntukan - $check";
+      if($check>0)
+      {
+        $sql = "update peruntukan set deskripsi='{$_POST['deskripsi'][$key]}',jenisfasos='{$_POST['jenisfasos'][$key]}',luas='{$_POST['luas'][$key]}' where nodokacuan='$nodokacuan2' and idperuntukan='$idperuntukan';";  
+      }else{
+        $sql = "insert into peruntukan
+        (idperuntukan,deskripsi,jenisfasos,luas,statussertifikat,statusplang,statuspenggunaan,sensusfasos,nodokacuan)   
+             values 
+             ('','{$deskripsi}','{$_POST['jenisfasos'][$key]}','{$_POST['luas'][$key]}','Belum SHP Pemprov. DKI Jakarta','Belum Terpasang','Idle','Belum dilakukan Sensus','$nodokacuan2');";
+      }
+      // mysql_query($sql); 
+   echo $sql; 
     } 
   }
   echo 'Data telah disimpan';  
+}
+if(isset($_GET['delete'])){
+  $qdelete=mysql_query("delete from peruntukan where idperuntukan='$_GET[delete]'");
+
 }
 ?>
 <div id="container">
@@ -190,7 +204,7 @@ require_once('auth.php');
           <body>
 
             <br><p>
-            <div style=" width:20; height:110px;overflow:auto;">
+            <div style=" width:20; height:auto;overflow:auto;">
 
               <table class="list" id=datatable >
                 <thead>
@@ -198,18 +212,22 @@ require_once('auth.php');
                     <td class="center">Deskripsi</td>
                     <td class="center">Jenis Fasos Fasum</td>
                     <td class="center">Luas</td>
+                    <td class="center">Act.</td>
                   </tr>
                 </thead>
 
                 <tbody>
                   <?php
                   $row=1;
-                  $query0=mysql_query("select deskripsi, jenisfasos, luas from peruntukan where nodokacuan='$id'");
+                  $query0=mysql_query("select idperuntukan,deskripsi, jenisfasos, luas from peruntukan where nodokacuan='$id'");
                   while ($d0=mysql_fetch_array($query0)) {
                     $row++;
                     echo"
                     <tr>
-                      <td><input type='text' name='deskripsi[]' value='$d0[deskripsi]'></td>
+                      <td>
+                        <input type='hidden' name='idperuntukan[]' value='$d0[idperuntukan]'>
+                        <input type='text' name='deskripsi[]' value='$d0[deskripsi]'>
+                      </td>
                       <td><select name='jenisfasos[]'>
                         <option value='$d0[jenisfasos]'>$d0[jenisfasos]</option>
                         ";
@@ -222,7 +240,8 @@ require_once('auth.php');
                         echo"
                       </select></td>
 
-                      <td><input type='number' name='luas[]' value='$d0[luas]'></td>         
+                      <td><input type='number' name='luas[]' value='$d0[luas]'></td>  
+                      <td><a href='editsippt.php?nodokacuan=$id&delete=$d0[idperuntukan]'>hapus</a></td>
                     </tr>
                     ";
                   }

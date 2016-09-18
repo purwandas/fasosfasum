@@ -90,17 +90,21 @@ require_once('auth.php');
 
               
               <?php
+              include "koneksi.php";
               if(isset($_REQUEST['submit2'])) {
 
-               include "koneksi.php";
+               
                $term = $_POST['term']; 
                
-               $query = mysql_query ("SELECT * FROM akun a inner join bast b on a.nobast=b.nobast inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dataaset s on a.idaset=s.idaset inner join peruntukan p on a.idperuntukan=p.idperuntukan inner join lokasidokumen l on a.nobast=l.nobastlokasi where pengembangbast like '%$term%' or kelurahan like '%$term%' or alamataset like '%$term%' or volume like '%$term%' or deskripsi like '%$term%' or kategoriaset like '%$term%' or a.nobast like '%$term%'");
+               $query = "SELECT * FROM akun a inner join bast b on a.nobast=b.nobast inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dataaset s on a.idaset=s.idaset inner join peruntukan p on a.idperuntukan=p.idperuntukan inner join lokasidokumen l on a.nobast=l.nobastlokasi where pengembangbast like '%$term%' or kelurahan like '%$term%' or alamataset like '%$term%' or volume like '%$term%' or deskripsi like '%$term%' or kategoriaset like '%$term%' or a.nobast like '%$term%'";
 
              }else
 
 
-             $query = mysql_query("SELECT * FROM akun a inner join dataaset s on a.idaset=s.idaset inner join peruntukan p on a.idperuntukan=p.idperuntukan ");
+             $query = "SELECT * FROM akun a inner join dataaset s on a.idaset=s.idaset inner join peruntukan p on a.idperuntukan=p.idperuntukan ";
+
+             // echo $query;
+             $query=mysql_query($query) or die(mysql_error());
 
 
              $no = 1;

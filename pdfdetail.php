@@ -75,7 +75,7 @@ $m++;
 
 
 
- require("../fpdf17/fpdf.php");
+ require("fpdf17/fpdf.php");
 
 
 

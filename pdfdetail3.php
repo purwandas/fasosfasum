@@ -39,7 +39,7 @@ while($data=mysql_fetch_row($db_query))
 
 
 
- require("../fpdf17/fpdf.php");
+ require("fpdf17/fpdf.php");
 
 
 

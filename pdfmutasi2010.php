@@ -29,7 +29,7 @@ $cell[$i][4] = $data[4];
 
 }
 
- require("../fpdf17/fpdf.php");
+ require("fpdf17/fpdf.php");
 
 
 

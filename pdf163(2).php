@@ -26,7 +26,7 @@
     array("label"=>"No.SIPPT", "length"=>50, "align"=>"L"),
     );
     #sertakan library PDF dan bentuk objek
-    require_once ("../fpdf17/fpdf.php");
+    require_once ("fpdf17/fpdf.php");
 
     $pdf = new FPDF('L','mm','Legal');
     $pdf->AddPage();

@@ -169,7 +169,7 @@ require_once('auth.php');
 
              <table>
               <tr>
-                <td>Alamat lokasi</td><td>:</td><td><?php echo $data3['alamataset']; ?></td><td><a href='editaset.php<?php echo "?id=$data3[idaset]"; ?>'>[Edit]</a></td>
+                <td>Alamat lokasi</td><td>:</td><td><?php echo $data3['alamataset']; ?></td><td><a href='editaset.php<?php echo "?id=$data3[idaset]"; ?>' target='_blank'>[Edit]</a></td>
               </tr>
               <tr>
                <td >Wilayah</td><td>:</td><td colspan='2'><?php echo $data3['wilayah']; ?></td>

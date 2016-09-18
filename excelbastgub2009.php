@@ -39,8 +39,7 @@ return;
 
 header("Pragma: public");
 header("Expires: 0");
-header("Cache-Control: must-revalidate, post-check=0,
-        pre-check=0");
+header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
 header("Content-Type: application/force-download");
 header("Content-Type: application/octet-stream");
 header("Content-Type: application/download");
@@ -95,7 +94,8 @@ mysql_select_db("bpkd2012");
 
 // query menampilkan semua data
 
-$query = "SELECT * FROM bast b inner join (select distinct nobast, totmix from akun)a on a.nobast=b.nobast inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan m on m.idkategori=d.idkategori  inner join (select distinct nobastaset, wilayah from dataaset)s on s.nobastaset=b.nobast  inner join lokasidokumen l on b.nobast=l.nobastlokasi 
+$query = "SELECT * FROM bast b inner join (select distinct nobast, totmix from akun)a on a.nobast=b.nobast inner join detaildokacuan d on b.nodokacuan=d.nodokacuan inner join dokumenacuan m on m.idkategori=d.idkategori  
+inner join (select distinct nobastaset, wilayah from dataaset)s on s.nobastaset=b.nobast  inner join lokasidokumen l on b.nobast=l.nobastlokasi 
 where b.keterangan like '%gub%' && ((bpk357 ='1'   && rekon129='0' && rekon54='0' && rekon163='0' && rekon101='0' && balaikota='0' &&  perihalbast='mutasi2009') or (bpk357='0' && mutasi='1' && pulomas='0' && perihalbast='mutasi2009') or (bpk357 ='0'  && pulomas='1'  && rekon129='0' && rekon54='0' && rekon163='0' && rekon101='0'  &&  perihalbast='mutasi2009')or (bpk357 ='0' && pulomas='0' && tp3w='1' && rekon129='0' && rekon54='0' && rekon163='0' && rekon101='0'  &&  perihalbast='mutasi2009') or (mutasi='0' && bpk357 ='0' && pulomas='0' && tp3w='0' && dtr='1' && rekon129='0' && rekon54='0' && rekon163='0' && rekon101='0'  &&  perihalbast='mutasi2009') or (bpk357 ='0' && pulomas='0' && tp3w='0' && dtr='0' && balaikota='1' && rekon129='0' && rekon54='0' && rekon163='0' && rekon101='0'  &&  perihalbast='mutasi2009')) 
 
 

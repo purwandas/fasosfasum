@@ -222,7 +222,8 @@ require_once('auth.php');
            <?php
            $query=mysql_query("select nodokacuan from bast where nobast='$data[nobastaset]'");
            $d1=mysql_fetch_array($query);
-           $query=mysql_query("select idperuntukan,deskripsi,jenisfasos,luas,nobast from peruntukan where nodokacuan='$d1[nodokacuan]' and (nobast='' or nobast='$data[nobastaset]')");
+           $nodokacuan=$d1['nodokacuan'];
+           $query=mysql_query("select idaset,idperuntukan,deskripsi,jenisfasos,luas,nobast from peruntukan where nodokacuan='$d1[nodokacuan]' and (nobast='' or idaset='$_GET[id]')");
            $idx=0;
 
            while ($d2=mysql_fetch_array($query)) {
@@ -231,7 +232,7 @@ require_once('auth.php');
               $ckd="checked";
               $peruntukan[$idx]=$_GET["wjb$d2[idperuntukan]"];
               $idx++;
-            }else if($data['nobastaset']==$d2['nobast']){
+            }else if($data['idaset']==$d2['idaset'] && !isset($_GET['cek'])){
               $ckd="checked";
               $peruntukan[$idx]=$d2['idperuntukan'];
               $idx++;
@@ -256,6 +257,9 @@ require_once('auth.php');
 
          ?>
        </table>
+       <div  align=right><a href="editsippt.php?nodokacuan=<?php echo $nodokacuan; ?>" target="_blank">*Lihat data kewajiban?</a></div>
+               <input type='hidden' name=cek value=1>
+
      </form>
    </div>
    <form name="peruntukan" action="" method=post>
@@ -276,8 +280,8 @@ require_once('auth.php');
 
 
     <br>
-    <div style="width:1132px; height:350px;overflow:auto;">  
-     <table class="list" id=datatable1 width="800" border="1" >
+    <div style="width:100%; height:auto;overflow:auto;">  
+     <table class="list" id=datatable1  border="1" >
        <thead>
          <tr>
            <td class="center">Peruntukan</td>

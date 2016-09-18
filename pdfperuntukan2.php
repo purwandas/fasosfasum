@@ -4,7 +4,7 @@
 //require_once("logsql.php");
 
 //// get fpdf, thank to Olivier Plathey
-require("../fpdf17/fpdf.php");
+require("fpdf17/fpdf.php");
 ////
 
 

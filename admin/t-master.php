@@ -21,10 +21,11 @@
 		$q_a="INSERT INTO `ref_master` (`id`, `tabel`, `nama`, `name`, `ref_table`, `ref_field`, `ket`, `kategori`, `urutan`) VALUES (NULL, '$_POST[tabel]', '$_POST[nama]', '$_POST[name]', '$_POST[ref_table]', '$_POST[ref_field]', '$_POST[ket]', '$_POST[kategori]', '$_POST[urutan]')";
 		$add=mysql_query($q_a);
 		if($add){
-			if($_POST['tabel']!='ref_tahun'){
-				$qa="CREATE TABLE $_POST[tabel] ( `id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, `kode` INT(11) NULL , `keyword` varchar(50) NULL , `display` varchar(50) NULL, `name` varchar(30) ) ENGINE = InnoDB;";
-			}else{
+			if($_POST['tabel']=='ref_tahun'){
 				$qa="CREATE TABLE $_POST[tabel] ( `id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, `name` varchar(50) NULL, `display` varchar(50) NULL, `ref_table` varchar(50) NULL, `ref_field` varchar(50) NULL, `clause` varchar(50) NULL ) ENGINE = InnoDB;";
+			}else{
+				$qa="CREATE TABLE $_POST[tabel] ( `id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, `kode` INT(11) NULL , `keyword` varchar(50) NULL , `display` varchar(50) NULL, `name` varchar(30) ) ENGINE = InnoDB;";
+				
 			}
 			$add=mysql_query($qa);
 			header("location:homeadmin.php?h=t_ref&&am=s");

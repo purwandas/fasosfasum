@@ -22,6 +22,7 @@
 				.$d_master[name]input{
 				  disabled:disabled;
 				}
+
 			</style>
 			<div class='form-group'>
 				<p class='$d_master[name] btn-info btn text-center col-md-12 row'>$d_master[nama]</p>
@@ -101,13 +102,10 @@
 					<h3>Data Tabel $d_master[tabel]</h3><br>
 					<table class='table table-striped table-hover table-bordered '>
 					";
-							if($d_master['kategori']!='tahun'){
+							if($d_master['ket']=='dataaset'){
 								echo"
 									<tr>
 										<td>
-												<div class='col-md-3 text-center'>
-													Keyword
-												</div>
 												<div class='col-md-3 text-center'>
 													Display
 												</div>
@@ -121,7 +119,7 @@
 									</tr>
 									</tr>
 								";
-							}else{
+							}else if($d_master['ket']=='tahun'){
 								echo"
 									<tr>
 										<td>
@@ -146,19 +144,36 @@
 										</td>
 									</tr>
 								";
-							}
-					$q_ref=mysql_query("select* from $d_master[tabel]");
-					while($d_ref=mysql_fetch_array($q_ref)){
-						if($d_master['kategori']!='tahun'){
+							}else{
 								echo"
 									<tr>
 										<td>
+												<div class='col-md-3 text-center'>
+													Keyword
+												</div>
+												<div class='col-md-3 text-center'>
+													Display
+												</div>
+												<div class='col-md-2 text-center'>
+													Name
+												</div>
+												<div class='col-md-4 text-center'>
+													Action
+												</div>	
+										</td>
+									</tr>
+									</tr>
+								";
+							}
+					$q_ref=mysql_query("select* from $d_master[tabel]");
+					while($d_ref=mysql_fetch_array($q_ref)){
+						if($d_master['ket']=='dataaset'){
+							echo"
+									<tr>
+										<td>
 											<form action='t-ref.php' class='form-inline' method='post'>
-												<div class='col-md-3'>
 													<input type=hidden name=tabel value='$d_master[tabel]'>
 													<input type=hidden name=id value='$d_ref[id]'>
-													<input type=text class='form-control' required name='keyword' value='$d_ref[keyword]'>
-												</div>
 												<div class='col-md-3'>
 													<input class='form-control' type=text required name='display' value='$d_ref[display]'>
 												</div>
@@ -173,7 +188,8 @@
 										</td>
 									</tr>
 								";
-						}else{
+						}else if($d_master['ket']=='tahun'){
+								
 								echo"
 									<tr>
 										<td>
@@ -203,17 +219,38 @@
 										</td>
 									</tr>
 								";
-						} 
-					}
-						if($d_master['kategori']!='tahun'){						
+						}else{
 								echo"
 									<tr>
 										<td>
 											<form action='t-ref.php' class='form-inline' method='post'>
 												<div class='col-md-3'>
-													<input type=hidden name=tabel value=$d_master[tabel]>
-													<input type=text class='form-control' required name='keyword' value=''>
+													<input type=hidden name=tabel value='$d_master[tabel]'>
+													<input type=hidden name=id value='$d_ref[id]'>
+													<input type=text class='form-control' required name='keyword' value='$d_ref[keyword]'>
 												</div>
+												<div class='col-md-3'>
+													<input class='form-control' type=text required name='display' value='$d_ref[display]'>
+												</div>
+												<div class='col-md-2'>
+													<input class='form-control' type=text required name='name' value='$d_ref[name]'>
+												</div>
+												<div class='col-md-4'>
+													<button type=submit name=simpan class='btn btn-primary'>Simpan Perubahan</button>
+													<a href='t-ref.php?hapus=$d_ref[id]&&tab=$d_master[tabel]'><button type='submit' name=hapus class='btn btn-danger'>Hapus Data</button></a>
+												</div>	
+											</form>
+										</td>
+									</tr>
+								";
+						} 
+					}
+						if($d_master['ket']=='dataaset'){
+								echo"
+									<tr>
+										<td>
+											<form action='t-ref.php' class='form-inline' method='post'>
+													<input type=hidden name=tabel value=$d_master[tabel]>
 												<div class='col-md-3'>
 													<input class='form-control' type=text required name='display' value=''>
 												</div>
@@ -227,7 +264,7 @@
 										</td>
 									</tr>
 								";
-						}else{
+						}else if($d_master['ket']=='tahun'){	
 								echo"
 									<tr>
 										<td>
@@ -247,6 +284,29 @@
 												</div>
 												<div class='col-md-2'>
 													<input class='form-control' type=text required name='clause' value=''>
+												</div>
+												<div class='col-md-4'>
+													<button type=submit name=tambah class='btn btn-success'>Tambah Data Baru</button>
+												</div>	
+											</form>
+										</td>
+									</tr>
+								";					
+								
+						}else{
+								echo"
+									<tr>
+										<td>
+											<form action='t-ref.php' class='form-inline' method='post'>
+												<div class='col-md-3'>
+													<input type=hidden name=tabel value=$d_master[tabel]>
+													<input type=text class='form-control' required name='keyword' value=''>
+												</div>
+												<div class='col-md-3'>
+													<input class='form-control' type=text required name='display' value=''>
+												</div>
+												<div class='col-md-2'>
+													<input class='form-control' type=text required name='name' value=''>
 												</div>
 												<div class='col-md-4'>
 													<button type=submit name=tambah class='btn btn-success'>Tambah Data Baru</button>
@@ -331,7 +391,7 @@
 						<td> 
 						</td>
 						<td>
-							Ket: 
+							Kategori: 
 						</td>
 						<td>
 							<input type=text name=ket  required class='add-masterinput form-control' value=''>
@@ -359,9 +419,11 @@
 						<tr>
 						<td colspan=5>
 							<center>
-								Kategori
+								Keterangan
 								<label><input type='radio' checked name='kategori' value='biasa'><img width='200px' src='../sources/biasa.png'></label>
+								<label><input type='radio' checked name='kategori' value='multi'><img width='200px' src='../sources/multi.png'></label>
 								<label><input type='radio' name='kategori' value='tahun'><img width='200px' src='../sources/tahun.png'></label>
+								<label><input type='radio' name='kategori' value='dataaset'><img width='200px' src='../sources/wilayah.png'></label>
 							</center>
 						</td>
 						</tr>

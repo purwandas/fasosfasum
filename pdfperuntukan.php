@@ -13,7 +13,7 @@
     //Variabel untuk iterasi
     $i = 0;
 
-require_once("../fpdf17/fpdf.php");
+require_once("fpdf17/fpdf.php");
 
 //memulai pengaturan output PDF
 class PDF extends FPDF

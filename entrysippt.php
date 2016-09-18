@@ -147,7 +147,14 @@ require_once('auth.php');
                 <div class="dashboard-heading">Input Data Kewajiban</div>
                 <div class="dashboard-content">
                   <form name="inputlokasiaset" action="" method="post">
-                    No.Dokumen Acuan :  <input type="text" name="nodokacuan2" <?php if(isset($_POST['nodokacuan'])){ echo "value='".$_POST['nodokacuan']."'"; }?>/>  
+                    No.Dokumen Acuan :  
+                    <input type="text" name="nodokacuan2" 
+                    <?php 
+                      if(isset($_POST['nodokacuan'])){ 
+                        echo "value='".$_POST['nodokacuan']."'"; 
+                      }
+                    ?>
+                    />  
                     <head>
                       <script>
                         var idrow = 2;
@@ -302,7 +309,7 @@ require_once('auth.php');
             die('Tidak ada data yang disimpan!');  
           }  
 
-    //menyimpan data ke tabel dataaset
+    //menyimpan data ke tabel peruntukan
           foreach($_POST['deskripsi'] as $key => $deskripsi){  
             if($deskripsi){
              $sql = "insert into peruntukan(idperuntukan,deskripsi,jenisfasos,luas,statussertifikat,statusplang,statuspenggunaan,sensusfasos,nodokacuan)   

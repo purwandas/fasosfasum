@@ -8,6 +8,7 @@
 <head>
 <title>Fasos Fasum BPKD DKI Jakarta</title>
 <link rel="stylesheet" href="../sources/bootstrap.min.css">
+<!-- <link rel="stylesheet" type="text/css" href="../sources/style.css" /> -->
 <link rel="stylesheet" type="text/css" href="../view/stylesheet/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="../view/javascript/jquery/ui/themes/ui-lightness/ui.all.css" />
 <script type="text/javascript" src="../view/javascript/jquery/jquery-1.3.2.min.js"></script>
@@ -33,7 +34,7 @@
       </div>
 
     <div id="menu">
-    <ul class="left" style="display: none;">
+    <ul class="" style="display: none;">
       <li id="dashboard"><a href="#" class="top">Dashboard</a></li>
       <li id="catalog"><a class="top">Master Data</a>
         <ul>
@@ -48,7 +49,7 @@
       	      <li><a href="kelurahan.php">Data Kelurahan</a></li>
             </ul>
           </li>
-          <li><a href="homeadmin.php?h=t_ref">Table Referensi</a></li>
+          <li><a href="homeadmin.php?h=t_ref">Data Filter</a></li>
         </ul>
       </li>
       </li>
@@ -166,7 +167,7 @@ $(document).ready(function() {
         if(isset($_GET['h'])){
           // if(!isset($_GET[]))
           if($_GET['h']=='t_ref'){
-            echo"Tabel Referensi Pencarian";
+            echo"Data Filter";
           }
         }else{
           echo"Dashboard";

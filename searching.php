@@ -72,6 +72,8 @@ require_once('auth.php');
         width: 100%;
       }
       #btnleft{
+        align:center;
+        
         background-color: cyan;
         float: right;
         width: 9%;
@@ -79,6 +81,7 @@ require_once('auth.php');
         cursor: hand;
       }
       #btnright{
+        align:center;
         background-color: cyan;
         margin-left: -2%;
         float: left;
@@ -550,8 +553,9 @@ require_once('auth.php');
                 <option value='tgldokacuan'>
                   Tgl. Dok. Acuan
                 </option>
-              </select> 
-              <a href=testexcell.php target=_blank style='margin-left:20px'><img alt=' ' src='view/image/excel.jpg' border='0'>excell nihh</a> 
+              </select> ";
+              // <a href=testexcell.php target=_blank style='margin-left:20px'><img alt=' ' src='view/image/excel.jpg' border='0'>excell nihh</a> 
+              echo"
               <br>
               <hr>
               
@@ -591,7 +595,7 @@ require_once('auth.php');
                     </thead>
                     ";
                   }
-                  echo $query."<--";
+                  // echo $query."<--";
                   $qs=mysql_query($query);
                   $sudah="<i class='fa fa-check-circle' aria-hidden='true' style='color:green'></i>";
                   $belum="<i class='fa fa-times-circle' aria-hidden='true' style='color:red'></i>";
@@ -675,13 +679,13 @@ require_once('auth.php');
                         <td  style='background-color: #C5EFF7' class='left'>$data[keterangan]</td>
                         <td  style='background-color: #C5EFF7' class='center'><a href='viewdetailbast.php?id=$data[nobast]'><img alt=' ' src='view/image/viewdetail.gif' border=0></a></td>
                       </tr>
+                      <tr class='rowdetail'>
+                          <td colspan=9>
+                            <center>
                       ";
                       $query2=mysql_query("select dataaset.idaset,dataaset.wilayah,dataaset.kecamatan,dataaset.kelurahan,detaildokacuan.tgldokacuan from bast inner join dataaset on bast.nobast=dataaset.nobastaset  inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan where bast.nobast='$data[nobast]'");
                       while ($data2=mysql_fetch_array($query2)) {      
                         echo "
-                        <tr class='rowdetail'>
-                          <td colspan=9>
-                            <center>
                               <table border=1 style='border-collapse: collapse;'>
                                 <tr>
                                   <td colspan=7>
@@ -731,11 +735,14 @@ require_once('auth.php');
                                 }
                                 echo"
                               </table>
-                            </center>
+                            <hr/>
+                        ";
+                      }
+                      echo"
+                      </center>
                           </td>
                         </tr>
                         ";
-                      }
                     }
                     $no++;
                   }

@@ -54,7 +54,7 @@ while($data2=mysql_fetch_row($db_query2))
 }
 
 
- require("../fpdf17/fpdf.php");
+ require("fpdf17/fpdf.php");
 
 
 

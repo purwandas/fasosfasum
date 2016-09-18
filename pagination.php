@@ -1,5 +1,5 @@
 <?php
-function pagination($query, $per_page = 10,$page = 1, $url = '?'){        
+function pagination($query, $per_page,$page = 1, $url = '?'){        
     $total=mysql_num_rows(mysql_query($query));
     // $query = "SELECT COUNT(*) as `num` FROM {$query}";
     // $row = mysql_fetch_array(mysql_query($query));
@@ -12,7 +12,7 @@ function pagination($query, $per_page = 10,$page = 1, $url = '?'){
 
     $prev = $page - 1;                          
     $next = $page + 1;
-    $lastpage = ceil($total/$per_page);
+    $lastpage = floor($total/$per_page);
     $lpm1 = $lastpage - 1;
 
     $pagination = "";
