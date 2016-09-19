@@ -19,7 +19,10 @@ require_once('auth.php');
 
   <script type="text/javascript" src="view/javascript/jquery/superfish/js/superfish.js"></script>
   <script type="text/javascript">
-
+    $( function() {
+      $( "#tglsertifikat" ).datepicker();
+      $( "#tglsk" ).datepicker();
+    } );
   </script>
 </head>
 <body>

@@ -143,6 +143,7 @@ require_once('auth.php');
           $("#tahunpkk2").append("<option value='' > -pilih- </option>");
           document.getElementById("formpencarian").submit();   
         });
+
       });
       function closeFil() {
         document.getElementById("left").style.display = "none";

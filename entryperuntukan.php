@@ -61,15 +61,15 @@ require_once('auth.php');
             <div class="dashboard-content">
 
 
-               <div style="margin-right:100px;float:right">
-                <script type="text/javascript">
-                  function submit() {
-                    document.getElementById("kwjb").submit();
-                  }
-                </script>
-               <form method="get" name='kwjb'>
+             <div style="margin-right:100px;float:right">
+              <script type="text/javascript">
+                function submit() {
+                  document.getElementById("kwjb").submit();
+                }
+              </script>
+              <form method="get" name='kwjb'>
                 <input type="hidden" name="id" value="<?php echo $id; ?>" />
-               <table>
+                <table>
                  <tr>
                    <td style="background-color:#E4F1FE">
                      Pilih
@@ -87,57 +87,57 @@ require_once('auth.php');
                  <?php
                  $query=mysql_query("select nodokacuan from bast where nobast='$data[nobastaset]'");
                  $d1=mysql_fetch_array($query);
-                  $query="select idperuntukan,idaset,deskripsi,jenisfasos,luas from peruntukan where nodokacuan='$d1[nodokacuan]' and (nobast='' or idaset='$id')";
+                 $query="select idperuntukan,idaset,deskripsi,jenisfasos,luas from peruntukan where nodokacuan='$d1[nodokacuan]' and (nobast='' or idaset='$id')";
                   // echo "$query";
-                  $query=mysql_query($query);
-                  $idx=0;
+                 $query=mysql_query($query);
+                 $idx=0;
 
-                  while ($d2=mysql_fetch_array($query)) {
-                    $ckd="";
-                    if(isset($_GET["wjb$d2[idperuntukan]"])){
-                      $ckd="checked";
-                      $peruntukan[$idx]=$_GET["wjb$d2[idperuntukan]"];
-                      $idx++;
-                    }else if($data['idaset']==$d2['idaset']){
-                      $ckd="checked";
-                      $peruntukan[$idx]=$d2['idperuntukan'];
-                      $idx++;
-                    }
-                    echo"
-                      <tr>
-                       <td>
-                         <input type='checkbox' $ckd name='wjb$d2[idperuntukan]' onclick='submit()' value='$d2[idperuntukan]'>
-                       </td>
-                       <td>
-                         $d2[deskripsi]
-                       </td>
-                       <td>
-                         $d2[jenisfasos]
-                       </td>
-                       <td>
-                         $d2[luas]
-                       </td>
-                     </tr>
-                    ";
+                 while ($d2=mysql_fetch_array($query)) {
+                  $ckd="";
+                  if(isset($_GET["wjb$d2[idperuntukan]"])){
+                    $ckd="checked";
+                    $peruntukan[$idx]=$_GET["wjb$d2[idperuntukan]"];
+                    $idx++;
+                  }else if($data['idaset']==$d2['idaset']){
+                    $ckd="checked";
+                    $peruntukan[$idx]=$d2['idperuntukan'];
+                    $idx++;
                   }
-                  
-                 ?>
-               </table>
-               </form>
-               </div>
-               <form name="peruntukan" action="" method=post>
-                <input type="hidden" name="nodokacuan" value='<?php echo "$d1[nodokacuan]";?>' />
-                <input type="hidden" name="id" value="<?php echo $idaset; ?>" />
-                <div style="float:left">
-                  <table>
-                   <tr><td><b>No.BAST </b></td><td>:</td><td><input type="text" name="nobast" value="<?php echo $data['nobastaset']; ?>" /></td>
-                     <td><a href="viewdetailbast.php?id=<?php echo $data['nobastaset']; ?>">Lihat data klik disini</a></td>
-                   </tr>
-                   <tr><td><b>No.Aset</b></td><td>: </td><td><input type="text" name="noaset" value="<?php echo $data['idaset']; ?>" /></td>
-                   </tr>
-                 </table>
-               </div>
-               <head>
+                  echo"
+                  <tr>
+                   <td>
+                     <input type='checkbox' $ckd name='wjb$d2[idperuntukan]' onclick='submit()' value='$d2[idperuntukan]'>
+                   </td>
+                   <td>
+                     $d2[deskripsi]
+                   </td>
+                   <td>
+                     $d2[jenisfasos]
+                   </td>
+                   <td>
+                     $d2[luas]
+                   </td>
+                 </tr>
+                 ";
+               }
+
+               ?>
+             </table>
+           </form>
+         </div>
+         <form name="peruntukan" action="" method=post>
+          <input type="hidden" name="nodokacuan" value='<?php echo "$d1[nodokacuan]";?>' />
+          <input type="hidden" name="id" value="<?php echo $idaset; ?>" />
+          <div style="float:left">
+            <table>
+             <tr><td><b>No.BAST </b></td><td>:</td><td><input type="text" name="nobast" value="<?php echo $data['nobastaset']; ?>" /></td>
+               <td><a href="viewdetailbast.php?id=<?php echo $data['nobastaset']; ?>">Lihat data klik disini</a></td>
+             </tr>
+             <tr><td><b>No.Aset</b></td><td>: </td><td><input type="text" name="noaset" value="<?php echo $data['idaset']; ?>" /></td>
+             </tr>
+           </table>
+         </div>
+         <head>
                  <!-- <script>
                    var idrow1 = 2;
 
@@ -227,7 +227,7 @@ require_once('auth.php');
 
 
                   <br>
-                  <div style="width:1132px; height:350px;overflow:auto;">  
+                  <div style="width:1132px; height:auto;overflow:auto;">  
                    <table class="list" id=datatable1 width="800" border="1" >
                      <thead>
                        <tr>
@@ -237,44 +237,63 @@ require_once('auth.php');
                          <td class="center">Sertifikasi</td>
                          <td class="center">Pemilik</td>
                          <td class="center">Jenis Sertifikasi</td>
-                         <td class="center">No.Sertifikat</td>
                          <td class="center">Masa Berlaku</td>
-                         <td class="center">Luas Stfkt (M2)</td>
                          <td class="center">Keterangan</td>
                          <td class="center">Status Sertifikat</td>
+                         <td class="center">No.Sertifikat</td>
+                         <td class="center">Tgl. Sertifikat</td>
+                         <td class="center">Luas Stfkt (M2)</td>
                          <td class="center">Status Plang</td>
                          <td class="center">Status Penggunaan</td>
+                         <td class="center">No.SK</td>
+                         <td class="center">Tgl. SK</td>
+                         <td class="center">SKPD</td>
                          <td class="center">Sensus Fasos</td>
                          <td class="center">Jenis Fasos</td>
                        </tr>
                      </thead>
 
                      <tbody>
-                     <?php
-                     if(isset($peruntukan))
-                     foreach ($peruntukan as $key => $value) 
-                     {
-                      $query=mysql_query("select idperuntukan,deskripsi,jenisfasos,luas from peruntukan where idperuntukan='$value'");
-                      $d3=mysql_fetch_array($query);
-                     ?>
-                       <tr>
+                       <?php
+                       if(isset($peruntukan))
+                         foreach ($peruntukan as $key => $value) 
+                         {
+                          $query=mysql_query("select idperuntukan,deskripsi,jenisfasos,luas from peruntukan where idperuntukan='$value'");
+                          $d3=mysql_fetch_array($query);
+                          ?>
+                          <tr>
 
-                         <td><input type='hidden' name='idperuntukan[]'<?php echo"value='$value'";?> >
+                           <td><input type='hidden' name='idperuntukan[]'<?php echo"value='$value'";?> >
                             <input type='text' name='deskripsi[]'<?php echo"value='$d3[deskripsi]'";?> >
+                          </td>
+                          <td><select name='jenis[]'><option>Tanah</option><option>Non-Tanah</option></select></td> 
+                          <td><input type='text' name='luas[]' <?php echo"value='$d3[luas]'";?> ></td>
+                          <td><select name='sertifikasi[]'><option>Non-Sertifikat</option><option>Sertifikat</option></select></td>
+                          <td><input type='text' name='pemilik[]'></td>
+                          <td><select name='jenissertifikat[]'><option>Non-Sertifikat</option><option>SHM</option><option>HGB</option><option>DKI</option></select></td>
+                          <td><input type='text' name='masaberlaku[]'></td>
+                          <td><input type='text' name='keterangan[]'></td>
+                          <td>
+                            <select name='statussertifikat[]'>
+                              <?php
+                              $query=mysql_query("select display from ref_statussertifikat order by id desc");
+                              while ($dss=mysql_fetch_array($query)) {
+                               echo"
+                               <option value='$dss[display]'>
+                                 $dss[display]
+                               </option>
+                               ";
+                             }
+                             ?>
+                           </select>
                          </td>
-                         <td><select name='jenis[]'><option>Tanah</option><option>Non-Tanah</option></select></td> 
-                         <td><input type='text' name='luas[]' <?php echo"value='$d3[luas]'";?> ></td>
-                         <td><select name='sertifikasi[]'><option>Non-Sertifikat</option><option>Sertifikat</option></select></td>
-                         <td><input type='text' name='pemilik[]'></td>
-                         <td><select name='jenissertifikat[]'><option>Non-Sertifikat</option><option>SHM</option><option>HGB</option><option>DKI</option></select></td>
-                         <td><input type='text' name='nosertifikat[]'></td>
-                         <td><input type='text' name='masaberlaku[]'></td>
-                         <td><input type='text' name='luassertifikat[]'></td>   
-                         <td><input type='text' name='keterangan[]'></td>
+                          <td><input type='text' name='nosertifikat[]'></td>
+                          <td><input type='text' name='tglsertifikat[]'></td>
+                          <td><input type='text' name='luassertifikat[]'></td>
                          <td>
-                          <select name='statussertifikat[]'>
+                          <select name='statusplang[]'>
                             <?php
-                            $query=mysql_query("select display from ref_statussertifikat order by id desc");
+                            $query=mysql_query("select display from ref_statusplangaset order by id desc");
                             while ($dss=mysql_fetch_array($query)) {
                              echo"
                              <option value='$dss[display]'>
@@ -286,9 +305,9 @@ require_once('auth.php');
                          </select>
                        </td>
                        <td>
-                        <select name='statusplang[]'>
+                        <select name='statuspenggunaan[]'>
                           <?php
-                          $query=mysql_query("select display from ref_statusplangaset order by id desc");
+                          $query=mysql_query("select display from ref_statuspenggunaanfasosfasum order by id desc");
                           while ($dss=mysql_fetch_array($query)) {
                            echo"
                            <option value='$dss[display]'>
@@ -299,10 +318,13 @@ require_once('auth.php');
                          ?>
                        </select>
                      </td>
+                     <td><input type='text' name='nosk[]'></td>
+                          <td><input type='text' name='tglsk[]'></td>
+                          <td><input type='text' name='skpd[]'></td>
                      <td>
-                      <select name='statuspenggunaan[]'>
+                      <select name='sensusfasos[]'>
                         <?php
-                        $query=mysql_query("select display from ref_statuspenggunaanfasosfasum order by id desc");
+                        $query=mysql_query("select display from ref_sensusfasosfasum order by id desc");
                         while ($dss=mysql_fetch_array($query)) {
                          echo"
                          <option value='$dss[display]'>
@@ -314,9 +336,12 @@ require_once('auth.php');
                      </select>
                    </td>
                    <td>
-                    <select name='sensusfasos[]'>
+                    <select name='jenisfasos[]'>
                       <?php
-                      $query=mysql_query("select display from ref_sensusfasosfasum order by id desc");
+                      echo"
+                      <option value='$d3[jenisfasos]'>$d3[jenisfasos]</option>
+                      ";
+                      $query=mysql_query("select display from ref_jenisfasosfasum order by id desc");
                       while ($dss=mysql_fetch_array($query)) {
                        echo"
                        <option value='$dss[display]'>
@@ -327,26 +352,9 @@ require_once('auth.php');
                      ?>
                    </select>
                  </td>
-                 <td>
-                  <select name='jenisfasos[]'>
-                    <?php
-                    echo"
-                    <option value='$d3[jenisfasos]'>$d3[jenisfasos]</option>
-                    ";
-                    $query=mysql_query("select display from ref_jenisfasosfasum order by id desc");
-                    while ($dss=mysql_fetch_array($query)) {
-                     echo"
-                     <option value='$dss[display]'>
-                       $dss[display]
-                     </option>
-                     ";
-                   }
-                   ?>
-                 </select>
-               </td>
-                <?php
-                }
-                ?>
+                 <?php
+               }
+               ?>
              </tr>
            </tbody>
          </table>
