@@ -87,7 +87,9 @@ require_once('auth.php');
                  <?php
                  $query=mysql_query("select nodokacuan from bast where nobast='$data[nobastaset]'");
                  $d1=mysql_fetch_array($query);
-                  $query=mysql_query("select idperuntukan,deskripsi,jenisfasos,luas from peruntukan where nodokacuan='$d1[nodokacuan]' and nobast=''");
+                  $query="select idperuntukan,idaset,deskripsi,jenisfasos,luas from peruntukan where nodokacuan='$d1[nodokacuan]' and (nobast='' or idaset='$id')";
+                  // echo "$query";
+                  $query=mysql_query($query);
                   $idx=0;
 
                   while ($d2=mysql_fetch_array($query)) {
@@ -96,7 +98,7 @@ require_once('auth.php');
                       $ckd="checked";
                       $peruntukan[$idx]=$_GET["wjb$d2[idperuntukan]"];
                       $idx++;
-                    }else if($data['nobastaset']==$d2['nobast']){
+                    }else if($data['idaset']==$d2['idaset']){
                       $ckd="checked";
                       $peruntukan[$idx]=$d2['idperuntukan'];
                       $idx++;
@@ -232,9 +234,6 @@ require_once('auth.php');
                          <td class="center">Peruntukan</td>
                          <td class="center">Jenis</td>
                          <td class="center">Luas Kwjbn (M2)</td>
-                         <td class="center">No.KRK</td>
-                         <td class="center">No.IMB</td>
-                         <td class="center">No.BlokPlan</td>
                          <td class="center">Sertifikasi</td>
                          <td class="center">Pemilik</td>
                          <td class="center">Jenis Sertifikasi</td>
@@ -265,9 +264,6 @@ require_once('auth.php');
                          </td>
                          <td><select name='jenis[]'><option>Tanah</option><option>Non-Tanah</option></select></td> 
                          <td><input type='text' name='luas[]' <?php echo"value='$d3[luas]'";?> ></td>
-                         <td><input type='text' name='nokrk[]'></td>
-                         <td><input type='text' name='noimb[]'></td>
-                         <td><input type='text' name='noblokplan[]'></td>
                          <td><select name='sertifikasi[]'><option>Non-Sertifikat</option><option>Sertifikat</option></select></td>
                          <td><input type='text' name='pemilik[]'></td>
                          <td><select name='jenissertifikat[]'><option>Non-Sertifikat</option><option>SHM</option><option>HGB</option><option>DKI</option></select></td>

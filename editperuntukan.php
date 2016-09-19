@@ -32,108 +32,166 @@ require_once('auth.php');
 
 
       <?php
-        include("menu.php");
+      include("menu.php");
       ?>
-</div>
-<div id="content">
-  <div class="breadcrumb">
-    <a href="home.php">Home</a>
-
-  </div>
-  <div class="box">
-    <div class="heading">
-      <h1><img src="view/image/home.png" alt="" /> Edit Data Peruntukan</h1>
     </div>
+    <div id="content">
+      <div class="breadcrumb">
+        <a href="home.php">Home</a>
 
-    <div class="content">
-      <div class="latest">
-        <div class="dashboard-heading">Edit Data Peruntukan</div>
-        <div class="dashboard-content">
+      </div>
+      <div class="box">
+        <div class="heading">
+          <h1><img src="view/image/home.png" alt="" /> Edit Data Peruntukan</h1>
+        </div>
 
-         <?php 
-         include "koneksi.php";
-         $id = $_GET['idperuntukan'];
+        <div class="content">
+          <div class="latest">
+            <div class="dashboard-heading">Edit Data Peruntukan</div>
+            <div class="dashboard-content">
 
-         $query = mysql_query("select * from peruntukan where idperuntukan='$id'") or die(mysql_error());
+             <?php 
+             include "koneksi.php";
+             $id = $_GET['idperuntukan'];
 
-         $data = mysql_fetch_array($query);
-         ?>
+             $query = mysql_query("select * from peruntukan where idperuntukan='$id'") or die(mysql_error());
 
-         <form name="editdokumenacuan" action="" method="post">
-           <input type="hidden" name="id" value="<?php echo $id; ?>" />
-           <table>
+             $data = mysql_fetch_array($query);
+             ?>
 
-            <tr>
-             <td >Id Peruntukan </td>           
-             <td height="21"><input type="text" name="idperuntukan" maxlength="15" required="required" value="<?php echo $data['idperuntukan']; ?>" disabled /></td>
+             <form name="editdokumenacuan" action="" method="post">
+               <input type="hidden" name="id" value="<?php echo $id; ?>" />
+               <table>
+
+                <tr>
+                 <td >Id Peruntukan </td>           
+                 <td height="21"><input type="text" name="idperuntukan" maxlength="15" required="required" value="<?php echo $data['idperuntukan']; ?>" disabled /></td>
+               </tr>
+               <tr>
+                <td >Deskripsi Peruntukan </td>           
+                <td height="21"><input type="text" name="deskripsi" maxlength="80" required="required" value="<?php echo $data['deskripsi']; ?>"/></td>
+              </tr>
+              <tr>
+               <td>Jenis Peruntukan</td>
+               <td><select name="jenis">
+                 <option value="<?php echo $data['jenis']; ?>"><?php echo $data['jenis']; ?></option><option>Tanah</option><option>Non-Tanah</option></select></td> 
+               </tr>
+
+               <tr>
+                <td>Volume </td>
+                <td height="21"><input name="luas" type="text" id="luas" size="10" maxlenght="18" onkeypress="return isNumberKey(event)" required="required" value="<?php echo $data['luas']; ?>"/>
+                </td>         
+              </tr>
+              <tr>
+               <td>Sertifikasi</td>
+               <td><select name="sertifikasi">
+                 <option value="<?php echo $data['sertifikasi']; ?>"><?php echo $data['sertifikasi']; ?></option><option>Sertifikat</option><option>Non-Sertifikat</option></select></td>
+               </tr>
+               <tr>
+                 <td>Pemilik</td>
+                 <td><input type="text" name="pemilik" maxlength="20" required="required" value="<?php echo $data['pemilik']; ?>"/></td>
+               </tr>
+
+               <tr>
+                 <td>Jenis Sertifikat</td>
+                 <td><select name="jenissertifikat">
+                   <option value="<?php echo $data['jenissertifikat']; ?>"><?php echo $data['jenissertifikat']; ?></option><option>DKI</option><option>SHM</option><option>HGB</option><option>Non-Sertifikat</option></select></td>
+                 </tr>
+                 <tr>
+                   <td>Masa Berlaku</td>
+                   <td><input type="text" name="masaberlaku" maxlength="10" required="required" value="<?php echo $data['masaberlaku']; ?>"/></td>
+                 </tr>
+
+                 <tr>
+                   <td>Keterangan</td>
+                   <td><input type="text" name="keterangan" maxlength="40" required="required" value="<?php echo $data['keterangan']; ?>"/></td>
+                 </tr>
+
+                 <tr>
+                   <td>Status Sertifikat</td>
+                   <td>
+                     <select name="statussertifikat">
+                      <option value="<?php echo $data['statussertifikat']; ?>">-<?php echo $data['statussertifikat']; ?></option>
+                      <?php
+                      $query=mysql_query("select display from ref_statussertifikat");
+                      while ($dss=mysql_fetch_array($query)) {
+                       echo"
+                       <option value='$dss[display]'>
+                         $dss[display]
+                       </option>
+                       ";
+                     }
+                     ?>
+                   </select>
+                 </td>
+               </tr>
+               <tr>
+                 <td>No.Sertifikat</td>
+                 <td><input type="text" name="nosertifikat" maxlength="20" required="required" value="<?php echo $data['nosertifikat']; ?>"/></td>
+               </tr>
+               <tr>
+                 <td>Tgl.Sertifikat</td>
+                 <td><input type="text" name="tglsertifikat" maxlength="20" required="required" value="<?php echo $data['tglsertifikat']; ?>"/></td>
+               </tr>
+               <tr>
+                 <td>Luas Sertifikat</td>
+                 <td><input type="text" name="luassertifikat" maxlength="10" required="required" value="<?php echo $data['luassertifikat']; ?>"/></td>
+               </tr>
+               <tr>
+                 <td>Status Plang</td>
+                 <td>
+                   <select name="statusplang">
+                    <option value="<?php echo $data['statusplang']; ?>">-<?php echo $data['statusplang']; ?></option>
+                    <?php
+                    $query=mysql_query("select display from ref_statusplangaset");
+                    while ($dss=mysql_fetch_array($query)) {
+                     echo"
+                     <option value='$dss[display]'>
+                       $dss[display]
+                     </option>
+                     ";
+                   }
+                   ?>
+                 </select>
+               </td>
+             </tr>
+             <tr>
+               <td>Status Penggunaan</td>
+               <td>
+                 <select name="statuspenggunaan">
+                  <option value="<?php echo $data['statuspenggunaan']; ?>">-<?php echo $data['statuspenggunaan']; ?></option>
+                  <?php
+                  $query=mysql_query("select display from ref_statuspenggunaanfasosfasum");
+                  while ($dss=mysql_fetch_array($query)) {
+                   echo"
+                   <option value='$dss[display]'>
+                     $dss[display]
+                   </option>
+                   ";
+                 }
+                 ?>
+               </select>
+             </td>
            </tr>
            <tr>
-            <td >Deskripsi Peruntukan </td>           
-            <td height="21"><input type="text" name="deskripsi" maxlength="80" required="required" value="<?php echo $data['deskripsi']; ?>"/></td>
-          </tr>
-          <tr>
-           <td>Jenis Peruntukan</td>
-           <td><select name="jenis">
-             <option value="<?php echo $data['jenis']; ?>"><?php echo $data['jenis']; ?></option><option>Tanah</option><option>Non-Tanah</option></select></td> 
-           </tr>
-
-           <tr>
-            <td>Volume </td>
-
-
-            <td height="21"><input name="luas" type="text" id="luas" size="10" maxlenght="18" onkeypress="return isNumberKey(event)" required="required" value="<?php echo $data['luas']; ?>"/>
-            </td>         
-          </tr>
-          <tr>
-           <td>No.KRK</td>
-           <td><input type="text" name="nokrk" maxlength="50" required="required" value="<?php echo $data['nokrk']; ?>"/></td>
-         </tr>
-         <tr>
-           <td>No.IMB</td>
-           <td><input type="text" name="noimb" maxlength="50" required="required" value="<?php echo $data['noimb']; ?>"/></td>
-         </tr>
-         <td>No.Blok Plan</td>
-         <td><input type="text" name="noblokplan" maxlength="50" required="required" value="<?php echo $data['noblokplan']; ?>"/></td>
-       </tr>
-       <tr>
-         <td>Sertifikasi</td>
-         <td><select name="sertifikasi">
-           <option value="<?php echo $data['sertifikasi']; ?>"><?php echo $data['sertifikasi']; ?></option><option>Sertifikat</option><option>Non-Sertifikat</option></select></td>
-         </tr>
-         <tr>
-           <td>Pemilik</td>
-           <td><input type="text" name="pemilik" maxlength="20" required="required" value="<?php echo $data['pemilik']; ?>"/></td>
-         </tr>
-
-         <tr>
-           <td>Jenis Sertifikat</td>
-           <td><select name="jenissertifikat">
-             <option value="<?php echo $data['jenissertifikat']; ?>"><?php echo $data['jenissertifikat']; ?></option><option>DKI</option><option>SHM</option><option>HGB</option><option>Non-Sertifikat</option></select></td>
+           <td>No.SK</td>
+             <td><input type="text" name="nosk" maxlength="20" required="required" value="<?php echo $data['nosk']; ?>"/></td>
            </tr>
            <tr>
-             <td>No.Sertifikat</td>
-             <td><input type="text" name="nosertifikat" maxlength="20" required="required" value="<?php echo $data['nosertifikat']; ?>"/></td>
+             <td>Tgl.SK</td>
+             <td><input type="text" name="tglsk" maxlength="20" required="required" value="<?php echo $data['tglsk']; ?>"/></td>
            </tr>
            <tr>
-             <td>Masa Berlaku</td>
-             <td><input type="text" name="masaberlaku" maxlength="10" required="required" value="<?php echo $data['masaberlaku']; ?>"/></td>
+             <td>SKPD</td>
+             <td><input type="text" name="skpd" maxlength="10" required="required" value="<?php echo $data['skpd']; ?>"/></td>
            </tr>
            <tr>
-             <td>Luas Sertifikat</td>
-             <td><input type="text" name="luassertifikat" maxlength="10" required="required" value="<?php echo $data['luassertifikat']; ?>"/></td>
-           </tr>
-           <tr>
-             <td>Keterangan</td>
-             <td><input type="text" name="keterangan" maxlength="40" required="required" value="<?php echo $data['keterangan']; ?>"/></td>
-           </tr>
-
-           <tr>
-             <td>Status Sertifikat</td>
+             <td>Sensus Fasos</td>
              <td>
-               <select name="statussertifikat">
-                <option value="<?php echo $data['statussertifikat']; ?>">-<?php echo $data['statussertifikat']; ?></option>
+               <select name="sensusfasos">
+                <option value="<?php echo $data['sensusfasos']; ?>">-<?php echo $data['sensusfasos']; ?></option>
                 <?php
-                $query=mysql_query("select display from ref_statussertifikat");
+                $query=mysql_query("select display from ref_sensusfasosfasum");
                 while ($dss=mysql_fetch_array($query)) {
                  echo"
                  <option value='$dss[display]'>
@@ -145,60 +203,6 @@ require_once('auth.php');
              </select>
            </td>
          </tr>
-         <tr>
-           <td>Status Plang</td>
-           <td>
-             <select name="statusplang">
-              <option value="<?php echo $data['statusplang']; ?>">-<?php echo $data['statusplang']; ?></option>
-              <?php
-              $query=mysql_query("select display from ref_statusplangaset");
-              while ($dss=mysql_fetch_array($query)) {
-               echo"
-               <option value='$dss[display]'>
-                 $dss[display]
-               </option>
-               ";
-             }
-             ?>
-           </select>
-         </td>
-       </tr>
-       <tr>
-         <td>Status Penggunaan</td>
-         <td>
-           <select name="statuspenggunaan">
-            <option value="<?php echo $data['statuspenggunaan']; ?>">-<?php echo $data['statuspenggunaan']; ?></option>
-            <?php
-            $query=mysql_query("select display from ref_statuspenggunaanfasosfasum");
-            while ($dss=mysql_fetch_array($query)) {
-             echo"
-             <option value='$dss[display]'>
-               $dss[display]
-             </option>
-             ";
-           }
-           ?>
-         </select>
-       </td>
-     </tr>
-     <tr>
-       <td>Sensus Fasos</td>
-       <td>
-         <select name="sensusfasos">
-          <option value="<?php echo $data['sensusfasos']; ?>">-<?php echo $data['sensusfasos']; ?></option>
-          <?php
-          $query=mysql_query("select display from ref_sensusfasosfasum");
-          while ($dss=mysql_fetch_array($query)) {
-           echo"
-           <option value='$dss[display]'>
-             $dss[display]
-           </option>
-           ";
-         }
-         ?>
-       </select>
-     </td>
-   </tr>
          <!-- <tr>
            <td>No. Dok. Acuan</td>
            <td><input type="text" name="nodokacuan" maxlength="40" required="required" value="<?php echo $data['nodokacuan']; ?>"/></td>

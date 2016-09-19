@@ -186,7 +186,7 @@ require_once('auth.php');
             $query="select bast.nobast, bast.keterangan, bast.tglbast, bast.pengembangbast, detaildokacuan.nodokacuan, detaildokacuan.pemegangdokacuan, dokumenacuan.jenisdokumen, detaildokacuan.tgldokacuan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori ";//INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
           }
           ?>
-         <option value='bast'>
+          <option value='bast'>
            BAST
          </option>
          <option value='aset'>
@@ -230,10 +230,11 @@ require_once('auth.php');
         if(isset($_GET['term'])&&$_GET['term']!=''){
           $term=$_GET['term'];
           $dan=1;
+          $dan2=1;
           if($_GET['kategori']=='dokacuan'){
-            $query.=" where detaildokacuan.nodokacuan like '%$term%'  or detaildokacuan.pemegangdokacuan like '%$term%' or dokumenacuan.jenisdokumen  like '%$term%'";
+            $query.=" where (detaildokacuan.nodokacuan like '%$term%'  or detaildokacuan.pemegangdokacuan like '%$term%' or dokumenacuan.jenisdokumen  like '%$term%')";
           }else{
-            $query.=" where  bast.nobast like '%$term%' or bast.pengembangbast like '%$term%' or dokumenacuan.jenisdokumen  like '%$term%'";
+            $query.=" where  (bast.nobast like '%$term%' or bast.pengembangbast like '%$term%' or dokumenacuan.jenisdokumen  like '%$term%')";
           }
         }
         while ($dfilter_m=mysql_fetch_array($qfilter_m)) {
@@ -430,7 +431,7 @@ require_once('auth.php');
                   echo"
                 </select><br>
                 ";
-                  echo "<div align='right'><button id='b$dfilter_m[name]$dfilter[name]'>Clear</button></div>";
+                echo "<div align='right'><button id='b$dfilter_m[name]$dfilter[name]'>Clear</button></div>";
 
                 }else{//ini normalnya
                   if(isset($_GET["$dfilter_m[name]$dfilter[name]"])){
@@ -448,7 +449,7 @@ require_once('auth.php');
                   }
                   echo"
                   <label>
-                    <input type='checkbox' $ck $submit name='$dfilter_m[name]$dfilter[name]' value='$dfilter[display]'> $dfilter[display]<br>
+                    <input type='checkbox' $ck $submit name='$dfilter_m[name]$dfilter[name]' value='$dfilter[keyword]'> $dfilter[display]<br>
                   </label>
                   "; 
                 }
@@ -543,6 +544,7 @@ require_once('auth.php');
                 $query.=$order;
                 $_SESSION['query']=$query;
                 $qpaging=$_SESSION['query'];
+                $totalData=mysql_num_rows(mysql_query($qpaging));
                 $page=ceil(mysql_num_rows(mysql_query($query))/$reclimit);
                 $query.=$limit;
                 $no=$offset+1;
@@ -560,215 +562,231 @@ require_once('auth.php');
               <hr>
               
               <center>
-                <table>
-                  ";
-                  if(isset($_GET['kategori'])&&$_GET['kategori']=='dokacuan'){
-                    echo"
-                    <thead>
-                      <tr>
-                        <td style='background-color: #89C4F4;' class='center'>No.</td>         
-                        <td style='background-color: #89C4F4;' class='center'>No.Dok Acuan</td>
-                        <td style='background-color: #89C4F4;' class='center'>Tgl. Dok Acuan</td>
-                        <td style='background-color: #89C4F4;' class='center'>Perihal</td>
-                        <td style='background-color: #89C4F4;' class='center'>Pemegang</td>
-
-                        <td style='background-color: #89C4F4;' class='center'>Keterangan</td>
-                        <td style='background-color: #89C4F4;' class='center'>Jenis Dok Acuan</td>
-                      </tr>
-                    </thead>
+                ";
+                if($totalData>0){
+                  echo"
+                  <table>
                     ";
-                  }else{
-                    echo"
-                    <thead>
-                      <tr>
-                        <td style='background-color: #89C4F4;' class='center'>No.</td>         
-                        <td style='background-color: #89C4F4;' class='center'>No.BAST</td>
-                        <td style='background-color: #89C4F4;' class='center'>Tgl.BAST</td>
-                        <td style='background-color: #89C4F4;' class='center'>Pengembang</td>
-                        <td style='background-color: #89C4F4;' class='center'>Dok Acuan</td>
-
-                        <td style='background-color: #89C4F4;' class='center'>No.Dok Acuan</td>
-                        <td style='background-color: #89C4F4;' class='center'>Pemegang SIPPT</td>
-                        <td style='background-color: #89C4F4;' class='center'>Kategori BAST</td>
-                        <td style='background-color: #89C4F4;' class='center'>Act.</td>
-                      </tr>
-                    </thead>
-                    ";
-                  }
-                  // echo $query."<--";
-                  $qs=mysql_query($query);
-                  $sudah="<i class='fa fa-check-circle' aria-hidden='true' style='color:green'></i>";
-                  $belum="<i class='fa fa-times-circle' aria-hidden='true' style='color:red'></i>";
-                  echo "<div align='right'>".pagination($qpaging,$reclimit,$cp,"$pth")."</div><br>";
-
-                  while ($data=mysql_fetch_array($qs)) {
-
                     if(isset($_GET['kategori'])&&$_GET['kategori']=='dokacuan'){
-                      echo "
-                      <tr class='rowdata'>
-                        <td style='background-color: #C5EFF7' class='center'>$no</td>
-                        <td  style='background-color: #C5EFF7' class='left'><a href='bastbysippt.php?id=$data[nodokacuan]'>$data[nodokacuan]</a></td>
-                        <td  style='background-color: #C5EFF7' class='center'>$data[tgldokacuan]</td>
-                        <td  style='background-color: #C5EFF7' class='left'>$data[haldokacuan]</td>
-                        <td  style='background-color: #C5EFF7' class='center'>$data[pemegangdokacuan]</td>
+                      echo"
+                      <thead>
+                        <tr>
+                          <td style='background-color: #89C4F4;' class='center'>No.</td>         
+                          <td style='background-color: #89C4F4;' class='center'>No.Dok Acuan</td>
+                          <td style='background-color: #89C4F4;' class='center'>Tgl. Dok Acuan</td>
+                          <td style='background-color: #89C4F4;' class='center'>Perihal</td>
+                          <td style='background-color: #89C4F4;' class='center'>Pemegang</td>
 
-
-                        <td  style='background-color: #C5EFF7' class='left'>$data[ketdokacuan]</td>
-                        <td  style='background-color: #C5EFF7' class='center'>$data[jenisdokumen]</td>
-
-                      </tr>
+                          <td style='background-color: #89C4F4;' class='center'>Keterangan</td>
+                          <td style='background-color: #89C4F4;' class='center'>Jenis Dok Acuan</td>
+                        </tr>
+                      </thead>
                       ";
-                      $number=0;
+                    }else{
+                      echo"
+                      <thead>
+                        <tr>
+                          <td style='background-color: #89C4F4;' class='center'>No.</td>         
+                          <td style='background-color: #89C4F4;' class='center'>No.BAST</td>
+                          <td style='background-color: #89C4F4;' class='center'>Tgl.BAST</td>
+                          <td style='background-color: #89C4F4;' class='center'>Pengembang</td>
+                          <td style='background-color: #89C4F4;' class='center'>Dok Acuan</td>
+
+                          <td style='background-color: #89C4F4;' class='center'>No.Dok Acuan</td>
+                          <td style='background-color: #89C4F4;' class='center'>Pemegang SIPPT</td>
+                          <td style='background-color: #89C4F4;' class='center'>Kategori BAST</td>
+                          <td style='background-color: #89C4F4;' class='center'>Act.</td>
+                        </tr>
+                      </thead>
+                      ";
+                    }
+                    echo $query."<--";
+                    $qs=mysql_query($query);
+                    $sudah="<i class='fa fa-check-circle' aria-hidden='true' style='color:green'></i>";
+                    $belum="<i class='fa fa-times-circle' aria-hidden='true' style='color:red'></i>";
+                    echo "<div align='right'>".pagination($qpaging,$reclimit,$cp,"$pth")."</div><br>";
+
+                    while ($data=mysql_fetch_array($qs)) {
+
+                      if(isset($_GET['kategori'])&&$_GET['kategori']=='dokacuan'){
+                        echo "
+                        <tr class='rowdata'>
+                          <td style='background-color: #C5EFF7' class='center'>$no</td>
+                          <td  style='background-color: #C5EFF7' class='left'><a href='bastbysippt.php?id=$data[nodokacuan]'>$data[nodokacuan]</a></td>
+                          <td  style='background-color: #C5EFF7' class='center'>$data[tgldokacuan]</td>
+                          <td  style='background-color: #C5EFF7' class='left'>$data[haldokacuan]</td>
+                          <td  style='background-color: #C5EFF7' class='center'>$data[pemegangdokacuan]</td>
+
+
+                          <td  style='background-color: #C5EFF7' class='left'>$data[ketdokacuan]</td>
+                          <td  style='background-color: #C5EFF7' class='center'>$data[jenisdokumen]</td>
+
+                        </tr>
+                        ";
+                        $number=0;
                       $query2=mysql_query("select * from peruntukan where nodokacuan='$data[nodokacuan]'");//nobast='' and 
                       $mxrow=mysql_num_rows($query2);
                       if($mxrow>0){
                         echo"
-                          <tr class='rowdetail'><td colspan=7><center>
+                        <tr class='rowdetail'><td colspan=7><center>
                           List Kewajiban
                           <table>
-                          <tr>
-                            <td style='background-color: #6BB9F0'>
-                            No.
-                            </td>
-                            <td style='background-color: #6BB9F0'>
-                            Jenis Fasos Fasum
-                            </td>
-                            <td style='background-color: #6BB9F0'>
-                            Deskripsi
-                            </td>
-                            <td style='background-color: #6BB9F0'>
-                            Luas (m<sup>2</sup>)
-                            </td>
-                            <td style='background-color: #6BB9F0'>
-                            Status Kewajiban
-                            </td>
-                          </tr>
-                        ";
-                      }
-                      while ($data2=mysql_fetch_array($query2)) {
-                        $number++;
-                        if($data2['nobast']==''){
-                          $sttskewajiban=$belum;
+                            <tr>
+                              <td style='background-color: #6BB9F0'>
+                                No.
+                              </td>
+                              <td style='background-color: #6BB9F0'>
+                                Jenis Fasos Fasum
+                              </td>
+                              <td style='background-color: #6BB9F0'>
+                                Deskripsi
+                              </td>
+                              <td style='background-color: #6BB9F0'>
+                                Luas (m<sup>2</sup>)
+                              </td>
+                              <td style='background-color: #6BB9F0'>
+                                Status Kewajiban
+                              </td>
+                            </tr>
+                            ";
+                          }
+                          while ($data2=mysql_fetch_array($query2)) {
+                            $number++;
+                            if($data2['nobast']==''){
+                              $sttskewajiban=$belum;
+                            }else{
+                              $sttskewajiban=$sudah;
+                            }
+                            echo "
+                            <tr>
+                              <td style='background-color: #E4F1FE'>$number</td>
+                              <td  style='background-color: #E4F1FE'>$data2[jenisfasos]</td>
+                              <td  style='background-color: #E4F1FE'>$data2[deskripsi]</td>
+                              <td  style='background-color: #E4F1FE'>$data2[luas]</td>
+                              <td  style='background-color: #E4F1FE' align='center'>$sttskewajiban</td>
+                            </tr>
+                            ";
+                          }
+                          if($mxrow>0){
+                            echo"</table></center></td></tr>";
+                          }
                         }else{
-                          $sttskewajiban=$sudah;
-                        }
-                        echo "
-                        <tr>
-                          <td style='background-color: #E4F1FE'>$number</td>
-                          <td  style='background-color: #E4F1FE'>$data2[jenisfasos]</td>
-                          <td  style='background-color: #E4F1FE'>$data2[deskripsi]</td>
-                          <td  style='background-color: #E4F1FE'>$data2[luas]</td>
-                          <td  style='background-color: #E4F1FE' align='center'>$sttskewajiban</td>
-                        </tr>
-                        ";
-                      }
-                      if($mxrow>0){
-                        echo"</table></center></td></tr>";
-                      }
-                    }else{
-                      echo "
-                      <tr class='rowdata'>
-                        <td style='background-color: #C5EFF7' class='center'>$no</td>
-                        <td  style='background-color: #C5EFF7' class='left'>$data[nobast]</td>
-                        <td  style='background-color: #C5EFF7' class='center'>$data[tglbast]</td>
-                        <td  style='background-color: #C5EFF7' class='left'>$data[pengembangbast]</td>
-                        <td  style='background-color: #C5EFF7' class='center'>$data[jenisdokumen]</td>
+                          echo "
+                          <tr class='rowdata'>
+                            <td style='background-color: #C5EFF7' class='center'>$no</td>
+                            <td  style='background-color: #C5EFF7' class='left'>$data[nobast]</td>
+                            <td  style='background-color: #C5EFF7' class='center'>$data[tglbast]</td>
+                            <td  style='background-color: #C5EFF7' class='left'>$data[pengembangbast]</td>
+                            <td  style='background-color: #C5EFF7' class='center'>$data[jenisdokumen]</td>
 
-                        <td  style='background-color: #C5EFF7' class='left'><a href='bastbysippt.php?id=$data[nodokacuan]'>$data[nodokacuan]</a></td>
-                        <td  style='background-color: #C5EFF7' class='left'>$data[pemegangdokacuan]</td>
-                        <td  style='background-color: #C5EFF7' class='left'>$data[keterangan]</td>
-                        <td  style='background-color: #C5EFF7' class='center'><a href='viewdetailbast.php?id=$data[nobast]'><img alt=' ' src='view/image/viewdetail.gif' border=0></a></td>
-                      </tr>
-                      <tr class='rowdetail'>
-                          <td colspan=9>
-                            <center>
-                      ";
-                      $query2=mysql_query("select dataaset.idaset,dataaset.wilayah,dataaset.kecamatan,dataaset.kelurahan,detaildokacuan.tgldokacuan from bast inner join dataaset on bast.nobast=dataaset.nobastaset  inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan where bast.nobast='$data[nobast]'");
-                      while ($data2=mysql_fetch_array($query2)) {      
-                        echo "
-                              <table border=1 style='border-collapse: collapse;'>
-                                <tr>
-                                  <td colspan=7>
-                                    <b>Wilayah</b>: $data2[wilayah], $data2[kecamatan], $data2[kelurahan]<br> <b>Tgl. Dokacuan</b>: $data2[tgldokacuan]
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style='background-color: #ECECEC'>No.</td>
-                                  <td  style='background-color: #ECECEC'>Status Sertifikat (SHP Pemprov)</td>
-                                  <td  style='background-color: #ECECEC'>Jenis Fasos Fasum</td>
-                                  <td  style='background-color: #ECECEC'>Status Penggunaan</td>
-                                  <td  style='background-color: #ECECEC'>Status Plang</td>
-                                  <td  style='background-color: #ECECEC'>Sensus Fasos Fasum</td>
-                                  <td  style='background-color: #ECECEC;' align='center'>KIB</td>
-                                </tr>
+                            <td  style='background-color: #C5EFF7' class='left'><a href='bastbysippt.php?id=$data[nodokacuan]'>$data[nodokacuan]</a></td>
+                            <td  style='background-color: #C5EFF7' class='left'>$data[pemegangdokacuan]</td>
+                            <td  style='background-color: #C5EFF7' class='left'>$data[keterangan]</td>
+                            <td  style='background-color: #C5EFF7' class='center'><a href='viewdetailbast.php?id=$data[nobast]'><img alt=' ' src='view/image/viewdetail.gif' border=0></a></td>
+                          </tr>
+                          <tr class='rowdetail'>
+                            <td colspan=9>
+                              <center>
                                 ";
-                                $query3=mysql_query("select peruntukan.jenisfasos,peruntukan.statussertifikat,peruntukan.statuspenggunaan,peruntukan.statusplang,peruntukan.sensusfasos, akun.kategoriaset from dataaset inner join peruntukan on dataaset.idaset=peruntukan.idaset inner join akun on peruntukan.idperuntukan=akun.idperuntukan where dataaset.idaset='$data2[idaset]'");
-                                $nomor=0;
-                                while ($data3=mysql_fetch_array($query3)) {
-                                  if($data3['statussertifikat']=='SHP Pemprov. DKI Jakarta'){
-                                    $statussertifikat=$sudah;
-                                  }else{
-                                    $statussertifikat=$belum;
-                                  }
-                                  if($data3['statusplang']=='Sudah'){
-                                    $statusplang=$sudah;
-                                  }else{
-                                    $statusplang=$belum;
-                                  }
-                                  if($data3['sensusfasos']=='Telah dilakukan Sensus'){
-                                    $sensusfasos=$sudah;
-                                  }else{
-                                    $sensusfasos=$belum;
-                                  }
-                                  $nomor++;
+                                $query2=mysql_query("select dataaset.idaset,dataaset.wilayah,dataaset.kecamatan,dataaset.kelurahan,detaildokacuan.tgldokacuan from bast inner join dataaset on bast.nobast=dataaset.nobastaset  inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan where bast.nobast='$data[nobast]'");
+                                while ($data2=mysql_fetch_array($query2)) {      
                                   echo "
-                                  <tr>
-                                    <td align='center'>$nomor</td>
-                                    <td align='center'>$statussertifikat</td>
-                                    <td align='center'>$data3[jenisfasos]</td>
-                                    <td align='center'>$data3[statuspenggunaan]</td>
-                                    <td align='center'>$statusplang</td>
-                                    <td align='center'>$sensusfasos</td>
-                                    <td align='center'>$data3[kategoriaset]</td>
-                                  </tr>
+                                  <table border=1 style='border-collapse: collapse;'>
+                                    <tr>
+                                      <td colspan=9>
+                                        <b>Wilayah</b>: $data2[wilayah], $data2[kecamatan], $data2[kelurahan]<br> <b>Tgl. Dokacuan</b>: $data2[tgldokacuan]
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style='background-color: #ECECEC'>No.</td>
+                                      <td  style='background-color: #ECECEC'>Status Sertifikat (SHP Pemprov)</td>
+                                      <td  style='background-color: #ECECEC'>Jenis Fasos Fasum</td>
+                                      <td  style='background-color: #ECECEC'>Status Penggunaan</td>
+                                      <td  style='background-color: #ECECEC'>Status Plang</td>
+                                      <td  style='background-color: #ECECEC'>Sensus Fasos Fasum</td>
+                                      <td  style='background-color: #ECECEC'>Status Laporan Keuangan</td>
+                                      <td  style='background-color: #ECECEC'>Status Recon</td>
+                                      <td  style='background-color: #ECECEC;' align='center'>KIB</td>
+                                    </tr>
+                                    ";
+                                    $query3=mysql_query("select peruntukan.jenisfasos, peruntukan.statussertifikat, peruntukan.statuspenggunaan, peruntukan.statusplang, peruntukan.sensusfasos, peruntukan.statuslaporankeuangan, peruntukan.statusrecon, akun.kategoriaset from dataaset inner join peruntukan on dataaset.idaset=peruntukan.idaset inner join akun on peruntukan.idperuntukan=akun.idperuntukan where dataaset.idaset='$data2[idaset]'");
+                                    $nomor=0;
+                                    while ($data3=mysql_fetch_array($query3)) {
+                                      if($data3['statussertifikat']=='SHP Pemprov. DKI Jakarta'){
+                                        $statussertifikat=$sudah;
+                                      }else{
+                                        $statussertifikat=$belum;
+                                      }
+                                      if($data3['statusplang']=='Sudah'){
+                                        $statusplang=$sudah;
+                                      }else{
+                                        $statusplang=$belum;
+                                      }
+                                      if($data3['sensusfasos']=='Telah dilakukan Sensus'){
+                                        $sensusfasos=$sudah;
+                                      }else{
+                                        $sensusfasos=$belum;
+                                      }
+                                      if($data3['statuslaporankeuangan']=='Masuk Laporan Keuangan'){
+                                        $statuslaporankeuangan=$sudah;
+                                      }else{
+                                        $statuslaporankeuangan=$belum;
+                                      }
+                                      if($data3['statusrecon']=='Sudah'){
+                                        $statusrecon=$sudah;
+                                      }else{
+                                        $statusrecon=$belum;
+                                      }
+                                      $nomor++;
+                                      echo "
+                                      <tr>
+                                        <td align='center'>$nomor</td>
+                                        <td align='center'>$statussertifikat</td>
+                                        <td align='center'>$data3[jenisfasos]</td>
+                                        <td align='center'>$data3[statuspenggunaan]</td>
+                                        <td align='center'>$statusplang</td>
+                                        <td align='center'>$sensusfasos</td>
+                                        <td align='center'>$statuslaporankeuangan</td>
+                                        <td align='center'>$statusrecon</td>
+                                        <td align='center'>$data3[kategoriaset]</td>
+                                      </tr>
+                                      ";
+                                    }
+                                    echo"
+                                  </table>
+                                  <hr/>
                                   ";
                                 }
                                 echo"
-                              </table>
-                            <hr/>
-                        ";
+                              </center>
+                            </td>
+                          </tr>
+                          ";
+                        }
+                        $no++;
                       }
                       echo"
-                      </center>
-                          </td>
-                        </tr>
-                        ";
-                    }
-                    $no++;
+                    </table>
+                    ";
                   }
-                  echo"
-                </table>
-                ";
-                
-                $totalData=mysql_num_rows(mysql_query($qpaging));
-                echo "<br><div align='left'> <b>*) $totalData Data ditemukan</b> </div>";
-                echo "<div align='right'>".pagination($qpaging,$reclimit,$cp,"$pth")."</div>";
+                  echo "<br><div align='left'> <b>*) $totalData Data ditemukan</b> </div>";
+                  echo "<div align='right'>".pagination($qpaging,$reclimit,$cp,"$pth")."</div>";
 
-                
+
               // for($i=0;$i<$page;$i++){
               //   $j=$i+1;
               //   echo "<a href='http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$qr"."offset=".$i*$reclimit."'>$j</a> ";
               // }
-                echo"
-              </center>
-              ";
-              ?>
+                  echo"
+                </center>
+                ";
+                ?>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </form>
-  <div id="footer"></div>
-</body>
-</html>
+    </form>
+    <div id="footer"></div>
+  </body>
+  </html>
