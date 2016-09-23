@@ -175,7 +175,7 @@ require_once('auth.php');
     <form method="post" action="">
 
      <tr>
-       No.BAST :  <input type="text" name="nobastlokasi" value="<?php echo $nobast; ?>"/>
+       No.BAST :  <input type="text" name="nobastlokasi" value="<?php if(isset($nobast)){echo $nobast;} ?>"/>
      </tr></p>
      <table >
 
@@ -284,7 +284,7 @@ require_once('auth.php');
         <div class="dashboard-content">
 
          <form name="inputlokasiaset" action="" method="post">
-           No.BAST :  <input type="text" name="nobast" value="<?php echo $nobastlokasi; ?>"/>	
+           No.BAST :  <input type="text" name="nobast" value="<?php if(isset($nobastlokasi)){echo $nobastlokasi;} ?>"/>	
            <head>
              <script>
                var idrow = 2;
@@ -472,7 +472,7 @@ require_once('auth.php');
 
     <form method="post" action="" name="short" id="form1" >
       <b>Masukan No BAST bila belum tertera :</b><br><br>   
-      No.BAST :  <input type="text" name="nobastaset" value="<?php echo $nobastaset; ?>"/><input type="submit" name="submit10" value="Pilih yang sesuai saja"/><br/>
+      No.BAST :  <input type="text" name="nobastaset" value="<?php if(isset($nobastaset)){echo $nobastaset;} ?>"/><input type="submit" name="submit10" value="Pilih yang sesuai saja"/><br/>
     </form><br>
     <div style="height:480px; overflow:auto;">
 

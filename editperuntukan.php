@@ -247,26 +247,26 @@ if (isset($_POST['submit'])){
   $deskripsi= $_POST['deskripsi'];
   $jenis= $_POST['jenis'];
   $luas= $_POST['luas'];
-  $nokrk= $_POST['nokrk'];
-
-  $noimb= $_POST['noimb'];
-  $noblokplan= $_POST['noblokplan'];
   $sertifikasi= $_POST['sertifikasi'];
   $pemilik= $_POST['pemilik'];
   $jenissertifikat= $_POST['jenissertifikat'];
-  $nosertifikat= $_POST['nosertifikat'];
   $masaberlaku= $_POST['masaberlaku'];
-  $luassertifikat= $_POST['luassertifikat'];
   $keterangan= $_POST['keterangan'];
   $statussertifikat=$_POST['statussertifikat'];
+  $nosertifikat= $_POST['nosertifikat'];
+  $tglsertifikat=$_POST['tglsertifikat'];
+  $luassertifikat= $_POST['luassertifikat'];
   $statuspenggunaan=$_POST['statuspenggunaan'];
+  $nosk= $_POST['nosk'];
+  $tglsk=$_POST['tglsk'];
+  $skpd= $_POST['skpd'];
   $statusplang=$_POST['statusplang'];
   $sensusfasos=$_POST['sensusfasos'];
 
 
 
 //update data ke database
-  $query = mysql_query("update peruntukan set  deskripsi='$deskripsi',jenis='$jenis',luas='$luas',nokrk='$nokrk',deskripsi='$deskripsi',jenis='$jenis',luas='$luas',nokrk='$nokrk',noimb='$noimb',noblokplan='$noblokplan',sertifikasi='$sertifikasi',pemilik='$pemilik',jenissertifikat='$jenissertifikat',nosertifikat='$nosertifikat',masaberlaku='$masaberlaku',luassertifikat='$luassertifikat',keterangan='$keterangan',statussertifikat='$statussertifikat', statuspenggunaan='$statuspenggunaan', statusplang='$statusplang', sensusfasos='$sensusfasos' where idperuntukan='$id'") or die(mysql_error());
+  $query = mysql_query("update peruntukan set  deskripsi='$deskripsi',jenis='$jenis',luas='$luas',nokrk='$nokrk',deskripsi='$deskripsi',jenis='$jenis',luas='$luas',sertifikasi='$sertifikasi',pemilik='$pemilik',jenissertifikat='$jenissertifikat',masaberlaku='$masaberlaku',keterangan='$keterangan',statussertifikat='$statussertifikat', nosertifikat='$nosertifikat',tglsertifikat='tglsertifikat', luassertifikat='$luassertifikat', statuspenggunaan='$statuspenggunaan', noskl='$nosk',tglsk='tglsk', skpd='$skpd', statusplang='$statusplang', sensusfasos='$sensusfasos' where idperuntukan='$id'") or die(mysql_error());
 
 
 

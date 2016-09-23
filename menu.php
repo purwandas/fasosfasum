@@ -6,6 +6,7 @@
           <li id="catalog"><a class="top">Master Data</a>
             <ul>
               <li><a href="dokacuan.php">Dokumen Acuan BAST</a></li>
+              <li><a href="dataperuntukan.php">Data Peruntukan</a></li>
               <li><a href="#">Data Pengembang</a></li>
               <li><a href="kategoriaset.php">Master Kategori Aset</a></li>
               <li><a href="#">Master Satuan Ukur (int.)</a></li>

@@ -227,11 +227,36 @@ require_once('auth.php');
 
 
                   <br>
-                  <div style="width:1132px; height:auto;overflow:auto;">  
-                   <table class="list" id=datatable1 width="800" border="1" >
+                  <div style="width:100%; height:auto;overflow:auto;">  
+                    <?php
+                    include "koneksi.php";
+                    if (isset($_POST['submit'])){
+                      foreach($_POST['deskripsi'] as $key => $value){
+                        if($value){
+
+                          $query="UPDATE `peruntukan` SET deskripsi='$value', jenis='".$_POST['jenis'][$key]."', luas='".$_POST['luas'][$key]."', sertifikasi='".$_POST['sertifikasi'][$key]."', pemilik='".$_POST['pemilik'][$key]."', jenissertifikat='".$_POST['jenissertifikat'][$key]."', masaberlaku='".$_POST['masaberlaku'][$key]."', keterangan='".$_POST['keterangan'][$key]."', statuslaporankeuangan='".$_POST['statuslaporankeuangan'][$key]."', statusrecon='".$_POST['statusrecon'][$key]."', nobast='".$_POST['nobast']."', idaset='".$_POST['noaset']."', statussertifikat='".$_POST['statussertifikat'][$key]."', nosertifikat='".$_POST['nosertifikat'][$key]."', tglsertifikat='".$_POST['tglsertifikat'][$key]."', luassertifikat='".$_POST['luassertifikat'][$key]."', statusplang='".$_POST['statusplang'][$key]."', statuspenggunaan='".$_POST['statuspenggunaan'][$key]."', nosk='".$_POST['nosk'][$key]."', tglsk='".$_POST['tglsk'][$key]."', skpd='".$_POST['skpd'][$key]."', sensusfasos='".$_POST['sensusfasos'][$key]."', jenisfasos='".$_POST['jenisfasos'][$key]."' WHERE `idperuntukan` ='".$_POST['idperuntukan'][$key]."'";
+        // "INSERT INTO peruntukan VALUES('','".$value."','".$_POST['jenis'][$key]."','".$_POST['luas'][$key]."','".$_POST['nokrk'][$key]."','".$_POST['noimb'][$key]."','".$_POST['noblokplan'][$key]."','".$_POST['sertifikasi'][$key]."','".$_POST['pemilik'][$key]."','".$_POST['jenissertifikat'][$key]."','".$_POST['nosertifikat'][$key]."','".$_POST['masaberlaku'][$key]."','".$_POST['luassertifikat'][$key]."','".$_POST['keterangan'][$key]."','".$_POST['nobast']."','".$_POST['noaset']."')"
+//simpan data ke database
+        // echo $query;
+                          $query = mysql_query($query) or die(mysql_error());
+
+
+                        }
+                        echo 'Input data peruntukan berhasil .....';
+                      }
+
+                      mysql_connect("localhost","root","");
+                      mysql_select_db("phplogin");
+                      $waktu = gmdate("Y-m-d H:i:s", time()+60*60*7);
+                      $user = $_SESSION['SESS_FIRST_NAME'];
+                      $query = mysql_query("insert into loging values('','$user','entry peruntukan akun nobast : ".$data['nobastaset']."','$waktu')") or die(mysql_error());
+                    }
+                    ?>
+                    <table class="list" id=datatable1 width="800" border="1" >
                      <thead>
                        <tr>
                          <td class="center">Peruntukan</td>
+                         <td class="center">Jenis Fasos</td>
                          <td class="center">Jenis</td>
                          <td class="center">Luas Kwjbn (M2)</td>
                          <td class="center">Sertifikasi</td>
@@ -239,6 +264,8 @@ require_once('auth.php');
                          <td class="center">Jenis Sertifikasi</td>
                          <td class="center">Masa Berlaku</td>
                          <td class="center">Keterangan</td>
+                         <td class="center">Status Laporan Keuangan</td>
+                         <td class="center">Status Recon</td>
                          <td class="center">Status Sertifikat</td>
                          <td class="center">No.Sertifikat</td>
                          <td class="center">Tgl. Sertifikat</td>
@@ -249,7 +276,6 @@ require_once('auth.php');
                          <td class="center">Tgl. SK</td>
                          <td class="center">SKPD</td>
                          <td class="center">Sensus Fasos</td>
-                         <td class="center">Jenis Fasos</td>
                        </tr>
                      </thead>
 
@@ -258,7 +284,7 @@ require_once('auth.php');
                        if(isset($peruntukan))
                          foreach ($peruntukan as $key => $value) 
                          {
-                          $query=mysql_query("select idperuntukan,deskripsi,jenisfasos,luas from peruntukan where idperuntukan='$value'");
+                          $query=mysql_query("select * from peruntukan where idperuntukan='$value'");
                           $d3=mysql_fetch_array($query);
                           ?>
                           <tr>
@@ -266,16 +292,40 @@ require_once('auth.php');
                            <td><input type='hidden' name='idperuntukan[]'<?php echo"value='$value'";?> >
                             <input type='text' name='deskripsi[]'<?php echo"value='$d3[deskripsi]'";?> >
                           </td>
-                          <td><select name='jenis[]'><option>Tanah</option><option>Non-Tanah</option></select></td> 
+                          <td>
+                            <select name='jenisfasos[]'>
+                              <?php
+                              echo"
+                              <option value='$d3[jenisfasos]'>$d3[jenisfasos]</option>
+                              ";
+                              $query=mysql_query("select display from ref_jenisfasosfasum order by id desc");
+                              while ($dss=mysql_fetch_array($query)) {
+                               echo"
+                               <option value='$dss[display]'>
+                                 $dss[display]
+                               </option>
+                               ";
+                             }
+                             ?>
+                           </select>
+                         </td>
+                          <td><select name='jenis[]'><?php echo"<option value='$d3[jenis]'>$d3[jenis]</option>"; ?><option value='Tanah'>Tanah</option><option value='Non-Tanah'>Non-Tanah</option></select></td> 
                           <td><input type='text' name='luas[]' <?php echo"value='$d3[luas]'";?> ></td>
-                          <td><select name='sertifikasi[]'><option>Non-Sertifikat</option><option>Sertifikat</option></select></td>
-                          <td><input type='text' name='pemilik[]'></td>
-                          <td><select name='jenissertifikat[]'><option>Non-Sertifikat</option><option>SHM</option><option>HGB</option><option>DKI</option></select></td>
-                          <td><input type='text' name='masaberlaku[]'></td>
-                          <td><input type='text' name='keterangan[]'></td>
+                          <td><select name='sertifikasi[]'><?php echo"<option value='$d3[sertifikasi]'>$d3[sertifikasi]</option>"; ?><option>Non-Sertifikat</option><option>Sertifikat</option></select></td>
+                          <td><input type='text' name='pemilik[]' <?php echo"value='$d3[pemilik]'";?> ></td>
+                          <td><select name='jenissertifikat[]'><?php echo"<option value='$d3[jenissertifikat]'>$d3[jenissertifikat]</option>"; ?><option>Non-Sertifikat</option><option>SHM</option><option>HGB</option><option>DKI</option></select></td>
+
+                          <td><input type='text' name='masaberlaku[]' <?php echo"value='$d3[masaberlaku]'";?> ></td>
+
+                          <td><input type='text' name='keterangan[]' <?php echo"value='$d3[keterangan]'";?> ></td>
+                          <td><input type='text' name='statuslaporankeuangan[]' <?php echo"value='$d3[statuslaporankeuangan]'";?> ></td>
+                          <td><input type='text' name='statusrecon[]' <?php echo"value='$d3[statusrecon]'";?> ></td>  
                           <td>
                             <select name='statussertifikat[]'>
                               <?php
+                              echo"
+                              <option value='$d3[statussertifikat]'>$d3[statussertifikat]</option>
+                              ";
                               $query=mysql_query("select display from ref_statussertifikat order by id desc");
                               while ($dss=mysql_fetch_array($query)) {
                                echo"
@@ -287,12 +337,15 @@ require_once('auth.php');
                              ?>
                            </select>
                          </td>
-                          <td><input type='text' name='nosertifikat[]'></td>
-                          <td><input type='text' name='tglsertifikat[]'></td>
-                          <td><input type='text' name='luassertifikat[]'></td>
+                         <td><input type='text' name='nosertifikat[]' <?php echo"value='$d3[nosertifikat]'";?> ></td>
+                         <td><input type='text' name='tglsertifikat[]' <?php echo"value='$d3[tglsertifikat]'";?> ></td>
+                         <td><input type='text' name='luassertifikat[]' <?php echo"value='$d3[luassertifikat]'";?> ></td>   
                          <td>
                           <select name='statusplang[]'>
                             <?php
+                            echo"
+                            <option value='$d3[statusplang]'>$d3[statusplang]</option>
+                            ";
                             $query=mysql_query("select display from ref_statusplangaset order by id desc");
                             while ($dss=mysql_fetch_array($query)) {
                              echo"
@@ -307,6 +360,9 @@ require_once('auth.php');
                        <td>
                         <select name='statuspenggunaan[]'>
                           <?php
+                          echo"
+                          <option value='$d3[statuspenggunaan]'>$d3[statuspenggunaan]</option>
+                          ";
                           $query=mysql_query("select display from ref_statuspenggunaanfasosfasum order by id desc");
                           while ($dss=mysql_fetch_array($query)) {
                            echo"
@@ -318,12 +374,15 @@ require_once('auth.php');
                          ?>
                        </select>
                      </td>
-                     <td><input type='text' name='nosk[]'></td>
-                          <td><input type='text' name='tglsk[]'></td>
-                          <td><input type='text' name='skpd[]'></td>
+                     <td><input type='text' name='nosk[]' <?php echo"value='$d3[nosk]'";?> ></td>
+                     <td><input type='text' name='tglsk[]' <?php echo"value='$d3[tglsk]'";?> ></td>
+                     <td><input type='text' name='skpd[]' <?php echo"value='$d3[skpd]'";?> ></td>  
                      <td>
                       <select name='sensusfasos[]'>
                         <?php
+                        echo"
+                        <option value='$d3[sensusfasos]'>$d3[sensusfasos]</option>
+                        ";
                         $query=mysql_query("select display from ref_sensusfasosfasum order by id desc");
                         while ($dss=mysql_fetch_array($query)) {
                          echo"
@@ -335,23 +394,7 @@ require_once('auth.php');
                        ?>
                      </select>
                    </td>
-                   <td>
-                    <select name='jenisfasos[]'>
-                      <?php
-                      echo"
-                      <option value='$d3[jenisfasos]'>$d3[jenisfasos]</option>
-                      ";
-                      $query=mysql_query("select display from ref_jenisfasosfasum order by id desc");
-                      while ($dss=mysql_fetch_array($query)) {
-                       echo"
-                       <option value='$dss[display]'>
-                         $dss[display]
-                       </option>
-                       ";
-                     }
-                     ?>
-                   </select>
-                 </td>
+
                  <?php
                }
                ?>
@@ -367,34 +410,11 @@ require_once('auth.php');
      </form>
    </body>
 
-   <?php
-   include "koneksi.php";
-   if (isset($_POST['submit'])){
-    foreach($_POST['deskripsi'] as $key => $value){
-      if($value){
-
-        $query="UPDATE `peruntukan` SET deskripsi='$value', jenis='".$_POST['jenis'][$key]."', luas='".$_POST['luas'][$key]."', nokrk = '".$_POST['nokrk'][$key]."', noimb='".$_POST['noimb'][$key]."', noblokplan='".$_POST['noblokplan'][$key]."', sertifikasi='".$_POST['sertifikasi'][$key]."', pemilik='".$_POST['pemilik'][$key]."', jenissertifikat='".$_POST['jenissertifikat'][$key]."', nosertifikat='".$_POST['nosertifikat'][$key]."', masaberlaku='".$_POST['masaberlaku'][$key]."', luassertifikat='".$_POST['luassertifikat'][$key]."', keterangan='".$_POST['keterangan'][$key]."', nobast='".$_POST['nobast']."', idaset='".$_POST['noaset']."', statussertifikat='".$_POST['statussertifikat'][$key]."', statusplang='".$_POST['statusplang'][$key]."', statuspenggunaan='".$_POST['statuspenggunaan'][$key]."', sensusfasos='".$_POST['sensusfasos'][$key]."', jenisfasos='".$_POST['jenisfasos'][$key]."' WHERE `idperuntukan` ='".$_POST['idperuntukan'][$key]."'";
-        // "INSERT INTO peruntukan VALUES('','".$value."','".$_POST['jenis'][$key]."','".$_POST['luas'][$key]."','".$_POST['nokrk'][$key]."','".$_POST['noimb'][$key]."','".$_POST['noblokplan'][$key]."','".$_POST['sertifikasi'][$key]."','".$_POST['pemilik'][$key]."','".$_POST['jenissertifikat'][$key]."','".$_POST['nosertifikat'][$key]."','".$_POST['masaberlaku'][$key]."','".$_POST['luassertifikat'][$key]."','".$_POST['keterangan'][$key]."','".$_POST['nobast']."','".$_POST['noaset']."')"
-//simpan data ke database
-        // echo $query;
-        $query = mysql_query($query) or die(mysql_error());
-
-
-      }
-      echo 'Input data peruntukan berhasil .....';
-    }
-
-    mysql_connect("localhost","root","");
-    mysql_select_db("phplogin");
-    $waktu = gmdate("Y-m-d H:i:s", time()+60*60*7);
-    $user = $_SESSION['SESS_FIRST_NAME'];
-    $query = mysql_query("insert into loging values('','$user','entry peruntukan akun nobast : ".$data['nobastaset']."','$waktu')") or die(mysql_error());
-  }
-  ?>
+   
 
 
 
-</div>
+ </div>
 </div>
 
 </div>

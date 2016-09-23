@@ -66,6 +66,7 @@ require_once('auth.php');
         float: left;
         background-color: #C5EFF7;
         width: 88%;
+        font-size: 13px;
       }
       #data{
         float: right;
@@ -174,8 +175,10 @@ require_once('auth.php');
             $query2c="";
             if(isset($_GET['kategori'])){
               if($_GET['kategori']=='dokacuan'){
+                $note=')* -<u>Dokumen Acuan</u>- Input Nomor Dok. Acuan atau Nama Pemegang Dok. atau Jenis Dok. Acuan <br />';
                 $query='select * from detaildokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori ';
               }else{
+                $note=')* -<u>'.strtoupper("$_GET[kategori]").'</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />';
                 $query="select bast.nobast, bast.keterangan, bast.tglbast, bast.pengembangbast, detaildokacuan.nodokacuan, detaildokacuan.pemegangdokacuan,dokumenacuan.jenisdokumen, detaildokacuan.tgldokacuan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori ";// INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
               }
               echo"
@@ -184,6 +187,7 @@ require_once('auth.php');
              </option>
              ";
            }else{
+                $note=')* -<u>BAST</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />';
             $query="select bast.nobast, bast.keterangan, bast.tglbast, bast.pengembangbast, detaildokacuan.nodokacuan, detaildokacuan.pemegangdokacuan, dokumenacuan.jenisdokumen, detaildokacuan.tgldokacuan from bast inner join detaildokacuan on bast.nodokacuan=detaildokacuan.nodokacuan inner join dokumenacuan on detaildokacuan.idkategori=dokumenacuan.idkategori ";//INNER JOIN dataaset on bast.nobast=dataaset.nobastaset ";
           }
           ?>
@@ -204,11 +208,10 @@ require_once('auth.php');
        <!-- <a class="advance-search-button">Advance Search</a><br/> -->
        <br>
 
-       <font size="1">
-        )* -<u>BAST</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />
-        )* -<u>ASET</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />
-        )* -<u>Akun</u>- Input Nomor Bast atau Nama Pengembang atau Jenis Dok. Acuan <br />
-        )* -<u>Dokumen Acuan</u>- Input Nomor Dok. Acuan atau Nama Pemegang Dok. atau Jenis Dok. Acuan <br />
+       <font size="2">
+        <?php
+          echo $note;
+        ?>
       </font>
     </div>
 
@@ -566,7 +569,8 @@ require_once('auth.php');
                 ";
                 if($totalData>0){
                   echo"
-                  <table>
+         
+                  <table style='font-size: 130%;'>
                     ";
                     if(isset($_GET['kategori'])&&$_GET['kategori']=='dokacuan'){
                       echo"
